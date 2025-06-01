@@ -4,19 +4,16 @@ frontend:
     preBuild:
       commands:
         - echo "Starting build process at $(date)"
-        - echo "Node version $(node -v)"
-        - echo "NPM version $(npm -v)"
         - npm i
-        - npm ci --legacy-peer-deps --cache .npm --prefer-offline
+        - npm ci --legacy-peer-deps
     build:
       commands:
         - echo "Injecting environment variables"
-        - env | grep -e OPENAI_API_KEY >> .env.production
-        - env | grep -e PINECONE_API_KEY >> .env.production
-        - env | grep -e PINECONE_INDEX_NAME >> .env.production
-        - echo "Starting build"
+        - echo "OPENAI_API_KEY=$OPENAI_API_KEY" >> .env.local
+        - echo "PINECONE_API_KEY=$PINECONE_API_KEY" >> .env.local
+        - echo "PINECONE_INDEX_NAME=$PINECONE_INDEX_NAME" >> .env.local
+        - echo "Starting Next.js build"
         - npm run build
-        - echo "Build completed at $(date)"
   artifacts:
     baseDirectory: .next
     files:
@@ -24,10 +21,6 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
-      - .next/cache/**/*
-      - .npm/**/*
 
-# Note: Environment variables should be configured in the Amplify Console
-# - OPENAI_API_KEY
-# - PINECONE_API_KEY
-# - PINECONE_INDEX_NAME
+# This configuration is for a Next.js app with external API connections
+# Environment variables are configured in the Amplify Console
