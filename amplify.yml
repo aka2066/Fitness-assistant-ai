@@ -1,4 +1,10 @@
 version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - '# Execute Amplify CLI with the helper script'
+        - amplifyPush --simple
 frontend:
   phases:
     preBuild:
@@ -6,16 +12,16 @@ frontend:
         - echo "Starting build process at $(date)"
         - echo "Node version $(node -v)"
         - echo "NPM version $(npm -v)"
-        - echo "Directory contents:" && ls -la
-        - echo "Installing only production dependencies to reduce build time"
-        - npm ci --legacy-peer-deps --production=false --no-optional
-        - echo "Finished installing dependencies at $(date)"
+        - npm i
+        - npm ci --legacy-peer-deps --cache .npm --prefer-offline
     build:
       commands:
-        - echo "Starting build at $(date)"
-        - echo "Package.json contents:" && cat package.json
-        - echo "Checking if next.config.js exists:" && ls -la next.config.js
-        - NODE_OPTIONS="--max-old-space-size=4096" npm run build
+        - echo "Injecting environment variables"
+        - env | grep -e OPENAI_API_KEY >> .env.production
+        - env | grep -e PINECONE_API_KEY >> .env.production
+        - env | grep -e PINECONE_INDEX_NAME >> .env.production
+        - echo "Starting build"
+        - npm run build
         - echo "Build completed at $(date)"
   artifacts:
     baseDirectory: .next
@@ -25,9 +31,9 @@ frontend:
     paths:
       - node_modules/**/*
       - .next/cache/**/*
+      - .npm/**/*
 
 # Note: Environment variables should be configured in the Amplify Console
-# This is just a reminder of which variables are needed:
 # - OPENAI_API_KEY
 # - PINECONE_API_KEY
 # - PINECONE_INDEX_NAME
