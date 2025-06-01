@@ -34,7 +34,7 @@ export PINECONE_API_KEY=pcsk_your_actual_api_key_here
 Or create a `.env.local` file:
 ```env
 PINECONE_API_KEY=pcsk_your_actual_api_key_here
-OPENAI_API_KEY=sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA
+OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
 ```
 
 ## Step 5: Deploy Updated Functions

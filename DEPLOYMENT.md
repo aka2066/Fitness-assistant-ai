@@ -6,7 +6,7 @@
 2. **AWS CLI** configured with your credentials
 3. **Node.js 18+** installed
 4. **Pinecone Account** - Sign up at [pinecone.io](https://pinecone.io)
-5. **OpenAI API Key** - Available: `sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA`
+5. **OpenAI API Key** - Available from [OpenAI Dashboard](https://platform.openai.com/api-keys): `<YOUR_OPENAI_API_KEY>`
 
 ## Step 1: Set Up Pinecone Vector Database
 
@@ -62,7 +62,7 @@ NEXT_PUBLIC_USER_POOL_CLIENT_ID=XXXXXXXXXXXXXXXXXXXXXXXXXX
 NEXT_PUBLIC_API_URL=https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/graphql
 
 # OpenAI API Key (provided)
-OPENAI_API_KEY=sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA
+OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
 
 # Pinecone Configuration
 PINECONE_API_KEY=your_pinecone_api_key_here
@@ -78,7 +78,7 @@ npx ampx deploy --branch main
 aws lambda update-function-configuration \
   --function-name fitness-assistant-chatbot \
   --environment Variables='{
-    "OPENAI_API_KEY":"sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA",
+    "OPENAI_API_KEY":"<YOUR_OPENAI_API_KEY>",
     "PINECONE_API_KEY":"your_pinecone_api_key",
     "PINECONE_INDEX":"fitness-assistant"
   }'
@@ -86,7 +86,7 @@ aws lambda update-function-configuration \
 aws lambda update-function-configuration \
   --function-name fitness-assistant-embeddings \
   --environment Variables='{
-    "OPENAI_API_KEY":"sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA",
+    "OPENAI_API_KEY":"<YOUR_OPENAI_API_KEY>",
     "PINECONE_API_KEY":"your_pinecone_api_key",
     "PINECONE_INDEX":"fitness-assistant"
   }'
