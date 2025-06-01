@@ -1,5 +1,7 @@
 // src/app/amplify-config.ts
 import { Amplify } from 'aws-amplify';
+import { generateClient } from 'aws-amplify/api';
+import { post } from 'aws-amplify/api';
 
 // Configure AWS Amplify v6 with the correct format
 Amplify.configure({
@@ -22,6 +24,9 @@ Amplify.configure({
     }
   }
 });
+
+// Create and export API client for use in components
+export const client = generateClient();
 
 // For more verbose debugging
 console.log('Amplify configured with Cognito User Pool:', {

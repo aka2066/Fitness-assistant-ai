@@ -15,13 +15,8 @@ const nextConfig = {
     '@aws-amplify/ui-react',
     'aws-amplify'
   ],
-  // Configure server-side optimization
-  experimental: {
-    // Enable app directory if using the app router
-    appDir: true,
-    // Optimize for server components
-    serverComponents: true,
-  },
+  // Next.js 14+ uses App Router by default, so we don't need to specify it as experimental
+  // The experimental options have been removed to fix build warnings
   // Disable source maps in production to reduce build size
   productionBrowserSourceMaps: false,
 };
