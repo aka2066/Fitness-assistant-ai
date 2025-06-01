@@ -1,0 +1,14 @@
+{
+  "name": "chatbot-function",
+  "version": "1.0.0",
+  "description": "AI Chatbot Lambda function with OpenAI integration",
+  "main": "handler.ts",
+  "dependencies": {
+    "openai": "^4.0.0",
+    "@pinecone-database/pinecone": "^1.1.2",
+    "@types/aws-lambda": "^8.10.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+} 
