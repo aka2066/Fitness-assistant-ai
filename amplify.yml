@@ -3,10 +3,15 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm ci
+        - echo "Node version $(node -v)"
+        - echo "NPM version $(npm -v)"
+        - npm ci --legacy-peer-deps
+        - echo "Finished installing dependencies"
     build:
       commands:
+        - echo "Starting build"
         - npm run build
+        - echo "Build completed"
   artifacts:
     baseDirectory: .next
     files:
@@ -15,3 +20,6 @@ frontend:
     paths:
       - node_modules/**/*
       - .next/cache/**/*
+
+# Note: Environment variables should be configured in the Amplify Console
+# This is just a reminder of which variables are needed
