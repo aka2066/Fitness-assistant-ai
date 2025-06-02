@@ -5,12 +5,14 @@ const schema = a.schema({
     .model({
       id: a.id(),
       userId: a.string().required(),
+      name: a.string(), // User's full name
       age: a.integer(),
-      height: a.float(), // in cm
-      weight: a.float(), // in kg
-      fitnessGoals: a.string(),
-      activityLevel: a.string(),
-      dietaryRestrictions: a.string(),
+      heightFeet: a.integer(), // Height in feet (5 for 5'11")
+      heightInches: a.integer(), // Height in inches (11 for 5'11")
+      weight: a.float(), // Weight in pounds
+      fitnessGoals: a.string(), // Primary fitness goal
+      activityLevel: a.string(), // Activity level description
+      dietaryRestrictions: a.string(), // Dietary restrictions or allergies
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
       owner: a.string(), // Required for owner-based authorization
