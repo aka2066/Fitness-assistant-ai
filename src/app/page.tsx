@@ -9,9 +9,6 @@ import {
   Typography,
   Button,
   Box,
-  AppBar,
-  Toolbar,
-  Alert
 } from '@mui/material';
 import {
   FitnessCenter,
@@ -22,7 +19,8 @@ import {
 } from '@mui/icons-material';
 import Link from 'next/link';
 import { useAuth } from './providers/AuthProvider';
-import { getCurrentUser } from 'aws-amplify/auth';
+import Navigation from '../components/Navigation';
+import NewUserRedirect from '../components/NewUserRedirect';
 
 const QuickActionCard = ({
   title,
@@ -65,19 +63,6 @@ const QuickActionCard = ({
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
-  const [authDebug, setAuthDebug] = useState<string>('');
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const currentUser = await getCurrentUser();
-        setAuthDebug(`Auth working: ${currentUser.username || currentUser.userId}`);
-      } catch (error) {
-        setAuthDebug(`Auth not configured: ${error}`);
-      }
-    };
-    checkAuth();
-  }, []);
 
   if (loading) {
     return (
@@ -89,23 +74,10 @@ export default function Dashboard() {
 
   return (
     <>
-      <AppBar position="static" elevation={0}>
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Fitness Assistant
-          </Typography>
-          <Typography variant="body2">
-            Welcome, {user?.username || 'User'}
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <NewUserRedirect />
+      <Navigation />
 
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        {/* Debug info */}
-        <Alert severity="info" sx={{ mb: 3 }}>
-          Auth Status: {authDebug}
-        </Alert>
-
         <Box sx={{ mb: 4 }}>
           <Typography variant="h3" component="h1" gutterBottom>
             Your AI-Powered Fitness Coach

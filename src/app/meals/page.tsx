@@ -18,17 +18,7 @@ import {
   Divider,
 } from '@mui/material';
 import { useAuth } from '../providers/AuthProvider';
-import { client } from '../amplify-config';
-
-interface MealLog {
-  id?: string;
-  userId: string;
-  type: string;
-  calories?: number;
-  notes?: string;
-  foods?: string;
-  date: string;
-}
+import { mealStorage, MealLog } from '../../utils/localData';
 
 const mealTypes = [
   'Breakfast',
@@ -38,14 +28,14 @@ const mealTypes = [
 ];
 
 export default function MealsPage() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [meals, setMeals] = useState<MealLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   
   const [newMeal, setNewMeal] = useState<MealLog>({
-    userId: user?.userId || '',
+    userId: '',
     type: '',
     calories: undefined,
     notes: '',
@@ -55,6 +45,7 @@ export default function MealsPage() {
 
   useEffect(() => {
     if (user?.userId) {
+      setNewMeal(prev => ({ ...prev, userId: user.userId }));
       loadMeals();
     }
   }, [user]);
@@ -62,13 +53,8 @@ export default function MealsPage() {
   const loadMeals = async () => {
     try {
       setLoading(true);
-      const { data: mealData } = await client.models.MealLog.list({
-        filter: { userId: { eq: user?.userId } },
-      });
-      
-      if (mealData) {
-        setMeals(mealData as MealLog[]);
-      }
+      const mealData = mealStorage.getAll(user!.userId);
+      setMeals(mealData);
     } catch (error) {
       console.error('Error loading meals:', error);
       setMessage({ type: 'error', text: 'Failed to load meals' });
@@ -79,6 +65,42 @@ export default function MealsPage() {
 
   const handleInputChange = (field: keyof MealLog, value: any) => {
     setNewMeal(prev => ({ ...prev, [field]: value }));
+  };
+
+  const createEmbedding = async (meal: MealLog) => {
+    try {
+      // Create a text summary of the meal for embedding
+      const mealSummary = `
+        Meal: ${meal.type} with ${meal.calories} calories.
+        Foods: ${meal.foods || meal.notes || 'Not specified'}.
+        Date: ${meal.date}.
+      `.trim();
+
+      const response = await fetch('/api/embeddings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: meal.userId,
+          type: 'meal',
+          content: mealSummary,
+          metadata: {
+            mealType: meal.type,
+            calories: meal.calories,
+            date: meal.date,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create embedding');
+      }
+      
+      const result = await response.json();
+      console.log('Meal embedding created:', result);
+    } catch (error) {
+      console.error('Error creating embedding:', error);
+      // Don't fail the whole save if embedding fails
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,18 +114,18 @@ export default function MealsPage() {
     try {
       setSaving(true);
       
-      const mealData = {
-        ...newMeal,
-        createdAt: new Date().toISOString(),
-        date: new Date(newMeal.date).toISOString(),
-      };
-
-      const { data: savedMeal } = await client.models.MealLog.create(mealData);
+      // Save to local storage
+      const savedMeal = mealStorage.save(newMeal);
       
-      if (savedMeal) {
-        setMeals(prev => [savedMeal as MealLog, ...prev]);
-      }
+      // Update the meals list
+      setMeals(prev => [savedMeal, ...prev]);
 
+      // Create embedding for the meal (runs in background)
+      await createEmbedding(savedMeal);
+
+      setMessage({ type: 'success', text: 'Meal logged successfully!' });
+      
+      // Reset form
       setNewMeal({
         userId: user?.userId || '',
         type: '',
@@ -113,7 +135,6 @@ export default function MealsPage() {
         date: new Date().toISOString().split('T')[0],
       });
 
-      setMessage({ type: 'success', text: 'Meal logged successfully!' });
       setTimeout(() => setMessage(null), 3000);
     } catch (error) {
       console.error('Error saving meal:', error);
@@ -123,7 +144,11 @@ export default function MealsPage() {
     }
   };
 
-  if (loading) {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  if (authLoading || loading) {
     return (
       <Container maxWidth="md" sx={{ mt: 4, textAlign: 'center' }}>
         <CircularProgress />
@@ -204,51 +229,54 @@ export default function MealsPage() {
               type="submit"
               variant="contained"
               disabled={saving}
-              sx={{ minWidth: 120 }}
+              size="large"
             >
               {saving ? <CircularProgress size={24} /> : 'Log Meal'}
             </Button>
             
-            <Button variant="outlined" href="/">
+            <Button
+              variant="outlined"
+              href="/"
+              size="large"
+            >
               Back to Dashboard
             </Button>
           </Box>
         </Box>
       </Paper>
 
+      {/* Meal History */}
       <Paper elevation={2} sx={{ p: 3 }}>
         <Typography variant="h5" gutterBottom>
-          Recent Meals
+          Meal History
         </Typography>
         
         {meals.length === 0 ? (
-          <Typography color="text.secondary">
-            No meals logged yet. Start by adding your first meal!
+          <Typography variant="body1" color="text.secondary">
+            No meals logged yet. Start by logging your first meal above!
           </Typography>
         ) : (
           <List>
-            {meals.slice(0, 10).map((meal, index) => (
-              <React.Fragment key={meal.id || index}>
-                <ListItem sx={{ px: 0 }}>
+            {meals.map((meal, index) => (
+              <React.Fragment key={meal.id}>
+                <ListItem>
                   <ListItemText
                     primary={
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Chip label={meal.type} size="small" />
-                        <Typography variant="body2" color="text.secondary">
-                          {new Date(meal.date).toLocaleDateString()}
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                        <Chip label={meal.type} color="secondary" size="small" />
+                        <Typography variant="body1">
+                          {formatDate(meal.date)}
                         </Typography>
                       </Box>
                     }
                     secondary={
                       <Box sx={{ mt: 1 }}>
-                        {meal.calories && (
-                          <Typography variant="caption" display="block">
-                            Calories: {meal.calories}
-                          </Typography>
-                        )}
+                        <Typography variant="body2" color="text.secondary">
+                          Calories: {meal.calories || 'Not specified'}
+                        </Typography>
                         {meal.notes && (
-                          <Typography variant="caption" display="block" sx={{ mt: 0.5 }}>
-                            {meal.notes}
+                          <Typography variant="body2" sx={{ mt: 0.5 }}>
+                            Notes: {meal.notes}
                           </Typography>
                         )}
                       </Box>

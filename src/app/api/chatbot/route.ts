@@ -1,9 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import { Pinecone } from '@pinecone-database/pinecone';
 
 const openai = new OpenAI({
   apiKey: 'sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA',
 });
+
+const pinecone = new Pinecone({
+  apiKey: 'pcsk_2YeBCc_3BgnVr2ENQbJJmDws13s55b3ZvKYywHgoZ2bR1ygu3Bnd1LV1km5x9t4pBkfMNb',
+});
+
+interface RetrievedContext {
+  id: string;
+  type: 'workout' | 'meal' | 'profile';
+  content: string;
+  metadata: any;
+  score: number;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,63 +29,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // For development, we'll provide a mock response with fitness advice
-    // In production, this would implement the full RAG pipeline
     console.log('Chat request:', { message, userId });
 
-    // Mock fitness coach responses based on common queries
-    let response = '';
-    const lowerMessage = message.toLowerCase();
+    // Step 1: Generate embedding for user's message
+    const messageEmbedding = await generateEmbedding(message);
 
-    if (lowerMessage.includes('workout') || lowerMessage.includes('exercise')) {
-      response = `Great question about workouts! Based on general fitness principles, I recommend:
+    // Step 2: Retrieve relevant context from Pinecone
+    const retrievedContext = await retrieveContext(userId, messageEmbedding);
 
-• Start with 3-4 workout sessions per week
-• Include both cardio (20-30 minutes) and strength training
-• Focus on compound movements like squats, deadlifts, and push-ups
-• Always warm up before and cool down after workouts
-• Listen to your body and rest when needed
+    // Step 3: Build augmented prompt with retrieved context
+    const augmentedPrompt = buildAugmentedPrompt(message, retrievedContext, userId);
 
-For personalized recommendations, make sure to log your workouts so I can analyze your patterns and suggest improvements!`;
-    } else if (lowerMessage.includes('meal') || lowerMessage.includes('food') || lowerMessage.includes('eat')) {
-      response = `Nutrition is crucial for your fitness goals! Here are some general guidelines:
-
-• Eat protein with every meal (aim for 0.8-1g per kg body weight)
-• Include plenty of vegetables and fruits
-• Stay hydrated (8-10 glasses of water daily)
-• Time your meals around workouts (protein + carbs post-workout)
-• Avoid processed foods when possible
-
-Log your meals regularly so I can provide more specific advice based on your eating patterns and goals!`;
-    } else if (lowerMessage.includes('goal') || lowerMessage.includes('plan')) {
-      response = `Setting clear fitness goals is the first step to success! Here's how to create an effective plan:
-
-• Define specific, measurable goals (e.g., "lose 10 pounds in 3 months")
-• Start gradually and build consistency
-• Combine cardio and strength training
-• Track your progress regularly
-• Be patient and celebrate small wins
-
-Update your profile with your specific goals so I can provide more targeted advice for your fitness journey!`;
-    } else {
-      response = `Thanks for your question! As your AI fitness coach, I'm here to help with:
-
-• Workout recommendations and planning
-• Nutrition advice and meal suggestions
-• Goal setting and progress tracking
-• Exercise form and safety tips
-
-To give you the most personalized advice, make sure to:
-1. Complete your profile with your fitness goals
-2. Log your workouts and meals regularly
-3. Ask specific questions about your fitness journey
-
-What specific aspect of fitness would you like help with today?`;
-    }
+    // Step 4: Generate response using OpenAI
+    const response = await generateResponse(augmentedPrompt);
 
     return NextResponse.json({
       response,
-      context: 0, // Mock context count
+      context: retrievedContext.length,
+      contextUsed: retrievedContext.length > 0,
+      retrievedData: retrievedContext, // For debugging
     });
     
   } catch (error) {
@@ -82,4 +57,97 @@ What specific aspect of fitness would you like help with today?`;
       { status: 500 }
     );
   }
+}
+
+async function generateEmbedding(text: string): Promise<number[]> {
+  const response = await openai.embeddings.create({
+    model: 'text-embedding-ada-002',
+    input: text,
+  });
+  return response.data[0].embedding;
+}
+
+async function retrieveContext(
+  userId: string,
+  queryEmbedding: number[]
+): Promise<RetrievedContext[]> {
+  try {
+    const index = pinecone.index('fitness-assistant');
+    
+    const queryResult = await index.namespace(userId).query({
+      vector: queryEmbedding,
+      topK: 5,
+      includeMetadata: true,
+      includeValues: false,
+    });
+
+    return queryResult.matches?.map(match => ({
+      id: match.id,
+      type: match.metadata?.type as 'workout' | 'meal' | 'profile',
+      content: match.metadata?.content as string,
+      metadata: match.metadata,
+      score: match.score || 0,
+    })) || [];
+  } catch (error) {
+    console.error('Error retrieving from Pinecone:', error);
+    // Return empty context if Pinecone fails - still provide basic response
+    return [];
+  }
+}
+
+function buildAugmentedPrompt(
+  originalMessage: string,
+  context: RetrievedContext[],
+  userId: string
+): string {
+  let prompt = `You are an AI fitness and nutrition coach. Help the user with their request based on their past activities and data.
+
+User ID: ${userId}
+
+Relevant Past Activities and Data:
+`;
+  
+  if (context.length > 0) {
+    context.forEach((item, index) => {
+      prompt += `${index + 1}. ${item.type.toUpperCase()}: ${item.content}\n`;
+      if (item.metadata?.date) {
+        prompt += `   Date: ${item.metadata.date}\n`;
+      }
+      if (item.metadata?.calories) {
+        prompt += `   Calories: ${item.metadata.calories}\n`;
+      }
+      if (item.metadata?.duration) {
+        prompt += `   Duration: ${item.metadata.duration} minutes\n`;
+      }
+      prompt += `   Relevance Score: ${(item.score * 100).toFixed(1)}%\n\n`;
+    });
+  } else {
+    prompt += 'No past activities found for this user yet. Provide general fitness and nutrition advice.';
+  }
+
+  prompt += `\nUser Question: ${originalMessage}
+
+Please provide a personalized, helpful response based on the user's past activities when available. Be specific and actionable in your recommendations. Reference their past activities when relevant. If no past activities are available, provide general but helpful fitness and nutrition advice.`;
+
+  return prompt;
+}
+
+async function generateResponse(prompt: string): Promise<string> {
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4',
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a knowledgeable and encouraging fitness and nutrition coach. Provide personalized, actionable advice based on the user\'s activity history when available. Be conversational and supportive.',
+      },
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ],
+    max_tokens: 600,
+    temperature: 0.7,
+  });
+
+  return completion.choices[0].message.content || 'I apologize, but I could not generate a response at this time.';
 } 

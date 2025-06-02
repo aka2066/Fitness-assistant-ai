@@ -13,8 +13,9 @@ const schema = a.schema({
       dietaryRestrictions: a.string(),
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
+      owner: a.string(), // Required for owner-based authorization
     })
-    .authorization(allow => [allow.owner().to(['create', 'read', 'update', 'delete'])]),
+    .authorization(allow => [allow.owner()]),
 
   WorkoutLog: a
     .model({
@@ -27,8 +28,9 @@ const schema = a.schema({
       exercises: a.string(), // JSON string of exercise details
       date: a.datetime().required(),
       createdAt: a.datetime(),
+      owner: a.string(), // Required for owner-based authorization
     })
-    .authorization(allow => [allow.owner().to(['create', 'read', 'update', 'delete'])]),
+    .authorization(allow => [allow.owner()]),
 
   MealLog: a
     .model({
@@ -40,8 +42,9 @@ const schema = a.schema({
       foods: a.string(), // JSON string of food details
       date: a.datetime().required(),
       createdAt: a.datetime(),
+      owner: a.string(), // Required for owner-based authorization
     })
-    .authorization(allow => [allow.owner().to(['create', 'read', 'update', 'delete'])]),
+    .authorization(allow => [allow.owner()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

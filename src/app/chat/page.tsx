@@ -114,12 +114,8 @@ export default function ChatPage() {
 
   // Real API call to RAG-enabled chatbot
   const getChatResponse = async (message: string, userId: string) => {
-    // For demo purposes, simulate RAG with real user data
     try {
-      const chatbotEndpoint = process.env.NEXT_PUBLIC_CHATBOT_API_URL || 
-        'https://jhf4qmbb7ff5ll5ctyujclivrm.appsync-api.us-east-1.amazonaws.com/chatbot';
-      
-      const response = await fetch(chatbotEndpoint, {
+      const response = await fetch('/api/chatbot', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -136,9 +132,8 @@ export default function ChatPage() {
 
       return await response.json();
     } catch (error) {
-      // Demo fallback: Simulate RAG-enabled responses for assessment
-      console.log('Using demo RAG simulation for assessment');
-      return await simulateRAGResponse(message, userId);
+      console.error('Error calling local chatbot API:', error);
+      throw error;
     }
   };
 

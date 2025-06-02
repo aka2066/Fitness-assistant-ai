@@ -150,7 +150,7 @@ A comprehensive full-stack fitness application with AI-powered recommendations u
 - Node.js 18+
 - npm or yarn
 - AWS Account (for deployment)
-- OpenAI API Key: `sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA`
+- OpenAI API Key: `<YOUR_OPENAI_API_KEY>`
 - Pinecone API Key (sign up at pinecone.io)
 
 ### Local Development Setup
@@ -167,7 +167,7 @@ A comprehensive full-stack fitness application with AI-powered recommendations u
    NEXT_PUBLIC_USER_POOL_ID=your_cognito_user_pool_id
    NEXT_PUBLIC_USER_POOL_CLIENT_ID=your_cognito_client_id
    NEXT_PUBLIC_API_URL=your_api_gateway_url
-   OPENAI_API_KEY=sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA
+   OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
    PINECONE_API_KEY=your_pinecone_api_key
    PINECONE_INDEX=fitness-assistant
    ```
@@ -257,7 +257,7 @@ npm run test:coverage
 NEXT_PUBLIC_USER_POOL_ID=us-east-1_XXXXXXXXX
 NEXT_PUBLIC_USER_POOL_CLIENT_ID=XXXXXXXXXXXXXXXXXXXXXXXXXX
 NEXT_PUBLIC_API_URL=https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com
-OPENAI_API_KEY=sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA
+OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
 PINECONE_API_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 PINECONE_INDEX=fitness-assistant
 ```

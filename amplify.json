@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "appId": "dqaqcfups61p9",
+  "frontend": {
+    "phases": {
+      "preBuild": {
+        "commands": [
+          "echo 'Node version:' && node -v",
+          "echo 'NPM version:' && npm -v",
+          "npm ci --legacy-peer-deps --quiet"
+        ]
+      },
+      "build": {
+        "commands": [
+          "echo 'Building Next.js app'",
+          "npm run build"
+        ]
+      }
+    },
+    "artifacts": {
+      "baseDirectory": ".next",
+      "files": [
+        "**/*"
+      ]
+    },
+    "cache": {
+      "paths": [
+        "node_modules/**/*",
+        ".next/cache/**/*"
+      ]
+    }
+  }
+}
