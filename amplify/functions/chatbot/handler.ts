@@ -6,7 +6,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const pinecone = new Pinecone({
+const pinecone = new (Pinecone as any)({
   apiKey: process.env.PINECONE_API_KEY!,
 });
 

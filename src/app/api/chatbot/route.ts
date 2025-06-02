@@ -3,11 +3,11 @@ import OpenAI from 'openai';
 import { Pinecone } from '@pinecone-database/pinecone';
 
 const openai = new OpenAI({
-  apiKey: 'sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA',
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
-const pinecone = new Pinecone({
-  apiKey: 'pcsk_2YeBCc_3BgnVr2ENQbJJmDws13s55b3ZvKYywHgoZ2bR1ygu3Bnd1LV1km5x9t4pBkfMNb',
+const pinecone = new (Pinecone as any)({
+  apiKey: process.env.PINECONE_API_KEY || 'pcsk_2YeBCc_3BgnVr2ENQbJJmDws13s55b3ZvKYywHgoZ2bR1ygu3Bnd1LV1km5x9t4pBkfMNb',
 });
 
 interface RetrievedContext {
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('Chat request:', { message, userId });
+    console.log('📧 Basic RAG chat request:', { message, userId });
 
     // Step 1: Generate embedding for user's message
     const messageEmbedding = await generateEmbedding(message);
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     });
     
   } catch (error) {
-    console.error('Chatbot API error:', error);
+    console.error('❌ Basic RAG Chatbot API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -134,7 +134,7 @@ Please provide a personalized, helpful response based on the user's past activit
 
 async function generateResponse(prompt: string): Promise<string> {
   const completion = await openai.chat.completions.create({
-    model: 'gpt-4',
+    model: 'gpt-3.5-turbo',
     messages: [
       {
         role: 'system',

@@ -51,6 +51,111 @@ const fitnessGoalsOptions = [
   'General health and wellness',
 ];
 
+// Simple test component
+function SimpleProfileTest() {
+  const { user } = useAuth();
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const testBasicSave = async () => {
+    try {
+      setLoading(true);
+      setMessage('');
+      
+      console.log('🧪 Testing basic profile save...');
+      console.log('User:', user);
+      console.log('Data:', { age, userId: user?.userId });
+
+      const createQuery = `
+        mutation CreateUserProfile($input: CreateUserProfileInput!) {
+          createUserProfile(input: $input) {
+            id
+            userId
+            age
+            createdAt
+          }
+        }
+      `;
+      
+      const result: any = await client.graphql({
+        query: createQuery,
+        variables: {
+          input: {
+            userId: user?.userId,
+            age: parseInt(age)
+          }
+        }
+      });
+
+      console.log('✅ Result:', result);
+      
+      if (result.data?.createUserProfile) {
+        setMessage(`✅ SUCCESS! Created profile: ${JSON.stringify(result.data.createUserProfile)}`);
+      } else {
+        setMessage(`❌ No data returned: ${JSON.stringify(result)}`);
+      }
+
+    } catch (error: any) {
+      console.error('❌ Error:', error);
+      setMessage(`❌ ERROR: ${error.message || JSON.stringify(error)}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!user) {
+    return <Typography>Please sign in first</Typography>;
+  }
+
+  return (
+    <Paper sx={{ p: 3, mb: 3, backgroundColor: '#e3f2fd', border: '2px solid #2196f3' }}>
+      <Typography variant="h6" gutterBottom>
+        🧪 DEBUG: Simple Profile Save Test
+      </Typography>
+      
+      <Typography variant="body2" paragraph>
+        User: {user.username} (ID: {user.userId})
+      </Typography>
+
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
+        <TextField
+          label="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Your full name"
+          size="small"
+        />
+        
+        <TextField
+          label="Age"
+          type="number"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          placeholder="25"
+          size="small"
+        />
+        
+        <Button 
+          variant="contained" 
+          onClick={testBasicSave}
+          disabled={loading || !name || !age}
+          size="small"
+        >
+          {loading ? 'Saving...' : 'Test Save'}
+        </Button>
+      </Box>
+
+      {message && (
+        <Alert severity={message.includes('SUCCESS') ? 'success' : 'error'}>
+          <pre style={{ whiteSpace: 'pre-wrap', fontSize: '12px' }}>{message}</pre>
+        </Alert>
+      )}
+    </Paper>
+  );
+}
+
 export default function ProfilePage() {
   const { user, loading: authLoading } = useAuth();
   const [profile, setProfile] = useState<UserProfile>({
@@ -78,14 +183,7 @@ export default function ProfilePage() {
             items {
               id
               userId
-              name
               age
-              heightFeet
-              heightInches
-              weight
-              fitnessGoals
-              activityLevel
-              dietaryRestrictions
               createdAt
               updatedAt
             }
@@ -113,7 +211,7 @@ export default function ProfilePage() {
         setProfile({
           id: existingProfile.id,
           userId: existingProfile.userId,
-          name: existingProfile.name,
+          name: existingProfile.name || '', // Default to empty string if field doesn't exist
           age: existingProfile.age || undefined,
           heightFeet: existingProfile.heightFeet || undefined,
           heightInches: existingProfile.heightInches || undefined,
@@ -152,16 +250,18 @@ export default function ProfilePage() {
       console.log('👤 User:', user);
       console.log('📝 Profile:', profile);
       
+      // Only save fields that exist in current schema
       const profileData = {
         userId: profile.userId,
-        name: profile.name,
         age: profile.age,
-        heightFeet: profile.heightFeet,
-        heightInches: profile.heightInches,
-        weight: profile.weight,
-        fitnessGoals: profile.fitnessGoals,
-        activityLevel: profile.activityLevel,
-        dietaryRestrictions: profile.dietaryRestrictions,
+        // TODO: Add other fields when backend schema is fully deployed
+        // name: profile.name,
+        // heightFeet: profile.heightFeet,
+        // heightInches: profile.heightInches,
+        // weight: profile.weight,
+        // fitnessGoals: profile.fitnessGoals,
+        // activityLevel: profile.activityLevel,
+        // dietaryRestrictions: profile.dietaryRestrictions,
       };
 
       console.log('🚀 Saving data:', profileData);
@@ -175,14 +275,7 @@ export default function ProfilePage() {
             updateUserProfile(input: $input) {
               id
               userId
-              name
               age
-              heightFeet
-              heightInches
-              weight
-              fitnessGoals
-              activityLevel
-              dietaryRestrictions
               createdAt
               updatedAt
             }
@@ -206,14 +299,7 @@ export default function ProfilePage() {
             createUserProfile(input: $input) {
               id
               userId
-              name
               age
-              heightFeet
-              heightInches
-              weight
-              fitnessGoals
-              activityLevel
-              dietaryRestrictions
               createdAt
               updatedAt
             }
@@ -234,18 +320,18 @@ export default function ProfilePage() {
         setProfile({
           id: savedProfile.id,
           userId: savedProfile.userId,
-          name: savedProfile.name,
+          name: savedProfile.name || profile.name, // Keep frontend value if not saved to backend yet
           age: savedProfile.age,
-          heightFeet: savedProfile.heightFeet,
-          heightInches: savedProfile.heightInches,
-          weight: savedProfile.weight,
-          fitnessGoals: savedProfile.fitnessGoals,
-          activityLevel: savedProfile.activityLevel,
-          dietaryRestrictions: savedProfile.dietaryRestrictions,
+          heightFeet: savedProfile.heightFeet || profile.heightFeet,
+          heightInches: savedProfile.heightInches || profile.heightInches,
+          weight: savedProfile.weight || profile.weight,
+          fitnessGoals: savedProfile.fitnessGoals || profile.fitnessGoals,
+          activityLevel: savedProfile.activityLevel || profile.activityLevel,
+          dietaryRestrictions: savedProfile.dietaryRestrictions || profile.dietaryRestrictions,
           createdAt: savedProfile.createdAt,
           updatedAt: savedProfile.updatedAt,
         });
-        setMessage({ type: 'success', text: 'Profile saved to DynamoDB!' });
+        setMessage({ type: 'success', text: 'Basic profile saved! (Full fields will save once backend is fully deployed)' });
         console.log('🎉 Profile saved successfully:', savedProfile);
         
         // If this was a new user, redirect to dashboard after a delay
@@ -256,10 +342,10 @@ export default function ProfilePage() {
         }
       }
 
-      setTimeout(() => setMessage(null), 3000);
+      setTimeout(() => setMessage(null), 5000);
     } catch (error) {
       console.error('❌ Error saving profile:', error);
-      setMessage({ type: 'error', text: 'Failed to save profile' });
+      setMessage({ type: 'error', text: `Failed to save profile: ${error}` });
     } finally {
       setSaving(false);
     }
@@ -278,6 +364,8 @@ export default function ProfilePage() {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+      <SimpleProfileTest />
+      
       <Paper elevation={2} sx={{ p: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           {isNewUser ? 'Welcome! Complete Your Profile' : 'Update Your Profile'}

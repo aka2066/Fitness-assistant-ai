@@ -18,9 +18,6 @@ frontend:
     baseDirectory: .next
     files:
       - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
 
 # This configuration is for a Next.js app with external API connections
 # Environment variables are configured in the Amplify Console

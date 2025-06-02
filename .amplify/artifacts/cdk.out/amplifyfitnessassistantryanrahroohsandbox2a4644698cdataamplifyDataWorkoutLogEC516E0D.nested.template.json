@@ -1,0 +1,2311 @@
+{
+ "Parameters": {
+  "DynamoDBModelTableReadIOPS": {
+   "Type": "Number",
+   "Default": 5,
+   "Description": "The number of read IOPS the table should support."
+  },
+  "DynamoDBModelTableWriteIOPS": {
+   "Type": "Number",
+   "Default": 5,
+   "Description": "The number of write IOPS the table should support."
+  },
+  "DynamoDBBillingMode": {
+   "Type": "String",
+   "Default": "PAY_PER_REQUEST",
+   "AllowedValues": [
+    "PAY_PER_REQUEST",
+    "PROVISIONED"
+   ],
+   "Description": "Configure @model types to create DynamoDB tables with PAY_PER_REQUEST or PROVISIONED billing modes."
+  },
+  "DynamoDBEnablePointInTimeRecovery": {
+   "Type": "String",
+   "Default": "false",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Whether to enable Point in Time Recovery on the table."
+  },
+  "DynamoDBEnableServerSideEncryption": {
+   "Type": "String",
+   "Default": "true",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Enable server side encryption powered by KMS."
+  },
+  "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource383585EAOutputsamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableMa7172AF6F": {
+   "Type": "String"
+  },
+  "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId": {
+   "Type": "String"
+  },
+  "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName": {
+   "Type": "String"
+  },
+  "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef": {
+   "Type": "String"
+  },
+  "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef": {
+   "Type": "String"
+  },
+  "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref": {
+   "Type": "String"
+  }
+ },
+ "Conditions": {
+  "HasEnvironmentParameter": {
+   "Fn::Not": [
+    {
+     "Fn::Equals": [
+      "NONE",
+      "NONE"
+     ]
+    }
+   ]
+  },
+  "ShouldUsePayPerRequestBilling": {
+   "Fn::Equals": [
+    {
+     "Ref": "DynamoDBBillingMode"
+    },
+    "PAY_PER_REQUEST"
+   ]
+  },
+  "ShouldUsePointInTimeRecovery": {
+   "Fn::Equals": [
+    {
+     "Ref": "DynamoDBEnablePointInTimeRecovery"
+    },
+    "true"
+   ]
+  },
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Resources": {
+  "WorkoutLogTable": {
+   "Type": "Custom::AmplifyDynamoDBTable",
+   "Properties": {
+    "ServiceToken": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource383585EAOutputsamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableMa7172AF6F"
+    },
+    "tableName": {
+     "Fn::Join": [
+      "",
+      [
+       "WorkoutLog-",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "-NONE"
+      ]
+     ]
+    },
+    "attributeDefinitions": [
+     {
+      "attributeName": "id",
+      "attributeType": "S"
+     }
+    ],
+    "keySchema": [
+     {
+      "attributeName": "id",
+      "keyType": "HASH"
+     }
+    ],
+    "provisionedThroughput": {
+     "Fn::If": [
+      "ShouldUsePayPerRequestBilling",
+      {
+       "Ref": "AWS::NoValue"
+      },
+      {
+       "ReadCapacityUnits": {
+        "Ref": "DynamoDBModelTableReadIOPS"
+       },
+       "WriteCapacityUnits": {
+        "Ref": "DynamoDBModelTableWriteIOPS"
+       }
+      }
+     ]
+    },
+    "sseSpecification": {
+     "sseEnabled": false
+    },
+    "streamSpecification": {
+     "streamViewType": "NEW_AND_OLD_IMAGES"
+    },
+    "deletionProtectionEnabled": false,
+    "allowDestructiveGraphqlSchemaUpdates": true,
+    "replaceTableUponGsiUpdate": true,
+    "pointInTimeRecoverySpecification": {
+     "Fn::If": [
+      "ShouldUsePointInTimeRecovery",
+      {
+       "PointInTimeRecoveryEnabled": true
+      },
+      {
+       "Ref": "AWS::NoValue"
+      }
+     ]
+    },
+    "billingMode": {
+     "Fn::If": [
+      "ShouldUsePayPerRequestBilling",
+      "PAY_PER_REQUEST",
+      {
+       "Ref": "AWS::NoValue"
+      }
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/WorkoutLogTable/Default/Default"
+   }
+  },
+  "WorkoutLogIAMRoleFA6F994F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "appsync.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "dynamodb:BatchGetItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:Scan",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem",
+          "dynamodb:ConditionCheckItem",
+          "dynamodb:DescribeTable",
+          "dynamodb:GetRecords",
+          "dynamodb:GetShardIterator"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::Sub": [
+            "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}",
+            {
+             "tablename": {
+              "Fn::Join": [
+               "",
+               [
+                "WorkoutLog-",
+                {
+                 "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+                },
+                "-NONE"
+               ]
+              ]
+             }
+            }
+           ]
+          },
+          {
+           "Fn::Sub": [
+            "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}/*",
+            {
+             "tablename": {
+              "Fn::Join": [
+               "",
+               [
+                "WorkoutLog-",
+                {
+                 "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+                },
+                "-NONE"
+               ]
+              ]
+             }
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "DynamoDBAccess"
+     }
+    ],
+    "RoleName": {
+     "Fn::Join": [
+      "",
+      [
+       "WorkoutLogIAMRole991830-",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "-NONE"
+      ]
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "amplify:friendly-name",
+      "Value": "amplifyData"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/WorkoutLogIAMRole/Resource"
+   }
+  },
+  "WorkoutLogDataSource": {
+   "Type": "AWS::AppSync::DataSource",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DynamoDBConfig": {
+     "AwsRegion": {
+      "Ref": "AWS::Region"
+     },
+     "TableName": {
+      "Fn::Select": [
+       1,
+       {
+        "Fn::Split": [
+         "/",
+         {
+          "Fn::Select": [
+           5,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "WorkoutLogTable",
+               "TableArn"
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    },
+    "Name": "WorkoutLogTable",
+    "ServiceRoleArn": {
+     "Fn::GetAtt": [
+      "WorkoutLogIAMRoleFA6F994F",
+      "Arn"
+     ]
+    },
+    "Type": "AMAZON_DYNAMODB"
+   },
+   "DependsOn": [
+    "WorkoutLogIAMRoleFA6F994F"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/WorkoutLogDataSource/Resource"
+   }
+  },
+  "QuerygetWorkoutLogpreAuth0FunctionQuerygetWorkoutLogpreAuth0FunctionAppSyncFunction19AB1683": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerygetWorkoutLogpreAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ffc597e18023b530e6afcbe02cee647d49550fa9e77bd06f1dee09d8b1be8de3.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerygetWorkoutLogpreAuth0Function/QuerygetWorkoutLogpreAuth0Function.AppSyncFunction"
+   }
+  },
+  "QuerygetWorkoutLogauth0FunctionQuerygetWorkoutLogauth0FunctionAppSyncFunction51A334EC": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerygetWorkoutLogauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6b25c9b572c67e0f7ad41cb8019a90825f3db4b02a0a15b837c7a82dcb302060.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerygetWorkoutLogauth0Function/QuerygetWorkoutLogauth0Function.AppSyncFunction"
+   }
+  },
+  "QuerygetWorkoutLogpostAuth0FunctionQuerygetWorkoutLogpostAuth0FunctionAppSyncFunction1427D1DF": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerygetWorkoutLogpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerygetWorkoutLogpostAuth0Function/QuerygetWorkoutLogpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryGetWorkoutLogDataResolverFnQueryGetWorkoutLogDataResolverFnAppSyncFunctionC487D419": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "WorkoutLogDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryGetWorkoutLogDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/08f4d557693d96c1a4efba0f9dc91330e4b19772fd5477c156468843e3d9cb5e.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4c6a2d29f01c6091bd1d9afe16e5849d456c96f17c3b215938c8067399532719.vtl"
+    }
+   },
+   "DependsOn": [
+    "WorkoutLogDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QueryGetWorkoutLogDataResolverFn/QueryGetWorkoutLogDataResolverFn.AppSyncFunction"
+   }
+  },
+  "GetWorkoutLogResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "FieldName": "getWorkoutLog",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QuerygetWorkoutLogpreAuth0FunctionQuerygetWorkoutLogpreAuth0FunctionAppSyncFunction19AB1683",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerygetWorkoutLogauth0FunctionQuerygetWorkoutLogauth0FunctionAppSyncFunction51A334EC",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerygetWorkoutLogpostAuth0FunctionQuerygetWorkoutLogpostAuth0FunctionAppSyncFunction1427D1DF",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryGetWorkoutLogDataResolverFnQueryGetWorkoutLogDataResolverFnAppSyncFunctionC487D419",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"getWorkoutLog\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "WorkoutLogTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/queryGetWorkoutLogResolver"
+   }
+  },
+  "QuerylistWorkoutLogspreAuth0FunctionQuerylistWorkoutLogspreAuth0FunctionAppSyncFunctionC4028529": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistWorkoutLogspreAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3e81312d4c75951808eda9fcd5f854c1925c0b819de0939f09c4fe2eebb190b8.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerylistWorkoutLogspreAuth0Function/QuerylistWorkoutLogspreAuth0Function.AppSyncFunction"
+   }
+  },
+  "QuerylistWorkoutLogsauth0FunctionQuerylistWorkoutLogsauth0FunctionAppSyncFunction3BAF9E87": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistWorkoutLogsauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6b25c9b572c67e0f7ad41cb8019a90825f3db4b02a0a15b837c7a82dcb302060.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerylistWorkoutLogsauth0Function/QuerylistWorkoutLogsauth0Function.AppSyncFunction"
+   }
+  },
+  "QuerylistWorkoutLogspostAuth0FunctionQuerylistWorkoutLogspostAuth0FunctionAppSyncFunctionD6056223": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QuerylistWorkoutLogspostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerylistWorkoutLogspostAuth0Function/QuerylistWorkoutLogspostAuth0Function.AppSyncFunction"
+   }
+  },
+  "QueryListWorkoutLogsDataResolverFnQueryListWorkoutLogsDataResolverFnAppSyncFunctionB1940E58": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "WorkoutLogDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "QueryListWorkoutLogsDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9fcbe070ecd3023c5bf5b966fa9584757db9762eef123bad0820bd87591b2174.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cc01911d0269d4080ea57505dc445dfc315ef7ad85d3d9d4ea1357858bff451d.vtl"
+    }
+   },
+   "DependsOn": [
+    "WorkoutLogDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QueryListWorkoutLogsDataResolverFn/QueryListWorkoutLogsDataResolverFn.AppSyncFunction"
+   }
+  },
+  "ListWorkoutLogResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "FieldName": "listWorkoutLogs",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "QuerylistWorkoutLogspreAuth0FunctionQuerylistWorkoutLogspreAuth0FunctionAppSyncFunctionC4028529",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerylistWorkoutLogsauth0FunctionQuerylistWorkoutLogsauth0FunctionAppSyncFunction3BAF9E87",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QuerylistWorkoutLogspostAuth0FunctionQuerylistWorkoutLogspostAuth0FunctionAppSyncFunctionD6056223",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "QueryListWorkoutLogsDataResolverFnQueryListWorkoutLogsDataResolverFnAppSyncFunctionB1940E58",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"listWorkoutLogs\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "WorkoutLogTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Query"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/queryListWorkoutLogsResolver"
+   }
+  },
+  "MutationcreateWorkoutLoginit0FunctionMutationcreateWorkoutLoginit0FunctionAppSyncFunction8D613BA7": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateWorkoutLoginit0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a183ddccbd956316c38ef97177b8f088ef0826f62023323f5ae6053d348ccffc.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationcreateWorkoutLoginit0Function/MutationcreateWorkoutLoginit0Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateWorkoutLogpreAuth0FunctionMutationcreateWorkoutLogpreAuth0FunctionAppSyncFunction4190CD42": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateWorkoutLogpreAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/39fb35c6f8e8573ffe3a63ba867cf543b05af129a104b387a44f03c3d85da0c3.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationcreateWorkoutLogpreAuth0Function/MutationcreateWorkoutLogpreAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateWorkoutLogauth0FunctionMutationcreateWorkoutLogauth0FunctionAppSyncFunctionF87634C5": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateWorkoutLogauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9ed97f745e1cfd451df27f4b1f3c96763fd21033b65b77a5c7e9d09a4893ec54.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationcreateWorkoutLogauth0Function/MutationcreateWorkoutLogauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationcreateWorkoutLogpostAuth0FunctionMutationcreateWorkoutLogpostAuth0FunctionAppSyncFunction5A78394C": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationcreateWorkoutLogpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationcreateWorkoutLogpostAuth0Function/MutationcreateWorkoutLogpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationCreateWorkoutLogDataResolverFnMutationCreateWorkoutLogDataResolverFnAppSyncFunctionB4BF7501": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "WorkoutLogDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationCreateWorkoutLogDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8963b9e45aa8e8eb9149fb41ab6650b8f37a96c9cb600159a065e525d40bf1e4.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "WorkoutLogDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationCreateWorkoutLogDataResolverFn/MutationCreateWorkoutLogDataResolverFn.AppSyncFunction"
+   }
+  },
+  "CreateWorkoutLogResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "FieldName": "createWorkoutLog",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationcreateWorkoutLoginit0FunctionMutationcreateWorkoutLoginit0FunctionAppSyncFunction8D613BA7",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateWorkoutLogpreAuth0FunctionMutationcreateWorkoutLogpreAuth0FunctionAppSyncFunction4190CD42",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateWorkoutLogauth0FunctionMutationcreateWorkoutLogauth0FunctionAppSyncFunctionF87634C5",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationcreateWorkoutLogpostAuth0FunctionMutationcreateWorkoutLogpostAuth0FunctionAppSyncFunction5A78394C",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationCreateWorkoutLogDataResolverFnMutationCreateWorkoutLogDataResolverFnAppSyncFunctionB4BF7501",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"createWorkoutLog\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "WorkoutLogTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/mutationCreateWorkoutLogResolver"
+   }
+  },
+  "MutationupdateWorkoutLoginit0FunctionMutationupdateWorkoutLoginit0FunctionAppSyncFunction647C0989": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateWorkoutLoginit0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/06db846fd14e6fc371f22b12b5545ba8e2dbfeda85d8c8d586c71c282166657b.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationupdateWorkoutLoginit0Function/MutationupdateWorkoutLoginit0Function.AppSyncFunction"
+   }
+  },
+  "MutationupdateWorkoutLogpreAuth0FunctionMutationupdateWorkoutLogpreAuth0FunctionAppSyncFunction4E77C0D7": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateWorkoutLogpreAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/39fb35c6f8e8573ffe3a63ba867cf543b05af129a104b387a44f03c3d85da0c3.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationupdateWorkoutLogpreAuth0Function/MutationupdateWorkoutLogpreAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationupdateWorkoutLogauth0FunctionMutationupdateWorkoutLogauth0FunctionAppSyncFunction791F1F17": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "WorkoutLogDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateWorkoutLogauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0ec71c38f8d8a84420518f37bf63be731a3dfde962cbbb99f568dd557d958952.vtl"
+    }
+   },
+   "DependsOn": [
+    "WorkoutLogDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationupdateWorkoutLogauth0Function/MutationupdateWorkoutLogauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationupdateWorkoutLogpostAuth0FunctionMutationupdateWorkoutLogpostAuth0FunctionAppSyncFunction7C0890AC": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationupdateWorkoutLogpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationupdateWorkoutLogpostAuth0Function/MutationupdateWorkoutLogpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationUpdateWorkoutLogDataResolverFnMutationUpdateWorkoutLogDataResolverFnAppSyncFunctionBEF16A0C": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "WorkoutLogDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationUpdateWorkoutLogDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/474bf0776ec2164a13191d1a0a9e057154931e4918fea5086f49850d02a5371b.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "WorkoutLogDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationUpdateWorkoutLogDataResolverFn/MutationUpdateWorkoutLogDataResolverFn.AppSyncFunction"
+   }
+  },
+  "UpdateWorkoutLogResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "FieldName": "updateWorkoutLog",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationupdateWorkoutLoginit0FunctionMutationupdateWorkoutLoginit0FunctionAppSyncFunction647C0989",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationupdateWorkoutLogpreAuth0FunctionMutationupdateWorkoutLogpreAuth0FunctionAppSyncFunction4E77C0D7",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationupdateWorkoutLogauth0FunctionMutationupdateWorkoutLogauth0FunctionAppSyncFunction791F1F17",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationupdateWorkoutLogpostAuth0FunctionMutationupdateWorkoutLogpostAuth0FunctionAppSyncFunction7C0890AC",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationUpdateWorkoutLogDataResolverFnMutationUpdateWorkoutLogDataResolverFnAppSyncFunctionBEF16A0C",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"updateWorkoutLog\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "WorkoutLogTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/mutationUpdateWorkoutLogResolver"
+   }
+  },
+  "MutationdeleteWorkoutLogpreAuth0FunctionMutationdeleteWorkoutLogpreAuth0FunctionAppSyncFunction170912B6": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationdeleteWorkoutLogpreAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a2c0f8a4d76f659d130c8a445801845ae9d33e5cc2c5ecd610edc272d4bd46e3.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationdeleteWorkoutLogpreAuth0Function/MutationdeleteWorkoutLogpreAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationdeleteWorkoutLogauth0FunctionMutationdeleteWorkoutLogauth0FunctionAppSyncFunction220C32AD": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "WorkoutLogDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationdeleteWorkoutLogauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/867fb7d7eb8e4127b6d0136b82c5c3f74a52eb410297086859986f8e7e4b02aa.vtl"
+    }
+   },
+   "DependsOn": [
+    "WorkoutLogDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationdeleteWorkoutLogauth0Function/MutationdeleteWorkoutLogauth0Function.AppSyncFunction"
+   }
+  },
+  "MutationdeleteWorkoutLogpostAuth0FunctionMutationdeleteWorkoutLogpostAuth0FunctionAppSyncFunction4EFF5725": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationdeleteWorkoutLogpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationdeleteWorkoutLogpostAuth0Function/MutationdeleteWorkoutLogpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "MutationDeleteWorkoutLogDataResolverFnMutationDeleteWorkoutLogDataResolverFnAppSyncFunctionE3D87A24": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Fn::GetAtt": [
+      "WorkoutLogDataSource",
+      "Name"
+     ]
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "MutationDeleteWorkoutLogDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4f7907d1209a2c9953a0c053df402c634e359546d70c7cc5c2e8e21ea734880f.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
+    }
+   },
+   "DependsOn": [
+    "WorkoutLogDataSource"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationDeleteWorkoutLogDataResolverFn/MutationDeleteWorkoutLogDataResolverFn.AppSyncFunction"
+   }
+  },
+  "DeleteWorkoutLogResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "FieldName": "deleteWorkoutLog",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "MutationdeleteWorkoutLogpreAuth0FunctionMutationdeleteWorkoutLogpreAuth0FunctionAppSyncFunction170912B6",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationdeleteWorkoutLogauth0FunctionMutationdeleteWorkoutLogauth0FunctionAppSyncFunction220C32AD",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationdeleteWorkoutLogpostAuth0FunctionMutationdeleteWorkoutLogpostAuth0FunctionAppSyncFunction4EFF5725",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "MutationDeleteWorkoutLogDataResolverFnMutationDeleteWorkoutLogDataResolverFnAppSyncFunctionE3D87A24",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deleteWorkoutLog\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Fn::GetAtt": [
+                 "WorkoutLogTable",
+                 "TableArn"
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Mutation"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/mutationDeleteWorkoutLogResolver"
+   }
+  },
+  "SubscriptiononCreateWorkoutLogauth0FunctionSubscriptiononCreateWorkoutLogauth0FunctionAppSyncFunction539F7F5A": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononCreateWorkoutLogauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3b6d810ef43cdbd93ef462c40b0df0328b89e04f1473a4f82f1178da1f1d5aa0.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononCreateWorkoutLogauth0Function/SubscriptiononCreateWorkoutLogauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononCreateWorkoutLogpostAuth0FunctionSubscriptiononCreateWorkoutLogpostAuth0FunctionAppSyncFunction0B96E126": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononCreateWorkoutLogpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononCreateWorkoutLogpostAuth0Function/SubscriptiononCreateWorkoutLogpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnCreateWorkoutLogDataResolverFnSubscriptionOnCreateWorkoutLogDataResolverFnAppSyncFunctionBF0D0FC4": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnCreateWorkoutLogDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptionOnCreateWorkoutLogDataResolverFn/SubscriptionOnCreateWorkoutLogDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononCreateWorkoutLogResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "FieldName": "onCreateWorkoutLog",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononCreateWorkoutLogauth0FunctionSubscriptiononCreateWorkoutLogauth0FunctionAppSyncFunction539F7F5A",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononCreateWorkoutLogpostAuth0FunctionSubscriptiononCreateWorkoutLogpostAuth0FunctionAppSyncFunction0B96E126",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnCreateWorkoutLogDataResolverFnSubscriptionOnCreateWorkoutLogDataResolverFnAppSyncFunctionBF0D0FC4",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onCreateWorkoutLog\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/subscriptionOnCreateWorkoutLogResolver"
+   }
+  },
+  "SubscriptiononUpdateWorkoutLogauth0FunctionSubscriptiononUpdateWorkoutLogauth0FunctionAppSyncFunction004AAFAB": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononUpdateWorkoutLogauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3b6d810ef43cdbd93ef462c40b0df0328b89e04f1473a4f82f1178da1f1d5aa0.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononUpdateWorkoutLogauth0Function/SubscriptiononUpdateWorkoutLogauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononUpdateWorkoutLogpostAuth0FunctionSubscriptiononUpdateWorkoutLogpostAuth0FunctionAppSyncFunction6DF3F9AC": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononUpdateWorkoutLogpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononUpdateWorkoutLogpostAuth0Function/SubscriptiononUpdateWorkoutLogpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnUpdateWorkoutLogDataResolverFnSubscriptionOnUpdateWorkoutLogDataResolverFnAppSyncFunction0B1F687A": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnUpdateWorkoutLogDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptionOnUpdateWorkoutLogDataResolverFn/SubscriptionOnUpdateWorkoutLogDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononUpdateWorkoutLogResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "FieldName": "onUpdateWorkoutLog",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononUpdateWorkoutLogauth0FunctionSubscriptiononUpdateWorkoutLogauth0FunctionAppSyncFunction004AAFAB",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononUpdateWorkoutLogpostAuth0FunctionSubscriptiononUpdateWorkoutLogpostAuth0FunctionAppSyncFunction6DF3F9AC",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnUpdateWorkoutLogDataResolverFnSubscriptionOnUpdateWorkoutLogDataResolverFnAppSyncFunction0B1F687A",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onUpdateWorkoutLog\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/subscriptionOnUpdateWorkoutLogResolver"
+   }
+  },
+  "SubscriptiononDeleteWorkoutLogauth0FunctionSubscriptiononDeleteWorkoutLogauth0FunctionAppSyncFunction463B5C07": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononDeleteWorkoutLogauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3b6d810ef43cdbd93ef462c40b0df0328b89e04f1473a4f82f1178da1f1d5aa0.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononDeleteWorkoutLogauth0Function/SubscriptiononDeleteWorkoutLogauth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptiononDeleteWorkoutLogpostAuth0FunctionSubscriptiononDeleteWorkoutLogpostAuth0FunctionAppSyncFunction03B4057A": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptiononDeleteWorkoutLogpostAuth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononDeleteWorkoutLogpostAuth0Function/SubscriptiononDeleteWorkoutLogpostAuth0Function.AppSyncFunction"
+   }
+  },
+  "SubscriptionOnDeleteWorkoutLogDataResolverFnSubscriptionOnDeleteWorkoutLogDataResolverFnAppSyncFunctionFF1B8C7E": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "SubscriptionOnDeleteWorkoutLogDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0cff47fb007f0bbf2a4e43ca256d6aa7ec109821769fd79fa7c5e83f0e7f9fc.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptionOnDeleteWorkoutLogDataResolverFn/SubscriptionOnDeleteWorkoutLogDataResolverFn.AppSyncFunction"
+   }
+  },
+  "SubscriptiononDeleteWorkoutLogResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "FieldName": "onDeleteWorkoutLog",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononDeleteWorkoutLogauth0FunctionSubscriptiononDeleteWorkoutLogauth0FunctionAppSyncFunction463B5C07",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptiononDeleteWorkoutLogpostAuth0FunctionSubscriptiononDeleteWorkoutLogpostAuth0FunctionAppSyncFunction03B4057A",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "SubscriptionOnDeleteWorkoutLogDataResolverFnSubscriptionOnDeleteWorkoutLogDataResolverFnAppSyncFunctionFF1B8C7E",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onDeleteWorkoutLog\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Subscription"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/subscriptionOnDeleteWorkoutLogResolver"
+   }
+  },
+  "WorkoutLogOwnerDataResolverFnWorkoutLogOwnerDataResolverFnAppSyncFunction47D12D5A": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "WorkoutLogOwnerDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/041534e5fd916595f752318f161512d7c7f83b9f2cf32d0f0be381c12253ff68.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/064303962e481067b44300212516363b99aaee539b6bafaf756fdd83ff0b60f0.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/WorkoutLogOwnerDataResolverFn/WorkoutLogOwnerDataResolverFn.AppSyncFunction"
+   }
+  },
+  "WorkoutLogownerResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+    },
+    "FieldName": "owner",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "WorkoutLogOwnerDataResolverFnWorkoutLogOwnerDataResolverFnAppSyncFunction47D12D5A",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"WorkoutLog\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"owner\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "WorkoutLog"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/workoutLogOwnerResolver"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WQQW+DMAyFf8vuwUP0sPMK2nGb6O6VSQxKIQmKnU4V4r8v0KnTTs+f/GQ/u4KqLKF8wm8utBmLyXawvBMLmZOgHlXd+0+M6EgoblAHb6zY4FVLHFLUpOrEEtwf9v5R57Hnxdw8umA6+MJuoiMyKYsOljZMd3fWVeE8881rWJrd3nQNCp4eI//TW/J6C5HT9HZIEfdEv5unK8VV8eGMzCQMr5tkhmPSI8kWYN28H0nmJGpv52MH64dV+WAILvx8rQ7wkh9zYWuLmLxYR9De9Qfok0loNQEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "GetAttWorkoutLogTableStreamArn": {
+   "Description": "Your DynamoDB table StreamArn.",
+   "Value": {
+    "Fn::GetAtt": [
+     "WorkoutLogTable",
+     "TableStreamArn"
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      ":",
+      [
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "GetAtt:WorkoutLogTable:StreamArn"
+      ]
+     ]
+    }
+   }
+  },
+  "GetAttWorkoutLogTableName": {
+   "Description": "Your DynamoDB table name.",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "WorkoutLog-",
+      {
+       "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+      },
+      "-NONE"
+     ]
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      ":",
+      [
+       {
+        "Ref": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+       },
+       "GetAtt:WorkoutLogTable:Name"
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

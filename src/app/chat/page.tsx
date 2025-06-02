@@ -15,6 +15,10 @@ import {
   ListItemText,
   Avatar,
   Chip,
+  Switch,
+  FormControlLabel,
+  Tooltip,
+  Stack,
 } from '@mui/material';
 import { Send as SendIcon, Person, SmartToy } from '@mui/icons-material';
 import { useAuth } from '../providers/AuthProvider';
@@ -27,6 +31,7 @@ interface ChatMessage {
   isUser: boolean;
   contextUsed?: boolean;
   contextCount?: number;
+  agentType?: string;
 }
 
 export default function ChatPage() {
@@ -35,6 +40,7 @@ export default function ChatPage() {
   const [currentMessage, setCurrentMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [useLangGraph, setUseLangGraph] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -52,13 +58,16 @@ export default function ChatPage() {
         {
           id: 'welcome',
           message: '',
-          response: "Hi! I'm your AI fitness coach with access to your profile and activity history. I can provide personalized workout recommendations, nutrition advice, and insights based on your actual data. What would you like to know?",
+          response: useLangGraph 
+            ? "Hi! I'm your AI fitness coach powered by LangGraph multi-agent system. I have specialized agents for workouts, nutrition, and progress tracking, all with access to your profile and activity history. What would you like to know?"
+            : "Hi! I'm your AI fitness coach with access to your profile and activity history. I can provide personalized workout recommendations, nutrition advice, and insights based on your actual data. What would you like to know?",
           timestamp: new Date().toISOString(),
           isUser: false,
+          agentType: useLangGraph ? 'langgraph-multi-agent' : 'rag-basic',
         }
       ]);
     }
-  }, [messages.length]);
+  }, [messages.length, useLangGraph]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,8 +90,9 @@ export default function ChatPage() {
     }]);
 
     try {
-      // Call the real RAG-enabled chatbot API
-      const response = await getChatResponse(userMessage, user.userId || user.username);
+      // Choose API endpoint based on toggle
+      const endpoint = useLangGraph ? '/api/chatbot-simple' : '/api/chatbot';
+      const response = await getChatResponse(userMessage, user.userId || user.username, endpoint);
       
       // Add AI response to chat
       setMessages(prev => [...prev, {
@@ -91,8 +101,9 @@ export default function ChatPage() {
         response: response.response,
         timestamp: new Date().toISOString(),
         isUser: false,
-        contextUsed: response.contextUsed,
-        contextCount: response.context?.length || 0,
+        contextUsed: response.contextUsed || response.dataFound?.profile,
+        contextCount: response.context?.length || (response.dataFound ? Object.values(response.dataFound).filter(Boolean).length : 0),
+        agentType: response.agentType || (useLangGraph ? 'multi-agent' : 'rag-basic'),
       }]);
 
     } catch (error) {
@@ -112,10 +123,10 @@ export default function ChatPage() {
     }
   };
 
-  // Real API call to RAG-enabled chatbot
-  const getChatResponse = async (message: string, userId: string) => {
+  // Updated API call to accept different endpoints
+  const getChatResponse = async (message: string, userId: string, endpoint: string = '/api/chatbot') => {
     try {
-      const response = await fetch('/api/chatbot', {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +143,7 @@ export default function ChatPage() {
 
       return await response.json();
     } catch (error) {
-      console.error('Error calling local chatbot API:', error);
+      console.error(`Error calling ${endpoint}:`, error);
       throw error;
     }
   };
@@ -197,6 +208,32 @@ export default function ChatPage() {
             size="small" 
           />
         )}
+        <Tooltip title={useLangGraph ? "Multi-agent system with specialized workout, nutrition, and progress agents" : "Single RAG system with vector search"}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={useLangGraph}
+                onChange={(e) => setUseLangGraph(e.target.checked)}
+                color="secondary"
+              />
+            }
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography variant="body2">
+                  {useLangGraph ? 'LangGraph Multi-Agent' : 'Basic RAG'}
+                </Typography>
+                {useLangGraph && (
+                  <Chip 
+                    label="ADVANCED" 
+                    color="secondary" 
+                    size="small" 
+                    sx={{ fontSize: '0.6rem', height: 16 }}
+                  />
+                )}
+              </Box>
+            }
+          />
+        </Tooltip>
       </Box>
       
       <Paper 
@@ -209,90 +246,114 @@ export default function ChatPage() {
         }}
       >
         {/* Chat Messages */}
-        <Box 
+        <Paper 
+          elevation={1} 
           sx={{ 
-            flex: 1, 
-            overflow: 'auto', 
-            p: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2
+            flexGrow: 1, 
+            p: 2, 
+            mb: 2, 
+            overflow: 'auto',
+            backgroundColor: '#fafafa',
+            borderRadius: 2
           }}
         >
-          {messages.map((msg) => (
-            <Box
-              key={msg.id}
-              sx={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: 2,
-                flexDirection: msg.isUser ? 'row-reverse' : 'row',
-              }}
-            >
-              <Avatar sx={{ 
-                bgcolor: msg.isUser ? 'primary.main' : 'secondary.main',
-                width: 32,
-                height: 32 
-              }}>
-                {msg.isUser ? <Person fontSize="small" /> : <SmartToy fontSize="small" />}
-              </Avatar>
-              
-              <Box sx={{ maxWidth: '70%' }}>
-                <Paper
-                  elevation={1}
-                  sx={{
-                    p: 2,
-                    bgcolor: msg.isUser ? 'primary.light' : 'grey.100',
-                    color: msg.isUser ? 'primary.contrastText' : 'text.primary',
-                  }}
-                >
-                  <Typography variant="body1">
-                    {msg.isUser ? msg.message : msg.response}
-                  </Typography>
-                  <Typography 
-                    variant="caption" 
-                    sx={{ 
-                      opacity: 0.7, 
-                      display: 'block',
-                      mt: 1,
-                      fontSize: '0.75rem'
-                    }}
-                  >
-                    {new Date(msg.timestamp).toLocaleTimeString()}
-                  </Typography>
-                </Paper>
-                
-                {/* Show context information for AI responses */}
-                {!msg.isUser && msg.contextUsed && (
-                  <Chip
-                    label={`Used ${msg.contextCount} context items`}
-                    size="small"
-                    color="success"
-                    sx={{ mt: 1, fontSize: '0.7rem' }}
-                  />
+          <Stack spacing={2}>
+            {messages.map((msg) => (
+              <Box key={msg.id}>
+                {msg.isUser ? (
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Paper 
+                      elevation={1} 
+                      sx={{ 
+                        p: 2, 
+                        maxWidth: '70%', 
+                        backgroundColor: '#2196f3', 
+                        color: 'white',
+                        borderRadius: '18px 18px 4px 18px'
+                      }}
+                    >
+                      <Typography variant="body1">{msg.message}</Typography>
+                      <Typography variant="caption" sx={{ opacity: 0.8, display: 'block', mt: 0.5 }}>
+                        {new Date(msg.timestamp).toLocaleTimeString()}
+                      </Typography>
+                    </Paper>
+                  </Box>
+                ) : (
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <Paper 
+                      elevation={1} 
+                      sx={{ 
+                        p: 2, 
+                        maxWidth: '80%', 
+                        backgroundColor: 'white',
+                        borderRadius: '18px 18px 18px 4px',
+                        border: '1px solid #e0e0e0'
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                          🤖 AI Coach
+                        </Typography>
+                        {msg.agentType && (
+                          <Chip 
+                            label={
+                              msg.agentType === 'langgraph-multi-agent' ? '🧠 Multi-Agent' :
+                              msg.agentType === 'workout_agent' ? '💪 Workout Agent' :
+                              msg.agentType === 'nutrition_agent' ? '🥗 Nutrition Agent' :
+                              msg.agentType === 'progress_agent' ? '📊 Progress Agent' :
+                              msg.agentType === 'general_agent' ? '💬 General Agent' :
+                              '🔍 RAG'
+                            }
+                            size="small"
+                            color={msg.agentType.includes('langgraph') ? 'secondary' : 'default'}
+                            sx={{ fontSize: '0.7rem', height: 20 }}
+                          />
+                        )}
+                        {msg.contextUsed && (
+                          <Chip 
+                            label={`${msg.contextCount} context items`}
+                            size="small"
+                            color="info"
+                            sx={{ fontSize: '0.6rem', height: 18 }}
+                          />
+                        )}
+                      </Box>
+                      <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
+                        {msg.response}
+                      </Typography>
+                      <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 1 }}>
+                        {new Date(msg.timestamp).toLocaleTimeString()}
+                      </Typography>
+                    </Paper>
+                  </Box>
                 )}
               </Box>
-            </Box>
-          ))}
-          
-          {loading && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2 }}>
-              <Avatar sx={{ bgcolor: 'secondary.main', width: 32, height: 32 }}>
-                <SmartToy fontSize="small" />
-              </Avatar>
-              <Paper elevation={1} sx={{ p: 2, bgcolor: 'grey.100' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <CircularProgress size={16} />
-                  <Typography variant="body2">
-                    AI is thinking and retrieving your data...
-                  </Typography>
-                </Box>
-              </Paper>
-            </Box>
-          )}
-          
-          <div ref={messagesEndRef} />
-        </Box>
+            ))}
+            
+            {loading && (
+              <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+                <Paper 
+                  elevation={1} 
+                  sx={{ 
+                    p: 2, 
+                    backgroundColor: 'white',
+                    borderRadius: '18px 18px 18px 4px',
+                    border: '1px solid #e0e0e0'
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <CircularProgress size={16} />
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      {useLangGraph ? 'Routing to specialized agent...' : 'Thinking...'}
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Box>
+            )}
+            
+            <div ref={messagesEndRef} />
+          </Stack>
+        </Paper>
 
         {/* Error Alert */}
         {error && (
@@ -302,27 +363,32 @@ export default function ChatPage() {
         )}
 
         {/* Message Input */}
-        <Paper elevation={0} sx={{ p: 2, borderTop: '1px solid #e0e0e0' }}>
+        <Paper elevation={1} sx={{ p: 2 }}>
           <form onSubmit={handleSubmit}>
-            <Box sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
               <TextField
                 fullWidth
-                variant="outlined"
-                placeholder="Ask about workouts, nutrition, or your progress..."
-                value={currentMessage}
-                onChange={(e) => setCurrentMessage(e.target.value)}
-                disabled={loading}
                 multiline
                 maxRows={3}
-                sx={{ flexGrow: 1 }}
+                value={currentMessage}
+                onChange={(e) => setCurrentMessage(e.target.value)}
+                placeholder="Ask your coach anything..."
+                variant="outlined"
+                disabled={loading}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }
+                }}
               />
               <Button
                 type="submit"
                 variant="contained"
-                disabled={loading || !currentMessage.trim()}
-                sx={{ minWidth: 'auto', px: 3 }}
+                disabled={!currentMessage.trim() || loading}
+                sx={{ minWidth: 80, height: 56 }}
               >
-                <SendIcon />
+                Send
               </Button>
             </Box>
           </form>
@@ -332,22 +398,25 @@ export default function ChatPage() {
       {/* Quick Actions */}
       <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
         <Chip
-          label="Suggest a workout"
+          label={useLangGraph ? "Plan my workout (Workout Agent)" : "Suggest a workout"}
           onClick={() => setCurrentMessage("Based on my recent workouts, what should I do next?")}
           clickable
           size="small"
+          color={useLangGraph ? "secondary" : "default"}
         />
         <Chip
-          label="Nutrition advice"
+          label={useLangGraph ? "Nutrition advice (Nutrition Agent)" : "Nutrition advice"}
           onClick={() => setCurrentMessage("Give me personalized nutrition advice based on my goals")}
           clickable
           size="small"
+          color={useLangGraph ? "secondary" : "default"}
         />
         <Chip
-          label="Progress check"
+          label={useLangGraph ? "Progress check (Progress Agent)" : "Progress check"}
           onClick={() => setCurrentMessage("How am I progressing toward my fitness goals?")}
           clickable
           size="small"
+          color={useLangGraph ? "secondary" : "default"}
         />
         <Chip
           label="Meal suggestions"

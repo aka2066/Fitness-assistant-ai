@@ -1,0 +1,2435 @@
+{
+  "version": "44.0.0",
+  "artifacts": {
+    "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "amplify:deployment-type": "sandbox",
+          "created-by": "amplify"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/82266240463c5cd17b1152cd5e6683055924c6d9af267cf1afc015bd00d44463.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c.assets"
+      ],
+      "metadata": {
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "amplify:deployment-type",
+                "Value": "sandbox"
+              },
+              {
+                "Key": "created-by",
+                "Value": "amplify"
+              }
+            ]
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/deploymentType": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "deploymentType"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/region": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "region"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/amplifyAuth/UserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthUserPool4BA7F805"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/amplifyAuth/UserPoolAppClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthUserPoolAppClient2626C6F8"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/amplifyAuth/IdentityPool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthIdentityPool3FDE84CC"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/amplifyAuth/authenticatedUserRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthauthenticatedUserRoleD8DA3689"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/amplifyAuth/unauthenticatedUserRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthunauthenticatedUserRole2B524D9E"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/amplifyAuth/IdentityPoolRoleAttachment": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyAuthIdentityPoolRoleAttachment045F17C8"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthUserPool07362FD7Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthUserPool07362FD7Ref"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthUserPoolAppClientCA88935ARef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthUserPoolAppClientCA88935ARef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth/amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/auth.NestedStack/auth.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "auth179371D7"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/userPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "userPoolId"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/webClientId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "webClientId"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/identityPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "identityPoolId"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/authRegion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "authRegion"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/allowUnauthenticatedIdentities": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "allowUnauthenticatedIdentities"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/signupAttributes": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "signupAttributes"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/usernameAttributes": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "usernameAttributes"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/verificationMechanisms": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "verificationMechanisms"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/passwordPolicyMinLength": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "passwordPolicyMinLength"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/passwordPolicyRequirements": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "passwordPolicyRequirements"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/mfaConfiguration": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "mfaConfiguration"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/mfaTypes": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "mfaTypes"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/socialProviders": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "socialProviders"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/oauthCognitoDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "oauthCognitoDomain"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/oauthScope": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "oauthScope"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/oauthRedirectSignIn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "oauthRedirectSignIn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/oauthRedirectSignOut": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "oauthRedirectSignOut"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/oauthResponseType": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "oauthResponseType"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/oauthClientId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "oauthClientId"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/groups": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "groups"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/GraphQLAPI/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataGraphQLAPI42A6FA33"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/GraphQLAPI/TransformerSchema": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataGraphQLAPITransformerSchemaFF50A789"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/GraphQLAPI/NONE_DS": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "NONE_DS"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/GraphQLAPI/NONE_DS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataGraphQLAPINONEDS684BF699"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "NONE_DS"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/AmplifyManagedTableIsCompleteRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AmplifyManagedTableIsCompleteRoleF825222C"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/AmplifyManagedTableOnEventRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AmplifyManagedTableOnEventRoleB4E71DEA"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/AmplifyManagedTableOnEventRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AmplifyManagedTableOnEventRoleDefaultPolicyF6DABCB6"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/TableManagerCustomProvider/framework-onEvent/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TableManagerCustomProviderframeworkonEvent1DFC2ECC"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/TableManagerCustomProvider/framework-onEvent/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TableManagerCustomProviderframeworkonEventLogGroup372A45D7"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/TableManagerCustomProvider/framework-isComplete/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TableManagerCustomProviderframeworkisComplete2E51021B"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/TableManagerCustomProvider/framework-isComplete/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TableManagerCustomProviderframeworkisCompleteLogGroupDAAEA49E"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/AmplifyTableWaiterStateMachine/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AmplifyTableWaiterStateMachineRole470BE899"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/AmplifyTableWaiterStateMachine/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AmplifyTableWaiterStateMachineRoleDefaultPolicy89F3836A"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/AmplifyTableWaiterStateMachine/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AmplifyTableWaiterStateMachine060600BC"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager/amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent379A8CD5Arn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent379A8CD5Arn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyTableManager.NestedStack/AmplifyTableManager.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource86290833"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/DynamoDBModelTableReadIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableReadIOPS"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/DynamoDBModelTableWriteIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableWriteIOPS"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/DynamoDBBillingMode": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBBillingMode"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/DynamoDBEnablePointInTimeRecovery": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnablePointInTimeRecovery"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/DynamoDBEnableServerSideEncryption": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnableServerSideEncryption"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/HasEnvironmentParameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HasEnvironmentParameter"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/ShouldUsePayPerRequestBilling": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShouldUsePayPerRequestBilling"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/ShouldUsePointInTimeRecovery": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShouldUsePointInTimeRecovery"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/UserProfileTable": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserProfile"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/UserProfileTable/Default/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserProfileTable"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserProfile"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/CustomTableUserProfileTable": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserProfile"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/GetAttUserProfileTableStreamArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetAttUserProfileTableStreamArn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/GetAttUserProfileTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetAttUserProfileTableName"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/UserProfileIAMRole": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserProfileIAMRole"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/UserProfileIAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserProfileIAMRoleA4E2934B"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserProfileIAMRole"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/UserProfileDataSource": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserProfileTable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/UserProfileDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserProfileDataSource"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserProfileTable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/QuerygetUserProfilepreAuth0Function/QuerygetUserProfilepreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetUserProfilepreAuth0FunctionQuerygetUserProfilepreAuth0FunctionAppSyncFunctionA8F2289A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetUserProfilepreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/QuerygetUserProfileauth0Function/QuerygetUserProfileauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetUserProfileauth0FunctionQuerygetUserProfileauth0FunctionAppSyncFunctionDAD22839"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetUserProfileauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/QuerygetUserProfilepostAuth0Function/QuerygetUserProfilepostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetUserProfilepostAuth0FunctionQuerygetUserProfilepostAuth0FunctionAppSyncFunction92890504"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetUserProfilepostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/QueryGetUserProfileDataResolverFn/QueryGetUserProfileDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QueryGetUserProfileDataResolverFnQueryGetUserProfileDataResolverFnAppSyncFunction8EB8BD57"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QueryGetUserProfileDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/queryGetUserProfileResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetUserProfileResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Query.getUserProfile"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/QuerylistUserProfilespreAuth0Function/QuerylistUserProfilespreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistUserProfilespreAuth0FunctionQuerylistUserProfilespreAuth0FunctionAppSyncFunction536D5235"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistUserProfilespreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/QuerylistUserProfilesauth0Function/QuerylistUserProfilesauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistUserProfilesauth0FunctionQuerylistUserProfilesauth0FunctionAppSyncFunction468B41DC"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistUserProfilesauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/QuerylistUserProfilespostAuth0Function/QuerylistUserProfilespostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistUserProfilespostAuth0FunctionQuerylistUserProfilespostAuth0FunctionAppSyncFunction01122A7A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistUserProfilespostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/QueryListUserProfilesDataResolverFn/QueryListUserProfilesDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QueryListUserProfilesDataResolverFnQueryListUserProfilesDataResolverFnAppSyncFunctionA05E8B7A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QueryListUserProfilesDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/queryListUserProfilesResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ListUserProfileResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Query.listUserProfiles"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationcreateUserProfileinit0Function/MutationcreateUserProfileinit0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateUserProfileinit0FunctionMutationcreateUserProfileinit0FunctionAppSyncFunction7EFE9ED4"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateUserProfileinit0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationcreateUserProfilepreAuth0Function/MutationcreateUserProfilepreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateUserProfilepreAuth0FunctionMutationcreateUserProfilepreAuth0FunctionAppSyncFunction060B63D9"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateUserProfilepreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationcreateUserProfileauth0Function/MutationcreateUserProfileauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateUserProfileauth0FunctionMutationcreateUserProfileauth0FunctionAppSyncFunctionCF3841B8"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateUserProfileauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationcreateUserProfilepostAuth0Function/MutationcreateUserProfilepostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateUserProfilepostAuth0FunctionMutationcreateUserProfilepostAuth0FunctionAppSyncFunctionF0C8FEFF"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateUserProfilepostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationCreateUserProfileDataResolverFn/MutationCreateUserProfileDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationCreateUserProfileDataResolverFnMutationCreateUserProfileDataResolverFnAppSyncFunction120FE646"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationCreateUserProfileDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/mutationCreateUserProfileResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateUserProfileResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.createUserProfile"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationupdateUserProfileinit0Function/MutationupdateUserProfileinit0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateUserProfileinit0FunctionMutationupdateUserProfileinit0FunctionAppSyncFunction9A840BAA"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateUserProfileinit0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationupdateUserProfilepreAuth0Function/MutationupdateUserProfilepreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateUserProfilepreAuth0FunctionMutationupdateUserProfilepreAuth0FunctionAppSyncFunction19D7D821"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateUserProfilepreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationupdateUserProfileauth0Function/MutationupdateUserProfileauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateUserProfileauth0FunctionMutationupdateUserProfileauth0FunctionAppSyncFunction7E8F945B"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateUserProfileauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationupdateUserProfilepostAuth0Function/MutationupdateUserProfilepostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateUserProfilepostAuth0FunctionMutationupdateUserProfilepostAuth0FunctionAppSyncFunction206AFA76"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateUserProfilepostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationUpdateUserProfileDataResolverFn/MutationUpdateUserProfileDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationUpdateUserProfileDataResolverFnMutationUpdateUserProfileDataResolverFnAppSyncFunction1707D92F"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationUpdateUserProfileDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/mutationUpdateUserProfileResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UpdateUserProfileResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.updateUserProfile"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationdeleteUserProfilepreAuth0Function/MutationdeleteUserProfilepreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteUserProfilepreAuth0FunctionMutationdeleteUserProfilepreAuth0FunctionAppSyncFunctionAF1B77BA"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteUserProfilepreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationdeleteUserProfileauth0Function/MutationdeleteUserProfileauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteUserProfileauth0FunctionMutationdeleteUserProfileauth0FunctionAppSyncFunction4A3AC4FD"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteUserProfileauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationdeleteUserProfilepostAuth0Function/MutationdeleteUserProfilepostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteUserProfilepostAuth0FunctionMutationdeleteUserProfilepostAuth0FunctionAppSyncFunctionEE3F21F4"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteUserProfilepostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/MutationDeleteUserProfileDataResolverFn/MutationDeleteUserProfileDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationDeleteUserProfileDataResolverFnMutationDeleteUserProfileDataResolverFnAppSyncFunction4835094F"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationDeleteUserProfileDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/mutationDeleteUserProfileResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeleteUserProfileResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.deleteUserProfile"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/SubscriptiononCreateUserProfileauth0Function/SubscriptiononCreateUserProfileauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateUserProfileauth0FunctionSubscriptiononCreateUserProfileauth0FunctionAppSyncFunctionD90BBD82"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononCreateUserProfileauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/SubscriptiononCreateUserProfilepostAuth0Function/SubscriptiononCreateUserProfilepostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateUserProfilepostAuth0FunctionSubscriptiononCreateUserProfilepostAuth0FunctionAppSyncFunctionD659A080"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononCreateUserProfilepostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/SubscriptionOnCreateUserProfileDataResolverFn/SubscriptionOnCreateUserProfileDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnCreateUserProfileDataResolverFnSubscriptionOnCreateUserProfileDataResolverFnAppSyncFunction08AFEB08"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnCreateUserProfileDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/subscriptionOnCreateUserProfileResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateUserProfileResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onCreateUserProfile"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/SubscriptiononUpdateUserProfileauth0Function/SubscriptiononUpdateUserProfileauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateUserProfileauth0FunctionSubscriptiononUpdateUserProfileauth0FunctionAppSyncFunction48B7E90B"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononUpdateUserProfileauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/SubscriptiononUpdateUserProfilepostAuth0Function/SubscriptiononUpdateUserProfilepostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateUserProfilepostAuth0FunctionSubscriptiononUpdateUserProfilepostAuth0FunctionAppSyncFunction446153A7"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononUpdateUserProfilepostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/SubscriptionOnUpdateUserProfileDataResolverFn/SubscriptionOnUpdateUserProfileDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnUpdateUserProfileDataResolverFnSubscriptionOnUpdateUserProfileDataResolverFnAppSyncFunctionBCF119CA"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnUpdateUserProfileDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/subscriptionOnUpdateUserProfileResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateUserProfileResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onUpdateUserProfile"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/SubscriptiononDeleteUserProfileauth0Function/SubscriptiononDeleteUserProfileauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteUserProfileauth0FunctionSubscriptiononDeleteUserProfileauth0FunctionAppSyncFunction4558BD0E"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononDeleteUserProfileauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/SubscriptiononDeleteUserProfilepostAuth0Function/SubscriptiononDeleteUserProfilepostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteUserProfilepostAuth0FunctionSubscriptiononDeleteUserProfilepostAuth0FunctionAppSyncFunction3E69A1F9"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononDeleteUserProfilepostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/SubscriptionOnDeleteUserProfileDataResolverFn/SubscriptionOnDeleteUserProfileDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnDeleteUserProfileDataResolverFnSubscriptionOnDeleteUserProfileDataResolverFnAppSyncFunction6EDD6652"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnDeleteUserProfileDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/subscriptionOnDeleteUserProfileResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteUserProfileResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onDeleteUserProfile"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/UserProfileOwnerDataResolverFn/UserProfileOwnerDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserProfileOwnerDataResolverFnUserProfileOwnerDataResolverFnAppSyncFunction23A35218"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserProfileOwnerDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/userProfileOwnerResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserProfileownerResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "UserProfile.owner"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource383585EAOutputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent379A8CD5Arn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource383585EAOutputsamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableMa7172AF6F"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/UserProfile.NestedStack/UserProfile.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataUserProfileNestedStackUserProfileNestedStackResource1B3713C5"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/DynamoDBModelTableReadIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableReadIOPS"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/DynamoDBModelTableWriteIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableWriteIOPS"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/DynamoDBBillingMode": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBBillingMode"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/DynamoDBEnablePointInTimeRecovery": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnablePointInTimeRecovery"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/DynamoDBEnableServerSideEncryption": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnableServerSideEncryption"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/HasEnvironmentParameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HasEnvironmentParameter"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/ShouldUsePayPerRequestBilling": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShouldUsePayPerRequestBilling"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/ShouldUsePointInTimeRecovery": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShouldUsePointInTimeRecovery"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/WorkoutLogTable": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "WorkoutLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/WorkoutLogTable/Default/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WorkoutLogTable"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "WorkoutLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/CustomTableWorkoutLogTable": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "WorkoutLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/GetAttWorkoutLogTableStreamArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetAttWorkoutLogTableStreamArn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/GetAttWorkoutLogTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetAttWorkoutLogTableName"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/WorkoutLogIAMRole": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "WorkoutLogIAMRole"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/WorkoutLogIAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WorkoutLogIAMRoleFA6F994F"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "WorkoutLogIAMRole"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/WorkoutLogDataSource": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "WorkoutLogTable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/WorkoutLogDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WorkoutLogDataSource"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "WorkoutLogTable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerygetWorkoutLogpreAuth0Function/QuerygetWorkoutLogpreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetWorkoutLogpreAuth0FunctionQuerygetWorkoutLogpreAuth0FunctionAppSyncFunction19AB1683"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetWorkoutLogpreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerygetWorkoutLogauth0Function/QuerygetWorkoutLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetWorkoutLogauth0FunctionQuerygetWorkoutLogauth0FunctionAppSyncFunction51A334EC"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetWorkoutLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerygetWorkoutLogpostAuth0Function/QuerygetWorkoutLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetWorkoutLogpostAuth0FunctionQuerygetWorkoutLogpostAuth0FunctionAppSyncFunction1427D1DF"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetWorkoutLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QueryGetWorkoutLogDataResolverFn/QueryGetWorkoutLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QueryGetWorkoutLogDataResolverFnQueryGetWorkoutLogDataResolverFnAppSyncFunctionC487D419"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QueryGetWorkoutLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/queryGetWorkoutLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetWorkoutLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Query.getWorkoutLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerylistWorkoutLogspreAuth0Function/QuerylistWorkoutLogspreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistWorkoutLogspreAuth0FunctionQuerylistWorkoutLogspreAuth0FunctionAppSyncFunctionC4028529"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistWorkoutLogspreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerylistWorkoutLogsauth0Function/QuerylistWorkoutLogsauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistWorkoutLogsauth0FunctionQuerylistWorkoutLogsauth0FunctionAppSyncFunction3BAF9E87"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistWorkoutLogsauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QuerylistWorkoutLogspostAuth0Function/QuerylistWorkoutLogspostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistWorkoutLogspostAuth0FunctionQuerylistWorkoutLogspostAuth0FunctionAppSyncFunctionD6056223"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistWorkoutLogspostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/QueryListWorkoutLogsDataResolverFn/QueryListWorkoutLogsDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QueryListWorkoutLogsDataResolverFnQueryListWorkoutLogsDataResolverFnAppSyncFunctionB1940E58"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QueryListWorkoutLogsDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/queryListWorkoutLogsResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ListWorkoutLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Query.listWorkoutLogs"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationcreateWorkoutLoginit0Function/MutationcreateWorkoutLoginit0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateWorkoutLoginit0FunctionMutationcreateWorkoutLoginit0FunctionAppSyncFunction8D613BA7"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateWorkoutLoginit0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationcreateWorkoutLogpreAuth0Function/MutationcreateWorkoutLogpreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateWorkoutLogpreAuth0FunctionMutationcreateWorkoutLogpreAuth0FunctionAppSyncFunction4190CD42"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateWorkoutLogpreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationcreateWorkoutLogauth0Function/MutationcreateWorkoutLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateWorkoutLogauth0FunctionMutationcreateWorkoutLogauth0FunctionAppSyncFunctionF87634C5"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateWorkoutLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationcreateWorkoutLogpostAuth0Function/MutationcreateWorkoutLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateWorkoutLogpostAuth0FunctionMutationcreateWorkoutLogpostAuth0FunctionAppSyncFunction5A78394C"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateWorkoutLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationCreateWorkoutLogDataResolverFn/MutationCreateWorkoutLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationCreateWorkoutLogDataResolverFnMutationCreateWorkoutLogDataResolverFnAppSyncFunctionB4BF7501"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationCreateWorkoutLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/mutationCreateWorkoutLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateWorkoutLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.createWorkoutLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationupdateWorkoutLoginit0Function/MutationupdateWorkoutLoginit0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateWorkoutLoginit0FunctionMutationupdateWorkoutLoginit0FunctionAppSyncFunction647C0989"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateWorkoutLoginit0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationupdateWorkoutLogpreAuth0Function/MutationupdateWorkoutLogpreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateWorkoutLogpreAuth0FunctionMutationupdateWorkoutLogpreAuth0FunctionAppSyncFunction4E77C0D7"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateWorkoutLogpreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationupdateWorkoutLogauth0Function/MutationupdateWorkoutLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateWorkoutLogauth0FunctionMutationupdateWorkoutLogauth0FunctionAppSyncFunction791F1F17"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateWorkoutLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationupdateWorkoutLogpostAuth0Function/MutationupdateWorkoutLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateWorkoutLogpostAuth0FunctionMutationupdateWorkoutLogpostAuth0FunctionAppSyncFunction7C0890AC"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateWorkoutLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationUpdateWorkoutLogDataResolverFn/MutationUpdateWorkoutLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationUpdateWorkoutLogDataResolverFnMutationUpdateWorkoutLogDataResolverFnAppSyncFunctionBEF16A0C"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationUpdateWorkoutLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/mutationUpdateWorkoutLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UpdateWorkoutLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.updateWorkoutLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationdeleteWorkoutLogpreAuth0Function/MutationdeleteWorkoutLogpreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteWorkoutLogpreAuth0FunctionMutationdeleteWorkoutLogpreAuth0FunctionAppSyncFunction170912B6"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteWorkoutLogpreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationdeleteWorkoutLogauth0Function/MutationdeleteWorkoutLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteWorkoutLogauth0FunctionMutationdeleteWorkoutLogauth0FunctionAppSyncFunction220C32AD"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteWorkoutLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationdeleteWorkoutLogpostAuth0Function/MutationdeleteWorkoutLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteWorkoutLogpostAuth0FunctionMutationdeleteWorkoutLogpostAuth0FunctionAppSyncFunction4EFF5725"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteWorkoutLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/MutationDeleteWorkoutLogDataResolverFn/MutationDeleteWorkoutLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationDeleteWorkoutLogDataResolverFnMutationDeleteWorkoutLogDataResolverFnAppSyncFunctionE3D87A24"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationDeleteWorkoutLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/mutationDeleteWorkoutLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeleteWorkoutLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.deleteWorkoutLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononCreateWorkoutLogauth0Function/SubscriptiononCreateWorkoutLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateWorkoutLogauth0FunctionSubscriptiononCreateWorkoutLogauth0FunctionAppSyncFunction539F7F5A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononCreateWorkoutLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononCreateWorkoutLogpostAuth0Function/SubscriptiononCreateWorkoutLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateWorkoutLogpostAuth0FunctionSubscriptiononCreateWorkoutLogpostAuth0FunctionAppSyncFunction0B96E126"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononCreateWorkoutLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptionOnCreateWorkoutLogDataResolverFn/SubscriptionOnCreateWorkoutLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnCreateWorkoutLogDataResolverFnSubscriptionOnCreateWorkoutLogDataResolverFnAppSyncFunctionBF0D0FC4"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnCreateWorkoutLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/subscriptionOnCreateWorkoutLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateWorkoutLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onCreateWorkoutLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononUpdateWorkoutLogauth0Function/SubscriptiononUpdateWorkoutLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateWorkoutLogauth0FunctionSubscriptiononUpdateWorkoutLogauth0FunctionAppSyncFunction004AAFAB"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononUpdateWorkoutLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononUpdateWorkoutLogpostAuth0Function/SubscriptiononUpdateWorkoutLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateWorkoutLogpostAuth0FunctionSubscriptiononUpdateWorkoutLogpostAuth0FunctionAppSyncFunction6DF3F9AC"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononUpdateWorkoutLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptionOnUpdateWorkoutLogDataResolverFn/SubscriptionOnUpdateWorkoutLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnUpdateWorkoutLogDataResolverFnSubscriptionOnUpdateWorkoutLogDataResolverFnAppSyncFunction0B1F687A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnUpdateWorkoutLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/subscriptionOnUpdateWorkoutLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateWorkoutLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onUpdateWorkoutLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononDeleteWorkoutLogauth0Function/SubscriptiononDeleteWorkoutLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteWorkoutLogauth0FunctionSubscriptiononDeleteWorkoutLogauth0FunctionAppSyncFunction463B5C07"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononDeleteWorkoutLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptiononDeleteWorkoutLogpostAuth0Function/SubscriptiononDeleteWorkoutLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteWorkoutLogpostAuth0FunctionSubscriptiononDeleteWorkoutLogpostAuth0FunctionAppSyncFunction03B4057A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononDeleteWorkoutLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/SubscriptionOnDeleteWorkoutLogDataResolverFn/SubscriptionOnDeleteWorkoutLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnDeleteWorkoutLogDataResolverFnSubscriptionOnDeleteWorkoutLogDataResolverFnAppSyncFunctionFF1B8C7E"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnDeleteWorkoutLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/subscriptionOnDeleteWorkoutLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteWorkoutLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onDeleteWorkoutLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/WorkoutLogOwnerDataResolverFn/WorkoutLogOwnerDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WorkoutLogOwnerDataResolverFnWorkoutLogOwnerDataResolverFnAppSyncFunction47D12D5A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "WorkoutLogOwnerDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/workoutLogOwnerResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WorkoutLogownerResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "WorkoutLog.owner"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource383585EAOutputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent379A8CD5Arn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource383585EAOutputsamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableMa7172AF6F"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/WorkoutLog.NestedStack/WorkoutLog.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataWorkoutLogNestedStackWorkoutLogNestedStackResourceAFC7CDA0"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/DynamoDBModelTableReadIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableReadIOPS"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/DynamoDBModelTableWriteIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableWriteIOPS"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/DynamoDBBillingMode": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBBillingMode"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/DynamoDBEnablePointInTimeRecovery": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnablePointInTimeRecovery"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/DynamoDBEnableServerSideEncryption": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnableServerSideEncryption"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/HasEnvironmentParameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HasEnvironmentParameter"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/ShouldUsePayPerRequestBilling": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShouldUsePayPerRequestBilling"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/ShouldUsePointInTimeRecovery": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShouldUsePointInTimeRecovery"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MealLogTable": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MealLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MealLogTable/Default/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MealLogTable"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MealLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/CustomTableMealLogTable": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MealLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/GetAttMealLogTableStreamArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetAttMealLogTableStreamArn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/GetAttMealLogTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetAttMealLogTableName"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MealLogIAMRole": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MealLogIAMRole"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MealLogIAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MealLogIAMRoleD61619D7"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MealLogIAMRole"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MealLogDataSource": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MealLogTable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MealLogDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MealLogDataSource"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MealLogTable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/QuerygetMealLogpreAuth0Function/QuerygetMealLogpreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetMealLogpreAuth0FunctionQuerygetMealLogpreAuth0FunctionAppSyncFunction0D93B4DD"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetMealLogpreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/QuerygetMealLogauth0Function/QuerygetMealLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetMealLogauth0FunctionQuerygetMealLogauth0FunctionAppSyncFunction66E3FDB4"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetMealLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/QuerygetMealLogpostAuth0Function/QuerygetMealLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerygetMealLogpostAuth0FunctionQuerygetMealLogpostAuth0FunctionAppSyncFunctionDA57C51A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerygetMealLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/QueryGetMealLogDataResolverFn/QueryGetMealLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QueryGetMealLogDataResolverFnQueryGetMealLogDataResolverFnAppSyncFunction61900815"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QueryGetMealLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/queryGetMealLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetMealLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Query.getMealLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/QuerylistMealLogspreAuth0Function/QuerylistMealLogspreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistMealLogspreAuth0FunctionQuerylistMealLogspreAuth0FunctionAppSyncFunctionF834050F"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistMealLogspreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/QuerylistMealLogsauth0Function/QuerylistMealLogsauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistMealLogsauth0FunctionQuerylistMealLogsauth0FunctionAppSyncFunction48EF8B94"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistMealLogsauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/QuerylistMealLogspostAuth0Function/QuerylistMealLogspostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QuerylistMealLogspostAuth0FunctionQuerylistMealLogspostAuth0FunctionAppSyncFunction7F56BB39"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QuerylistMealLogspostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/QueryListMealLogsDataResolverFn/QueryListMealLogsDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "QueryListMealLogsDataResolverFnQueryListMealLogsDataResolverFnAppSyncFunction2CF5FA95"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "QueryListMealLogsDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/queryListMealLogsResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ListMealLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Query.listMealLogs"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationcreateMealLoginit0Function/MutationcreateMealLoginit0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateMealLoginit0FunctionMutationcreateMealLoginit0FunctionAppSyncFunctionFCB4CC8E"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateMealLoginit0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationcreateMealLogpreAuth0Function/MutationcreateMealLogpreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateMealLogpreAuth0FunctionMutationcreateMealLogpreAuth0FunctionAppSyncFunction6B8954E8"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateMealLogpreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationcreateMealLogauth0Function/MutationcreateMealLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateMealLogauth0FunctionMutationcreateMealLogauth0FunctionAppSyncFunctionBFA50236"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateMealLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationcreateMealLogpostAuth0Function/MutationcreateMealLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationcreateMealLogpostAuth0FunctionMutationcreateMealLogpostAuth0FunctionAppSyncFunction7813F963"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationcreateMealLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationCreateMealLogDataResolverFn/MutationCreateMealLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationCreateMealLogDataResolverFnMutationCreateMealLogDataResolverFnAppSyncFunctionD88DFCB7"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationCreateMealLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/mutationCreateMealLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateMealLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.createMealLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationupdateMealLoginit0Function/MutationupdateMealLoginit0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateMealLoginit0FunctionMutationupdateMealLoginit0FunctionAppSyncFunctionF98AD43D"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateMealLoginit0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationupdateMealLogpreAuth0Function/MutationupdateMealLogpreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateMealLogpreAuth0FunctionMutationupdateMealLogpreAuth0FunctionAppSyncFunction67479674"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateMealLogpreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationupdateMealLogauth0Function/MutationupdateMealLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateMealLogauth0FunctionMutationupdateMealLogauth0FunctionAppSyncFunctionD9AB187E"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateMealLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationupdateMealLogpostAuth0Function/MutationupdateMealLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationupdateMealLogpostAuth0FunctionMutationupdateMealLogpostAuth0FunctionAppSyncFunction58C6B9A9"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationupdateMealLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationUpdateMealLogDataResolverFn/MutationUpdateMealLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationUpdateMealLogDataResolverFnMutationUpdateMealLogDataResolverFnAppSyncFunctionD4DDDAC5"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationUpdateMealLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/mutationUpdateMealLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UpdateMealLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.updateMealLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationdeleteMealLogpreAuth0Function/MutationdeleteMealLogpreAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteMealLogpreAuth0FunctionMutationdeleteMealLogpreAuth0FunctionAppSyncFunctionCBF3DBDA"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteMealLogpreAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationdeleteMealLogauth0Function/MutationdeleteMealLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteMealLogauth0FunctionMutationdeleteMealLogauth0FunctionAppSyncFunctionBF5282EA"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteMealLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationdeleteMealLogpostAuth0Function/MutationdeleteMealLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationdeleteMealLogpostAuth0FunctionMutationdeleteMealLogpostAuth0FunctionAppSyncFunction8FC3AC12"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationdeleteMealLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MutationDeleteMealLogDataResolverFn/MutationDeleteMealLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationDeleteMealLogDataResolverFnMutationDeleteMealLogDataResolverFnAppSyncFunctionF1B4F83A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationDeleteMealLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/mutationDeleteMealLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeleteMealLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.deleteMealLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/SubscriptiononCreateMealLogauth0Function/SubscriptiononCreateMealLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateMealLogauth0FunctionSubscriptiononCreateMealLogauth0FunctionAppSyncFunctionCD933D9F"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononCreateMealLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/SubscriptiononCreateMealLogpostAuth0Function/SubscriptiononCreateMealLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateMealLogpostAuth0FunctionSubscriptiononCreateMealLogpostAuth0FunctionAppSyncFunction0D1FA836"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononCreateMealLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/SubscriptionOnCreateMealLogDataResolverFn/SubscriptionOnCreateMealLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnCreateMealLogDataResolverFnSubscriptionOnCreateMealLogDataResolverFnAppSyncFunction598FF91A"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnCreateMealLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/subscriptionOnCreateMealLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononCreateMealLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onCreateMealLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/SubscriptiononUpdateMealLogauth0Function/SubscriptiononUpdateMealLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateMealLogauth0FunctionSubscriptiononUpdateMealLogauth0FunctionAppSyncFunction22B01FA1"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononUpdateMealLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/SubscriptiononUpdateMealLogpostAuth0Function/SubscriptiononUpdateMealLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateMealLogpostAuth0FunctionSubscriptiononUpdateMealLogpostAuth0FunctionAppSyncFunctionA560B7FB"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononUpdateMealLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/SubscriptionOnUpdateMealLogDataResolverFn/SubscriptionOnUpdateMealLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnUpdateMealLogDataResolverFnSubscriptionOnUpdateMealLogDataResolverFnAppSyncFunctionEC91EA76"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnUpdateMealLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/subscriptionOnUpdateMealLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononUpdateMealLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onUpdateMealLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/SubscriptiononDeleteMealLogauth0Function/SubscriptiononDeleteMealLogauth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteMealLogauth0FunctionSubscriptiononDeleteMealLogauth0FunctionAppSyncFunctionF019CAE7"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononDeleteMealLogauth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/SubscriptiononDeleteMealLogpostAuth0Function/SubscriptiononDeleteMealLogpostAuth0Function.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteMealLogpostAuth0FunctionSubscriptiononDeleteMealLogpostAuth0FunctionAppSyncFunction7349A105"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptiononDeleteMealLogpostAuth0Function"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/SubscriptionOnDeleteMealLogDataResolverFn/SubscriptionOnDeleteMealLogDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptionOnDeleteMealLogDataResolverFnSubscriptionOnDeleteMealLogDataResolverFnAppSyncFunction0C58FB3E"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SubscriptionOnDeleteMealLogDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/subscriptionOnDeleteMealLogResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SubscriptiononDeleteMealLogResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Subscription.onDeleteMealLog"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/MealLogOwnerDataResolverFn/MealLogOwnerDataResolverFn.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MealLogOwnerDataResolverFnMealLogOwnerDataResolverFnAppSyncFunction9785EE9E"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MealLogOwnerDataResolverFn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/mealLogOwnerResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MealLogownerResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MealLog.owner"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource383585EAOutputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerTableManagerCustomProviderframeworkonEvent379A8CD5Arn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource383585EAOutputsamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyTableMa7172AF6F"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPINONEDS2F7D28DEName"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/MealLog.NestedStack/MealLog.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataMealLogNestedStackMealLogNestedStackResourceDFFD7A96"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsBucket9CCB4ACA"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsBucketPolicyF1C1C548"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsBucketAutoDeleteObjectsCustomResource437F26F5"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsDeployment/AwsCliLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentAwsCliLayerE322F905"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsDeployment/CustomResource-1536MiB/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentCustomResource1536MiB21775929"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/DynamoDBModelTableReadIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableReadIOPS"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/DynamoDBModelTableWriteIOPS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBModelTableWriteIOPS"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/DynamoDBBillingMode": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBBillingMode"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/DynamoDBEnablePointInTimeRecovery": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnablePointInTimeRecovery"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/DynamoDBEnableServerSideEncryption": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DynamoDBEnableServerSideEncryption"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-singleton",
+            "data": true
+          },
+          {
+            "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+            "data": 2
+          },
+          {
+            "type": "aws:cdk:is-custom-resource-handler-singleton",
+            "data": true
+          },
+          {
+            "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+            "data": 2
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiBServiceRoleA41FC8C2"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiBServiceRoleDefaultPolicyFF1C635B"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiBC5D8AB21"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiB/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C1536MiBLogGroupDCF3D784"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/modelIntrospectionSchemaBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "modelIntrospectionSchemaBucketF566B665"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/modelIntrospectionSchemaBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "modelIntrospectionSchemaBucketPolicy4DAB0D15"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/modelIntrospectionSchemaBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "modelIntrospectionSchemaBucketAutoDeleteObjectsCustomResourceFE57309F"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/modelIntrospectionSchemaBucketDeployment/AwsCliLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "modelIntrospectionSchemaBucketDeploymentAwsCliLayer13C432F7"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/modelIntrospectionSchemaBucketDeployment/CustomResource-1536MiB/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "modelIntrospectionSchemaBucketDeploymentCustomResource1536MiB104B97EC"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/AMPLIFY_DATA_GRAPHQL_ENDPOINTParameter/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AMPLIFYDATAGRAPHQLENDPOINTParameter1C2CBB16"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAMEParameter/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AMPLIFYDATAMODELINTROSPECTIONSCHEMABUCKETNAMEParameter47BF4F44"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEYParameter/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AMPLIFYDATAMODELINTROSPECTIONSCHEMAKEYParameterB6AEAE8A"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/AMPLIFY_DATA_DEFAULT_NAMEParameter/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AMPLIFYDATADEFAULTNAMEParameterE7C23CC4"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthUserPool07362FD7Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthUserPool07362FD7Ref"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthauthenticatedUserRoleDDF561FCRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthunauthenticatedUserRole581645DCRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/reference-to-amplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyfitnessassistantryanrahroohsandbox2a4644698cauthNestedStackauthNestedStackResource3702D9F2Outputsamplifyfitnessassistantryanrahroohsandbox2a4644698cauthamplifyAuthIdentityPoolB9A545C2Ref"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7ApiId"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7GraphQLUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataGraphQLAPI28ED70D7GraphQLUrl"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentCustomResource1536MiB303521C9DestinationBucketArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyfitnessassistantryanrahroohsandbox2a4644698cdataamplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentCustomResource1536MiB303521C9DestinationBucketArn"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data.NestedStack/data.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "data7552DF31"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/awsAppsyncApiId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsAppsyncApiId"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/awsAppsyncApiEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsAppsyncApiEndpoint"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/awsAppsyncAuthenticationType": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsAppsyncAuthenticationType"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/awsAppsyncRegion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsAppsyncRegion"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/amplifyApiModelSchemaS3Uri": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyApiModelSchemaS3Uri"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/awsAppsyncAdditionalAuthenticationTypes": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsAppsyncAdditionalAuthenticationTypes"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  },
+  "minimumCliVersion": "2.1017.1"
+}
