@@ -36,6 +36,7 @@ export default function Navigation() {
               items {
                 id
                 userId
+                name
               }
             }
           }

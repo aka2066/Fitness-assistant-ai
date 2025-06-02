@@ -78,7 +78,14 @@ export default function ProfilePage() {
             items {
               id
               userId
+              name
               age
+              heightFeet
+              heightInches
+              weight
+              fitnessGoals
+              activityLevel
+              dietaryRestrictions
               createdAt
               updatedAt
             }
@@ -106,7 +113,14 @@ export default function ProfilePage() {
         setProfile({
           id: existingProfile.id,
           userId: existingProfile.userId,
+          name: existingProfile.name,
           age: existingProfile.age || undefined,
+          heightFeet: existingProfile.heightFeet || undefined,
+          heightInches: existingProfile.heightInches || undefined,
+          weight: existingProfile.weight || undefined,
+          fitnessGoals: existingProfile.fitnessGoals || undefined,
+          activityLevel: existingProfile.activityLevel || undefined,
+          dietaryRestrictions: existingProfile.dietaryRestrictions || undefined,
           createdAt: existingProfile.createdAt || undefined,
           updatedAt: existingProfile.updatedAt || undefined,
         });
@@ -140,9 +154,14 @@ export default function ProfilePage() {
       
       const profileData = {
         userId: profile.userId,
+        name: profile.name,
         age: profile.age,
-        // Note: Only saving age for now since backend schema may not include other fields yet
-        // TODO: Add name, height, weight, etc. when backend schema is updated
+        heightFeet: profile.heightFeet,
+        heightInches: profile.heightInches,
+        weight: profile.weight,
+        fitnessGoals: profile.fitnessGoals,
+        activityLevel: profile.activityLevel,
+        dietaryRestrictions: profile.dietaryRestrictions,
       };
 
       console.log('🚀 Saving data:', profileData);
@@ -156,7 +175,14 @@ export default function ProfilePage() {
             updateUserProfile(input: $input) {
               id
               userId
+              name
               age
+              heightFeet
+              heightInches
+              weight
+              fitnessGoals
+              activityLevel
+              dietaryRestrictions
               createdAt
               updatedAt
             }
@@ -180,7 +206,14 @@ export default function ProfilePage() {
             createUserProfile(input: $input) {
               id
               userId
+              name
               age
+              heightFeet
+              heightInches
+              weight
+              fitnessGoals
+              activityLevel
+              dietaryRestrictions
               createdAt
               updatedAt
             }
@@ -201,7 +234,14 @@ export default function ProfilePage() {
         setProfile({
           id: savedProfile.id,
           userId: savedProfile.userId,
+          name: savedProfile.name,
           age: savedProfile.age,
+          heightFeet: savedProfile.heightFeet,
+          heightInches: savedProfile.heightInches,
+          weight: savedProfile.weight,
+          fitnessGoals: savedProfile.fitnessGoals,
+          activityLevel: savedProfile.activityLevel,
+          dietaryRestrictions: savedProfile.dietaryRestrictions,
           createdAt: savedProfile.createdAt,
           updatedAt: savedProfile.updatedAt,
         });
