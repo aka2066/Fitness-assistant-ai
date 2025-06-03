@@ -80,7 +80,7 @@ export default function Dashboard() {
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Box sx={{ mb: 4 }}>
           <Typography variant="h3" component="h1" gutterBottom>
-            Your AI-Powered Fitness Coach
+            Your AI-Powered Fitness Assistant
           </Typography>
           <Typography variant="h6" color="text.secondary" paragraph>
             Track your workouts and meals while getting personalized recommendations
@@ -92,7 +92,7 @@ export default function Dashboard() {
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} md={4}>
             <QuickActionCard
-              title="Track Workouts"
+              title="Workouts"
               description="Log your exercises, duration, and intensity. Our AI learns from your patterns to suggest optimal routines."
               icon={<FitnessCenter fontSize="large" />}
               href="/workouts"
@@ -102,7 +102,7 @@ export default function Dashboard() {
           
           <Grid item xs={12} sm={6} md={4}>
             <QuickActionCard
-              title="Log Meals"
+              title="Meals"
               description="Record your nutrition intake and get personalized meal suggestions based on your goals."
               icon={<Restaurant fontSize="large" />}
               href="/meals"
@@ -112,7 +112,7 @@ export default function Dashboard() {
           
           <Grid item xs={12} sm={6} md={4}>
             <QuickActionCard
-              title="AI Coach Chat"
+              title="AI Chat"
               description="Get instant, personalized advice from your AI fitness coach based on your activity history."
               icon={<Chat fontSize="large" />}
               href="/chat"
@@ -122,7 +122,7 @@ export default function Dashboard() {
           
           <Grid item xs={12} sm={6} md={4}>
             <QuickActionCard
-              title="Profile Setup"
+              title="Profile"
               description="Set your fitness goals, preferences, and track your progress over time."
               icon={<Person fontSize="large" />}
               href="/profile"

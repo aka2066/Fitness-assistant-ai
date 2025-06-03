@@ -46,10 +46,11 @@ describe('Home Page', () => {
     });
     
     await waitFor(() => {
-      expect(screen.getByText('Profile')).toBeInTheDocument();
-      expect(screen.getByText('Workouts')).toBeInTheDocument();
-      expect(screen.getByText('Meals')).toBeInTheDocument();
-      expect(screen.getByText('AI Chat')).toBeInTheDocument();
+      // Use more specific selectors to avoid navigation menu duplicates
+      expect(screen.getByRole('heading', { name: 'Profile' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Workouts' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Meals' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'AI Chat' })).toBeInTheDocument();
     });
   });
 }); 

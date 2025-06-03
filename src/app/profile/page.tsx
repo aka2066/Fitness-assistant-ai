@@ -25,7 +25,9 @@ interface UserProfile {
   age?: number;
   heightFeet?: number;
   heightInches?: number;
+  heightCm?: number; // Add height in cm
   weight?: number; // in pounds
+  weightKg?: number; // Add weight in kg  
   fitnessGoals?: string;
   activityLevel?: string;
   dietaryRestrictions?: string;
@@ -40,16 +42,6 @@ const activityLevels = [
   'Moderately active (moderate exercise 3-5 days/week)',
   'Very active (hard exercise 6-7 days/week)',
   'Extremely active (very hard exercise, physical job)',
-];
-
-const fitnessGoalsOptions = [
-  'Lose weight',
-  'Gain muscle',
-  'Improve endurance',
-  'Maintain current fitness',
-  'Increase strength',
-  'Improve flexibility',
-  'General health and wellness',
 ];
 
 export default function ProfilePage() {
@@ -83,7 +75,9 @@ export default function ProfilePage() {
               age
               heightFeet
               heightInches
+              heightCm
               weight
+              weightKg
               fitnessGoals
               activityLevel
               dietaryRestrictions
@@ -117,7 +111,9 @@ export default function ProfilePage() {
           age: existingProfile.age || undefined,
           heightFeet: existingProfile.heightFeet || undefined,
           heightInches: existingProfile.heightInches || undefined,
+          heightCm: existingProfile.heightCm || undefined,
           weight: existingProfile.weight || undefined,
+          weightKg: existingProfile.weightKg || undefined,
           fitnessGoals: existingProfile.fitnessGoals || undefined,
           activityLevel: existingProfile.activityLevel || undefined,
           dietaryRestrictions: existingProfile.dietaryRestrictions || undefined,
@@ -156,7 +152,9 @@ export default function ProfilePage() {
         age: profile.age,
         heightFeet: profile.heightFeet,
         heightInches: profile.heightInches,
+        heightCm: profile.heightCm,
         weight: profile.weight,
+        weightKg: profile.weightKg,
         fitnessGoals: profile.fitnessGoals,
         activityLevel: profile.activityLevel,
         dietaryRestrictions: profile.dietaryRestrictions,
@@ -175,7 +173,9 @@ export default function ProfilePage() {
               age
               heightFeet
               heightInches
+              heightCm
               weight
+              weightKg
               fitnessGoals
               activityLevel
               dietaryRestrictions
@@ -205,7 +205,9 @@ export default function ProfilePage() {
               age
               heightFeet
               heightInches
+              heightCm
               weight
+              weightKg
               fitnessGoals
               activityLevel
               dietaryRestrictions
@@ -233,7 +235,9 @@ export default function ProfilePage() {
           age: savedProfile.age,
           heightFeet: savedProfile.heightFeet,
           heightInches: savedProfile.heightInches,
+          heightCm: savedProfile.heightCm,
           weight: savedProfile.weight,
+          weightKg: savedProfile.weightKg,
           fitnessGoals: savedProfile.fitnessGoals,
           activityLevel: savedProfile.activityLevel,
           dietaryRestrictions: savedProfile.dietaryRestrictions,
@@ -273,7 +277,7 @@ export default function ProfilePage() {
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
       <Paper elevation={2} sx={{ p: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          {isNewUser ? 'Welcome! Complete Your Profile' : 'Update Your Profile'}
+          Update Your Profile
         </Typography>
         
         <Typography variant="body1" color="text.secondary" paragraph>
@@ -336,6 +340,17 @@ export default function ProfilePage() {
             />
           </Grid>
 
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              label="Height (cm)"
+              type="number"
+              value={profile.heightCm || ''}
+              onChange={(e) => handleInputChange('heightCm', parseFloat(e.target.value) || undefined)}
+              placeholder="175"
+            />
+          </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -344,6 +359,17 @@ export default function ProfilePage() {
               value={profile.weight || ''}
               onChange={(e) => handleInputChange('weight', parseFloat(e.target.value) || undefined)}
               placeholder="150"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Weight (kg)"
+              type="number"
+              value={profile.weightKg || ''}
+              onChange={(e) => handleInputChange('weightKg', parseFloat(e.target.value) || undefined)}
+              placeholder="70"
             />
           </Grid>
 
@@ -366,17 +392,13 @@ export default function ProfilePage() {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              select
-              label="Primary Fitness Goal"
+              multiline
+              rows={3}
+              label="Fitness Goals"
               value={profile.fitnessGoals || ''}
               onChange={(e) => handleInputChange('fitnessGoals', e.target.value)}
-            >
-              {fitnessGoalsOptions.map((goal) => (
-                <MenuItem key={goal} value={goal}>
-                  {goal}
-                </MenuItem>
-              ))}
-            </TextField>
+              placeholder="e.g., lose weight, build muscle, improve endurance..."
+            />
           </Grid>
 
           <Grid item xs={12}>
@@ -396,7 +418,7 @@ export default function ProfilePage() {
               <Button
                 variant="contained"
                 onClick={handleSave}
-                disabled={saving || !profile.name?.trim()}
+                disabled={saving}
                 size="large"
               >
                 {saving ? <CircularProgress size={24} /> : 'Save Profile'}
