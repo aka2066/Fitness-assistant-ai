@@ -21,7 +21,10 @@ import {
 import { ArrowBack } from '@mui/icons-material';
 import Link from 'next/link';
 import { useAuth } from '../providers/AuthProvider';
-import { client } from '../amplify-config';
+import { generateClient } from 'aws-amplify/api';
+import type { Schema } from '../../../amplify/data/resource';
+
+const client = generateClient<Schema>();
 
 const workoutTypes = [
   'Cardio',
