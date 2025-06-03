@@ -98,7 +98,7 @@ async function retrieveContext(
       includeValues: false,
     });
 
-    return queryResult.matches?.map(match => ({
+    return queryResult.matches?.map((match: any) => ({
       id: match.id,
       type: match.metadata?.type as 'workout' | 'meal' | 'profile',
       content: match.metadata?.content as string,

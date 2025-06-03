@@ -2,6 +2,7 @@
   "name": "fitness-assistant",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -38,6 +39,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@aws-amplify/backend-cli": "^1.7.2",
     "@eslint/eslintrc": "^2.1.4",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
