@@ -126,7 +126,7 @@ describe('Chatbot Lambda Function', () => {
     const result = await handler(mockEvent as APIGatewayProxyEvent);
 
     expect(result.headers).toHaveProperty('Access-Control-Allow-Origin', '*');
-    expect(result.headers).toHaveProperty('Access-Control-Allow-Headers', 'Content-Type');
-    expect(result.headers).toHaveProperty('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    expect(result.headers).toHaveProperty('Access-Control-Allow-Headers', 'Content-Type,X-Amz-Date,Authorization,X-Api-Key');
+    expect(result.headers).toHaveProperty('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
   });
 }); 
