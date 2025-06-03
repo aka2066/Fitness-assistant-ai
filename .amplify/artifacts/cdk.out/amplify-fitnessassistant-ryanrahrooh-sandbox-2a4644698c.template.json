@@ -43,6 +43,12 @@
     "amplifyApiModelSchemaS3Uri",
     "awsAppsyncAdditionalAuthenticationTypes"
    ]
+  },
+  "AWS::Amplify::Function": {
+   "version": "1",
+   "stackOutputs": [
+    "definedFunctions"
+   ]
   }
  },
  "Outputs": {
@@ -199,6 +205,30 @@
   },
   "awsAppsyncAdditionalAuthenticationTypes": {
    "Value": "AWS_IAM"
+  },
+  "definedFunctions": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "[\"",
+      {
+       "Fn::GetAtt": [
+        "function1351588B",
+        "Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cfunctionchatbotlambdaC3D3A78CRef"
+       ]
+      },
+      "\",\"",
+      {
+       "Fn::GetAtt": [
+        "function1351588B",
+        "Outputs.amplifyfitnessassistantryanrahroohsandbox2a4644698cfunctionembeddingslambdaDFA2513CRef"
+       ]
+      },
+      "\"]"
+     ]
+    ]
+   }
   }
  },
  "Resources": {
@@ -309,6 +339,48 @@
    "Metadata": {
     "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data.NestedStack/data.NestedStackResource",
     "aws:asset:path": "amplifyfitnessassistantryanrahroohsandbox2a4644698cdata3FD6475D.nested.template.json",
+    "aws:asset:property": "TemplateURL"
+   }
+  },
+  "function1351588B": {
+   "Type": "AWS::CloudFormation::Stack",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "TemplateURL": {
+     "Fn::Join": [
+      "",
+      [
+       "https://s3.",
+       {
+        "Ref": "AWS::Region"
+       },
+       ".",
+       {
+        "Ref": "AWS::URLSuffix"
+       },
+       "/",
+       {
+        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+       },
+       "/3afc3f810394e67603e464a6dd63fc767cb5f103f80476c00f4b5900c78eb879.json"
+      ]
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function.NestedStack/function.NestedStackResource",
+    "aws:asset:path": "amplifyfitnessassistantryanrahroohsandbox2a4644698cfunction106705A5.nested.template.json",
     "aws:asset:property": "TemplateURL"
    }
   },

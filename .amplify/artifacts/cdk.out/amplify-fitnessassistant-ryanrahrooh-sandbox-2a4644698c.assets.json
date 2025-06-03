@@ -519,6 +519,34 @@
         }
       }
     },
+    "ba50422051c5435d9222b76e0ef36cbf67d44d12296bf2e15f1d0377a3a352e5": {
+      "displayName": "function/chatbot-lambda/Code",
+      "source": {
+        "path": "asset.ba50422051c5435d9222b76e0ef36cbf67d44d12296bf2e15f1d0377a3a352e5",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "ba50422051c5435d9222b76e0ef36cbf67d44d12296bf2e15f1d0377a3a352e5.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "0e8f0eae59daf6a5284823d4b89baec02a7f1526061becb2c681bd0589d190bf": {
+      "displayName": "function/embeddings-lambda/Code",
+      "source": {
+        "path": "asset.0e8f0eae59daf6a5284823d4b89baec02a7f1526061becb2c681bd0589d190bf",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "0e8f0eae59daf6a5284823d4b89baec02a7f1526061becb2c681bd0589d190bf.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
     "0e236bd23153df903281e1f259f0b69a41e94c2b2bdffaf11fde22f9541a8c92": {
       "displayName": "data/amplifyData/GraphQLAPI/schema",
       "source": {
@@ -617,7 +645,21 @@
         }
       }
     },
-    "82266240463c5cd17b1152cd5e6683055924c6d9af267cf1afc015bd00d44463": {
+    "3afc3f810394e67603e464a6dd63fc767cb5f103f80476c00f4b5900c78eb879": {
+      "displayName": "function Nested Stack Template",
+      "source": {
+        "path": "amplifyfitnessassistantryanrahroohsandbox2a4644698cfunction106705A5.nested.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "3afc3f810394e67603e464a6dd63fc767cb5f103f80476c00f4b5900c78eb879.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "73624e9d07cae6496e17cfa6fb7e0988a6695bb872937ab85b88dd2102071be0": {
       "displayName": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c Template",
       "source": {
         "path": "amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c.template.json",
@@ -626,7 +668,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "82266240463c5cd17b1152cd5e6683055924c6d9af267cf1afc015bd00d44463.json",
+          "objectKey": "73624e9d07cae6496e17cfa6fb7e0988a6695bb872937ab85b88dd2102071be0.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

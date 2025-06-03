@@ -22,7 +22,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/82266240463c5cd17b1152cd5e6683055924c6d9af267cf1afc015bd00d44463.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/73624e9d07cae6496e17cfa6fb7e0988a6695bb872937ab85b88dd2102071be0.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -2395,6 +2395,78 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "awsAppsyncAdditionalAuthenticationTypes"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function/chatbot-lambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "chatbotlambdaServiceRoleAD848AA7"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function/chatbot-lambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "chatbotlambdaF783EA7B"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function/chatbot-lambda/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "chatbotlambdaLogGroupDE4B80C5"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function/embeddings-lambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "embeddingslambdaServiceRoleFD1D766F"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function/embeddings-lambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "embeddingslambdaEA4B8EFB"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function/embeddings-lambda/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "embeddingslambdaLogGroup7F3DB9A5"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function/amplifyfitnessassistantryanrahroohsandbox2a4644698cfunctionchatbotlambdaC3D3A78CRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyfitnessassistantryanrahroohsandbox2a4644698cfunctionchatbotlambdaC3D3A78CRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function/amplifyfitnessassistantryanrahroohsandbox2a4644698cfunctionembeddingslambdaDFA2513CRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyfitnessassistantryanrahroohsandbox2a4644698cfunctionembeddingslambdaDFA2513CRef"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/function.NestedStack/function.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "function1351588B"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/definedFunctions": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "definedFunctions"
           }
         ],
         "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/CDKMetadata/Default": [
