@@ -168,7 +168,7 @@ export default function ProfilePage() {
 
   // Load profile when user is available
   useEffect(() => {
-    if (user?.userId && !loading) {
+    if (user?.userId) {
       loadProfile();
     }
   }, [user?.userId]); // Only depend on userId
