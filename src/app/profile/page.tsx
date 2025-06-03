@@ -166,16 +166,16 @@ export default function ProfilePage() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [isNewUser, setIsNewUser] = useState(false);
 
+  // Load profile when user is available
   useEffect(() => {
-    if (user?.userId) {
+    if (user?.userId && !loading) {
       loadProfile();
     }
-  }, [user]);
+  }, [user?.userId]); // Only depend on userId
 
   const loadProfile = async () => {
     try {
       setLoading(true);
-      console.log('🔄 Loading profile for user:', user?.userId);
       
       const listQuery = `
         query ListUserProfiles($filter: ModelUserProfileFilterInput) {
@@ -202,8 +202,6 @@ export default function ProfilePage() {
         }
       });
       
-      console.log('📋 Load result:', result);
-      
       const profiles = result.data?.listUserProfiles?.items || [];
       
       if (profiles && profiles.length > 0) {
@@ -211,7 +209,7 @@ export default function ProfilePage() {
         setProfile({
           id: existingProfile.id,
           userId: existingProfile.userId,
-          name: existingProfile.name || '', // Default to empty string if field doesn't exist
+          name: existingProfile.name || '',
           age: existingProfile.age || undefined,
           heightFeet: existingProfile.heightFeet || undefined,
           heightInches: existingProfile.heightInches || undefined,
@@ -223,13 +221,11 @@ export default function ProfilePage() {
           updatedAt: existingProfile.updatedAt || undefined,
         });
         setIsNewUser(false);
-        console.log('✅ Loaded existing profile:', existingProfile);
       } else {
         setProfile({
           userId: user!.userId,
         });
         setIsNewUser(true);
-        console.log('📝 No existing profile, creating new one');
       }
     } catch (error) {
       console.error('❌ Error loading profile:', error);
@@ -246,30 +242,16 @@ export default function ProfilePage() {
   const handleSave = async () => {
     try {
       setSaving(true);
-      console.log('🔄 Starting profile save...');
-      console.log('👤 User:', user);
-      console.log('📝 Profile:', profile);
       
       // Only save fields that exist in current schema
       const profileData = {
         userId: profile.userId,
         age: profile.age,
-        // TODO: Add other fields when backend schema is fully deployed
-        // name: profile.name,
-        // heightFeet: profile.heightFeet,
-        // heightInches: profile.heightInches,
-        // weight: profile.weight,
-        // fitnessGoals: profile.fitnessGoals,
-        // activityLevel: profile.activityLevel,
-        // dietaryRestrictions: profile.dietaryRestrictions,
       };
-
-      console.log('🚀 Saving data:', profileData);
 
       let result: any;
       
       if (profile.id) {
-        console.log('✏️ Updating existing profile...');
         const updateQuery = `
           mutation UpdateUserProfile($input: UpdateUserProfileInput!) {
             updateUserProfile(input: $input) {
@@ -291,9 +273,7 @@ export default function ProfilePage() {
             }
           }
         });
-        console.log('✅ Update result:', result);
       } else {
-        console.log('🆕 Creating new profile...');
         const createQuery = `
           mutation CreateUserProfile($input: CreateUserProfileInput!) {
             createUserProfile(input: $input) {
@@ -312,7 +292,6 @@ export default function ProfilePage() {
             input: profileData
           }
         });
-        console.log('✅ Create result:', result);
       }
 
       if (result.data) {
@@ -320,7 +299,7 @@ export default function ProfilePage() {
         setProfile({
           id: savedProfile.id,
           userId: savedProfile.userId,
-          name: savedProfile.name || profile.name, // Keep frontend value if not saved to backend yet
+          name: savedProfile.name || profile.name,
           age: savedProfile.age,
           heightFeet: savedProfile.heightFeet || profile.heightFeet,
           heightInches: savedProfile.heightInches || profile.heightInches,
@@ -332,7 +311,6 @@ export default function ProfilePage() {
           updatedAt: savedProfile.updatedAt,
         });
         setMessage({ type: 'success', text: 'Basic profile saved! (Full fields will save once backend is fully deployed)' });
-        console.log('🎉 Profile saved successfully:', savedProfile);
         
         // If this was a new user, redirect to dashboard after a delay
         if (isNewUser) {
