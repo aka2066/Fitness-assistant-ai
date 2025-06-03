@@ -29,6 +29,7 @@ interface UserProfile {
   fitnessGoals?: string;
   activityLevel?: string;
   dietaryRestrictions?: string;
+  owner?: string; // Required for authorization
   createdAt?: string;
   updatedAt?: string;
 }
@@ -50,114 +51,6 @@ const fitnessGoalsOptions = [
   'Improve flexibility',
   'General health and wellness',
 ];
-
-// Simple test component
-function SimpleProfileTest() {
-  const { user } = useAuth();
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const testBasicSave = async () => {
-    try {
-      setLoading(true);
-      setMessage('');
-      
-      console.log('🧪 Testing profile save with full data...');
-      console.log('User:', user);
-      console.log('Data:', { name, age: parseInt(age), userId: user?.userId });
-
-      const createQuery = `
-        mutation CreateUserProfile($input: CreateUserProfileInput!) {
-          createUserProfile(input: $input) {
-            id
-            userId
-            name
-            age
-            createdAt
-            updatedAt
-          }
-        }
-      `;
-      
-      const result: any = await client.graphql({
-        query: createQuery,
-        variables: {
-          input: {
-            userId: user?.userId,
-            name: name,
-            age: parseInt(age)
-          }
-        }
-      });
-
-      console.log('✅ Result:', result);
-      
-      if (result.data?.createUserProfile) {
-        setMessage(`✅ SUCCESS! Created profile in DynamoDB: ${JSON.stringify(result.data.createUserProfile)}`);
-      } else {
-        setMessage(`❌ No data returned: ${JSON.stringify(result)}`);
-      }
-
-    } catch (error: any) {
-      console.error('❌ Error:', error);
-      setMessage(`❌ ERROR: ${error.message || JSON.stringify(error)}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (!user) {
-    return <Typography>Please sign in first</Typography>;
-  }
-
-  return (
-    <Paper sx={{ p: 3, mb: 3, backgroundColor: '#e3f2fd', border: '2px solid #2196f3' }}>
-      <Typography variant="h6" gutterBottom>
-        🧪 DEBUG: Simple Profile Save Test
-      </Typography>
-      
-      <Typography variant="body2" paragraph>
-        User: {user.username} (ID: {user.userId})
-      </Typography>
-
-      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-        <TextField
-          label="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Your full name"
-          size="small"
-        />
-        
-        <TextField
-          label="Age"
-          type="number"
-          value={age}
-          onChange={(e) => setAge(e.target.value)}
-          placeholder="25"
-          size="small"
-        />
-        
-        <Button 
-          variant="contained" 
-          onClick={testBasicSave}
-          disabled={loading || !name || !age}
-          size="small"
-        >
-          {loading ? 'Saving...' : 'Test Save'}
-        </Button>
-      </Box>
-
-      {message && (
-        <Alert severity={message.includes('SUCCESS') ? 'success' : 'error'}>
-          <pre style={{ whiteSpace: 'pre-wrap', fontSize: '12px' }}>{message}</pre>
-        </Alert>
-      )}
-    </Paper>
-  );
-}
 
 export default function ProfilePage() {
   const { user, loading: authLoading } = useAuth();
@@ -194,6 +87,7 @@ export default function ProfilePage() {
               fitnessGoals
               activityLevel
               dietaryRestrictions
+              owner
               createdAt
               updatedAt
             }
@@ -227,6 +121,7 @@ export default function ProfilePage() {
           fitnessGoals: existingProfile.fitnessGoals || undefined,
           activityLevel: existingProfile.activityLevel || undefined,
           dietaryRestrictions: existingProfile.dietaryRestrictions || undefined,
+          owner: existingProfile.owner,
           createdAt: existingProfile.createdAt || undefined,
           updatedAt: existingProfile.updatedAt || undefined,
         });
@@ -234,6 +129,7 @@ export default function ProfilePage() {
       } else {
         setProfile({
           userId: user!.userId,
+          owner: user!.userId, // Set owner for new profiles
         });
         setIsNewUser(true);
       }
@@ -264,6 +160,7 @@ export default function ProfilePage() {
         fitnessGoals: profile.fitnessGoals,
         activityLevel: profile.activityLevel,
         dietaryRestrictions: profile.dietaryRestrictions,
+        owner: user!.userId, // Always set owner for authorization
       };
 
       let result: any;
@@ -282,6 +179,7 @@ export default function ProfilePage() {
               fitnessGoals
               activityLevel
               dietaryRestrictions
+              owner
               createdAt
               updatedAt
             }
@@ -311,6 +209,7 @@ export default function ProfilePage() {
               fitnessGoals
               activityLevel
               dietaryRestrictions
+              owner
               createdAt
               updatedAt
             }
@@ -338,20 +237,19 @@ export default function ProfilePage() {
           fitnessGoals: savedProfile.fitnessGoals,
           activityLevel: savedProfile.activityLevel,
           dietaryRestrictions: savedProfile.dietaryRestrictions,
+          owner: savedProfile.owner,
           createdAt: savedProfile.createdAt,
           updatedAt: savedProfile.updatedAt,
         });
-        setMessage({ type: 'success', text: 'Profile saved successfully!' });
+        setMessage({ type: 'success', text: 'Profile saved successfully! Your information will now appear in the navigation bar.' });
         
-        // If this was a new user, redirect to dashboard after a delay
-        if (isNewUser) {
-          setTimeout(() => {
-            window.location.href = '/';
-          }, 2000);
-        }
+        // Clear message after 5 seconds
+        setTimeout(() => setMessage(null), 5000);
+        
+        // Emit event to trigger navigation refresh
+        window.dispatchEvent(new CustomEvent('profile-updated'));
       }
 
-      setTimeout(() => setMessage(null), 5000);
     } catch (error) {
       console.error('❌ Error saving profile:', error);
       setMessage({ type: 'error', text: `Failed to save profile: ${error}` });
@@ -373,8 +271,6 @@ export default function ProfilePage() {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
-      <SimpleProfileTest />
-      
       <Paper elevation={2} sx={{ p: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           {isNewUser ? 'Welcome! Complete Your Profile' : 'Update Your Profile'}
@@ -401,43 +297,42 @@ export default function ProfilePage() {
               value={profile.name || ''}
               onChange={(e) => handleInputChange('name', e.target.value)}
               placeholder="Enter your full name"
-              required={isNewUser}
+              helperText="This will appear in your welcome message"
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={4}>
             <TextField
               fullWidth
               label="Age"
               type="number"
               value={profile.age || ''}
               onChange={(e) => handleInputChange('age', parseInt(e.target.value) || undefined)}
-              inputProps={{ min: 13, max: 120 }}
-              required={isNewUser}
+              placeholder="25"
             />
           </Grid>
 
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={4}>
             <TextField
               fullWidth
               label="Height (feet)"
               type="number"
               value={profile.heightFeet || ''}
               onChange={(e) => handleInputChange('heightFeet', parseInt(e.target.value) || undefined)}
-              inputProps={{ min: 3, max: 8 }}
               placeholder="5"
+              inputProps={{ min: 3, max: 8 }}
             />
           </Grid>
 
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={4}>
             <TextField
               fullWidth
               label="Height (inches)"
               type="number"
               value={profile.heightInches || ''}
               onChange={(e) => handleInputChange('heightInches', parseInt(e.target.value) || undefined)}
-              inputProps={{ min: 0, max: 11 }}
               placeholder="11"
+              inputProps={{ min: 0, max: 11 }}
             />
           </Grid>
 
@@ -447,8 +342,8 @@ export default function ProfilePage() {
               label="Weight (lbs)"
               type="number"
               value={profile.weight || ''}
-              onChange={(e) => handleInputChange('weight', parseInt(e.target.value) || undefined)}
-              inputProps={{ min: 50, max: 800 }}
+              onChange={(e) => handleInputChange('weight', parseFloat(e.target.value) || undefined)}
+              placeholder="150"
             />
           </Grid>
 
@@ -492,37 +387,30 @@ export default function ProfilePage() {
               label="Dietary Restrictions or Allergies"
               value={profile.dietaryRestrictions || ''}
               onChange={(e) => handleInputChange('dietaryRestrictions', e.target.value)}
-              placeholder="e.g., Vegetarian, Gluten-free, Nut allergies, etc."
+              placeholder="e.g., Vegetarian, no nuts, lactose intolerant..."
             />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+              <Button
+                variant="contained"
+                onClick={handleSave}
+                disabled={saving || !profile.name?.trim()}
+                size="large"
+              >
+                {saving ? <CircularProgress size={24} /> : 'Save Profile'}
+              </Button>
+            </Box>
           </Grid>
         </Grid>
 
-        <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Button
-            variant="contained"
-            onClick={handleSave}
-            disabled={saving || (isNewUser && (!profile.name || !profile.age))}
-            size="large"
-            sx={{ minWidth: 200 }}
-          >
-            {saving ? <CircularProgress size={24} /> : (isNewUser ? 'Complete Profile' : 'Save Changes')}
-          </Button>
-
-          {!isNewUser && (
-            <Button
-              variant="outlined"
-              href="/"
-              size="large"
-            >
-              Back to Dashboard
-            </Button>
-          )}
-        </Box>
-
-        {isNewUser && (
-          <Typography variant="caption" display="block" sx={{ mt: 2, color: 'text.secondary' }}>
-            * Name and age are required to continue
-          </Typography>
+        {profile.id && (
+          <Box sx={{ mt: 3, p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
+            <Typography variant="caption" color="text.secondary">
+              Profile ID: {profile.id} | Last updated: {profile.updatedAt ? new Date(profile.updatedAt).toLocaleString() : 'Never'}
+            </Typography>
+          </Box>
         )}
       </Paper>
     </Container>

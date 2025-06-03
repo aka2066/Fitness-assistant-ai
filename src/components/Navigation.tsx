@@ -11,7 +11,7 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material';
+import { AccountCircle, Refresh } from '@mui/icons-material';
 import { useAuth } from '../app/providers/AuthProvider';
 import { generateClient } from 'aws-amplify/api';
 
@@ -21,54 +21,67 @@ export default function Navigation() {
   const { user } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [userName, setUserName] = useState<string>('');
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const fetchUserName = async () => {
+    if (!user?.userId) {
+      setUserName('');
+      return;
+    }
+
+    try {
+      const listQuery = `
+        query ListUserProfiles($filter: ModelUserProfileFilterInput) {
+          listUserProfiles(filter: $filter) {
+            items {
+              id
+              userId
+              name
+            }
+          }
+        }
+      `;
+      
+      const result: any = await client.graphql({
+        query: listQuery,
+        variables: {
+          filter: {
+            userId: {
+              eq: user.userId
+            }
+          }
+        }
+      });
+
+      const profiles = result.data?.listUserProfiles?.items || [];
+      
+      if (profiles.length > 0 && profiles[0].name) {
+        setUserName(profiles[0].name);
+      } else {
+        // Fallback to username if no profile name
+        setUserName(user.username);
+      }
+    } catch (error) {
+      console.error('Error fetching user name:', error);
+      setUserName(user.username || 'User');
+    }
+  };
 
   useEffect(() => {
-    const fetchUserName = async () => {
-      if (!user?.userId) {
-        setUserName('');
-        return;
-      }
+    fetchUserName();
+  }, [user, refreshTrigger]);
 
-      try {
-        const listQuery = `
-          query ListUserProfiles($filter: ModelUserProfileFilterInput) {
-            listUserProfiles(filter: $filter) {
-              items {
-                id
-                userId
-                name
-              }
-            }
-          }
-        `;
-        
-        const result: any = await client.graphql({
-          query: listQuery,
-          variables: {
-            filter: {
-              userId: {
-                eq: user.userId
-              }
-            }
-          }
-        });
-
-        const profiles = result.data?.listUserProfiles?.items || [];
-        
-        if (profiles.length > 0 && profiles[0].name) {
-          setUserName(profiles[0].name);
-        } else {
-          // Fallback to username if no profile name
-          setUserName(user.username);
-        }
-      } catch (error) {
-        console.error('Error fetching user name:', error);
-        setUserName(user.username || 'User');
-      }
+  // Listen for profile updates
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      setRefreshTrigger(prev => prev + 1);
     };
 
-    fetchUserName();
-  }, [user]);
+    window.addEventListener('profile-updated', handleProfileUpdate);
+    return () => {
+      window.removeEventListener('profile-updated', handleProfileUpdate);
+    };
+  }, []);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -85,6 +98,10 @@ export default function Navigation() {
     handleClose();
   };
 
+  const handleRefresh = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
+
   const displayName = userName || user?.username || 'User';
 
   return (
@@ -99,6 +116,14 @@ export default function Navigation() {
             <Typography variant="body2">
               Welcome, {displayName}
             </Typography>
+            <IconButton
+              size="small"
+              onClick={handleRefresh}
+              color="inherit"
+              title="Refresh profile info"
+            >
+              <Refresh fontSize="small" />
+            </IconButton>
             <IconButton
               size="large"
               aria-label="account of current user"

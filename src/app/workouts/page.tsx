@@ -21,7 +21,9 @@ import {
   Divider,
 } from '@mui/material';
 import { useAuth } from '../providers/AuthProvider';
-import { workoutStorage, WorkoutLog } from '../../utils/localData';
+import { generateClient } from 'aws-amplify/api';
+
+const client = generateClient();
 
 const workoutTypes = [
   'Cardio',
@@ -35,6 +37,20 @@ const workoutTypes = [
   'Sports',
   'Other',
 ];
+
+interface WorkoutLog {
+  id?: string;
+  userId: string;
+  type: string;
+  duration?: number;
+  calories?: number;
+  notes?: string;
+  exercises?: string;
+  date: string;
+  owner?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 export default function WorkoutsPage() {
   const { user, loading: authLoading } = useAuth();
@@ -63,11 +79,44 @@ export default function WorkoutsPage() {
   const loadWorkouts = async () => {
     try {
       setLoading(true);
-      const workoutData = workoutStorage.getAll(user!.userId);
+      
+      const listQuery = `
+        query ListWorkoutLogs($filter: ModelWorkoutLogFilterInput) {
+          listWorkoutLogs(filter: $filter) {
+            items {
+              id
+              userId
+              type
+              duration
+              calories
+              notes
+              exercises
+              date
+              owner
+              createdAt
+              updatedAt
+            }
+          }
+        }
+      `;
+      
+      const result: any = await client.graphql({
+        query: listQuery,
+        variables: {
+          filter: {
+            userId: { eq: user!.userId }
+          }
+        }
+      });
+
+      const workoutData = result.data?.listWorkoutLogs?.items || [];
+      // Sort by date (newest first)
+      workoutData.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
       setWorkouts(workoutData);
+      
     } catch (error) {
       console.error('Error loading workouts:', error);
-      setMessage({ type: 'error', text: 'Failed to load workouts' });
+      setMessage({ type: 'error', text: 'Failed to load workouts from database' });
     } finally {
       setLoading(false);
     }
@@ -103,11 +152,11 @@ export default function WorkoutsPage() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create embedding');
+        console.warn('Failed to create embedding, but workout was saved');
+      } else {
+        const result = await response.json();
+        console.log('Workout embedding created:', result);
       }
-      
-      const result = await response.json();
-      console.log('Workout embedding created:', result);
     } catch (error) {
       console.error('Error creating embedding:', error);
       // Don't fail the whole save if embedding fails
@@ -125,32 +174,72 @@ export default function WorkoutsPage() {
     try {
       setSaving(true);
       
-      // Save to local storage
-      const savedWorkout = workoutStorage.save(newWorkout);
-      
-      // Update the workouts list
-      setWorkouts(prev => [savedWorkout, ...prev]);
+      // Save to DynamoDB via GraphQL
+      const createQuery = `
+        mutation CreateWorkoutLog($input: CreateWorkoutLogInput!) {
+          createWorkoutLog(input: $input) {
+            id
+            userId
+            type
+            duration
+            calories
+            notes
+            exercises
+            date
+            owner
+            createdAt
+            updatedAt
+          }
+        }
+      `;
 
-      // Create embedding for the workout (runs in background)
-      await createEmbedding(savedWorkout);
+      const workoutData = {
+        userId: user!.userId,
+        type: newWorkout.type,
+        duration: newWorkout.duration,
+        calories: newWorkout.calories,
+        notes: newWorkout.notes || '',
+        exercises: newWorkout.exercises || '',
+        date: new Date(newWorkout.date).toISOString(),
+        owner: user!.userId, // Required for authorization
+      };
 
-      setMessage({ type: 'success', text: 'Workout logged successfully!' });
-      
-      // Reset form
-      setNewWorkout({
-        userId: user?.userId || '',
-        type: '',
-        duration: undefined,
-        calories: undefined,
-        notes: '',
-        exercises: '',
-        date: new Date().toISOString().split('T')[0],
+      const result: any = await client.graphql({
+        query: createQuery,
+        variables: {
+          input: workoutData
+        }
       });
 
-      setTimeout(() => setMessage(null), 3000);
+      const savedWorkout = result.data?.createWorkoutLog;
+      
+      if (savedWorkout) {
+        // Update the workouts list
+        setWorkouts(prev => [savedWorkout, ...prev]);
+
+        // Create embedding for the workout (runs in background)
+        await createEmbedding(savedWorkout);
+
+        setMessage({ type: 'success', text: 'Workout saved to database successfully!' });
+        
+        // Reset form
+        setNewWorkout({
+          userId: user?.userId || '',
+          type: '',
+          duration: undefined,
+          calories: undefined,
+          notes: '',
+          exercises: '',
+          date: new Date().toISOString().split('T')[0],
+        });
+
+        setTimeout(() => setMessage(null), 3000);
+      } else {
+        throw new Error('No data returned from database');
+      }
     } catch (error) {
       console.error('Error saving workout:', error);
-      setMessage({ type: 'error', text: 'Failed to log workout' });
+      setMessage({ type: 'error', text: `Failed to save workout: ${error}` });
     } finally {
       setSaving(false);
     }
@@ -173,7 +262,7 @@ export default function WorkoutsPage() {
       <Container maxWidth="md" sx={{ mt: 4, textAlign: 'center' }}>
         <CircularProgress />
         <Typography variant="h6" sx={{ mt: 2 }}>
-          Loading workouts...
+          Loading workouts from database...
         </Typography>
       </Container>
     );
@@ -218,11 +307,23 @@ export default function WorkoutsPage() {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
+                label="Date"
+                type="date"
+                value={newWorkout.date}
+                onChange={(e) => handleInputChange('date', e.target.value)}
+                InputLabelProps={{ shrink: true }}
+                required
+              />
+            </Grid>
+            
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
                 label="Duration (minutes)"
                 type="number"
                 value={newWorkout.duration || ''}
                 onChange={(e) => handleInputChange('duration', parseInt(e.target.value) || undefined)}
-                inputProps={{ min: 1, max: 480 }}
+                InputProps={{ inputProps: { min: 1, max: 600 } }}
               />
             </Grid>
             
@@ -233,91 +334,91 @@ export default function WorkoutsPage() {
                 type="number"
                 value={newWorkout.calories || ''}
                 onChange={(e) => handleInputChange('calories', parseInt(e.target.value) || undefined)}
-                inputProps={{ min: 0, max: 2000 }}
-              />
-            </Grid>
-            
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Date"
-                type="date"
-                value={newWorkout.date}
-                onChange={(e) => handleInputChange('date', e.target.value)}
-                required
+                InputProps={{ inputProps: { min: 0, max: 5000 } }}
               />
             </Grid>
             
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                multiline
-                rows={3}
-                label="Workout Notes"
-                value={newWorkout.notes}
-                onChange={(e) => handleInputChange('notes', e.target.value)}
-                placeholder="How did the workout feel? Any exercises you focused on?"
+                label="Exercises"
+                value={newWorkout.exercises || ''}
+                onChange={(e) => handleInputChange('exercises', e.target.value)}
+                placeholder="e.g., Push-ups, Squats, Bench Press..."
               />
             </Grid>
-          </Grid>
-          
-          <Box sx={{ mt: 3 }}>
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={saving}
-              size="large"
-            >
-              {saving ? <CircularProgress size={24} /> : 'Log Workout'}
-            </Button>
             
-            <Button
-              variant="outlined"
-              href="/"
-              sx={{ ml: 2 }}
-              size="large"
-            >
-              Back to Dashboard
-            </Button>
-          </Box>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Notes"
+                multiline
+                rows={3}
+                value={newWorkout.notes || ''}
+                onChange={(e) => handleInputChange('notes', e.target.value)}
+                placeholder="Any additional details about your workout..."
+              />
+            </Grid>
+            
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={saving || !newWorkout.type}
+                  size="large"
+                >
+                  {saving ? <CircularProgress size={24} /> : 'Save to Database'}
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
         </Box>
       </Paper>
 
-      {/* Workout History */}
+      {/* Recent Workouts */}
       <Paper elevation={2} sx={{ p: 3 }}>
         <Typography variant="h5" gutterBottom>
-          Workout History
+          Recent Workouts ({workouts.length})
         </Typography>
         
         {workouts.length === 0 ? (
-          <Typography variant="body1" color="text.secondary">
-            No workouts logged yet. Start by logging your first workout above!
+          <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 4 }}>
+            No workouts logged yet. Start by adding your first workout above!
           </Typography>
         ) : (
           <List>
             {workouts.map((workout, index) => (
               <React.Fragment key={workout.id}>
-                <ListItem>
+                <ListItem sx={{ px: 0 }}>
                   <ListItemText
                     primary={
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                         <Chip label={workout.type} color="primary" size="small" />
-                        <Typography variant="body1">
+                        <Typography variant="body2" color="text.secondary">
                           {formatDate(workout.date)}
                         </Typography>
                       </Box>
                     }
                     secondary={
-                      <Box sx={{ mt: 1 }}>
-                        <Typography variant="body2" color="text.secondary">
+                      <Box>
+                        <Typography variant="body2">
                           Duration: {formatDuration(workout.duration)} | 
-                          Calories: {workout.calories || 'Not specified'}
+                          Calories: {workout.calories || 'Not tracked'}
                         </Typography>
-                        {workout.notes && (
+                        {workout.exercises && (
                           <Typography variant="body2" sx={{ mt: 0.5 }}>
+                            Exercises: {workout.exercises}
+                          </Typography>
+                        )}
+                        {workout.notes && (
+                          <Typography variant="body2" sx={{ mt: 0.5, fontStyle: 'italic' }}>
                             Notes: {workout.notes}
                           </Typography>
                         )}
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+                          Saved to DynamoDB: {workout.createdAt ? new Date(workout.createdAt).toLocaleString() : 'Unknown'}
+                        </Typography>
                       </Box>
                     }
                   />
