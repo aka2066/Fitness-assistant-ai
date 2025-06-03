@@ -246,63 +246,32 @@ Provide helpful general fitness advice and guidance.
 export async function POST(request: NextRequest) {
   try {
     const { message, userId } = await request.json();
-    
-    if (!message || !userId) {
-      return NextResponse.json(
-        { error: 'Message and userId are required' },
-        { status: 400 }
-      );
+
+    if (!message) {
+      return NextResponse.json({ error: 'Message is required' }, { status: 400 });
     }
 
-    console.log('🤖 Multi-agent chat request:', { message, userId });
+    // Simple response without OpenAI for testing
+    const simpleResponses = [
+      "That's a great question about fitness! I'm here to help you with your health and wellness journey.",
+      "Based on general fitness principles, I'd recommend staying consistent with your routine and gradually increasing intensity.",
+      "Nutrition and exercise go hand in hand. Make sure you're getting adequate protein and staying hydrated!",
+      "Remember that rest and recovery are just as important as your workout routine. Listen to your body.",
+      "Setting realistic, achievable goals is key to long-term fitness success. What specific goals are you working toward?"
+    ];
 
-    // 1. Determine which agent should handle this
-    const agentType = determineAgent(message);
-    console.log('🎯 Routing to agent:', agentType);
+    const randomResponse = simpleResponses[Math.floor(Math.random() * simpleResponses.length)];
 
-    // 2. Fetch user data from DynamoDB
-    const userData = await fetchUserData(userId);
-
-    // 3. Route to appropriate agent
-    let response: string;
-    let specificAgentType: string;
-
-    switch (agentType) {
-      case 'workout':
-        response = await workoutAgent(message, userData);
-        specificAgentType = 'workout_agent';
-        break;
-      case 'nutrition':
-        response = await nutritionAgent(message, userData);
-        specificAgentType = 'nutrition_agent';
-        break;
-      case 'progress':
-        response = await progressAgent(message, userData);
-        specificAgentType = 'progress_agent';
-        break;
-      default:
-        response = await generalAgent(message, userData);
-        specificAgentType = 'general_agent';
-        break;
-    }
-
-    console.log('✅ Generated response from', specificAgentType);
-
-    return NextResponse.json({
-      response,
-      agentType: specificAgentType,
-      dataFound: {
-        profile: !!userData.profile,
-        workouts: userData.workouts.length,
-        meals: userData.meals.length
-      },
+    return NextResponse.json({ 
+      response: randomResponse,
       timestamp: new Date().toISOString(),
+      mode: 'simple'
     });
-    
+
   } catch (error) {
-    console.error('❌ Multi-agent chatbot API error:', error);
+    console.error('Simple chatbot error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to process request' }, 
       { status: 500 }
     );
   }

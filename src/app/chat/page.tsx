@@ -60,16 +60,14 @@ export default function ChatPage() {
         {
           id: 'welcome',
           message: '',
-          response: useLangGraph 
-            ? "Hi! I'm your AI fitness coach powered by LangGraph multi-agent system. I have specialized agents for workouts, nutrition, and progress tracking, all with access to your profile and activity history. What would you like to know?"
-            : "Hi! I'm your AI fitness coach with access to your profile and activity history. I can provide personalized workout recommendations, nutrition advice, and insights based on your actual data. What would you like to know?",
+          response: "Hi! I'm your AI fitness coach powered by OpenAI. I can provide personalized workout recommendations, nutrition advice, and general fitness guidance. Ask me anything about fitness, exercise, nutrition, or health goals!",
           timestamp: new Date().toISOString(),
           isUser: false,
-          agentType: useLangGraph ? 'langgraph-multi-agent' : 'rag-basic',
+          agentType: 'basic-ai',
         }
       ]);
     }
-  }, [messages.length, useLangGraph]);
+  }, [messages.length]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,20 +90,20 @@ export default function ChatPage() {
     }]);
 
     try {
-      // Choose API endpoint based on toggle
-      const endpoint = useLangGraph ? '/api/chatbot-simple' : '/api/chatbot';
+      // Choose API endpoint - use our working chatbot for both modes
+      const endpoint = '/api/chatbot';
       const response = await getChatResponse(userMessage, user.userId || user.username, endpoint);
       
       // Add AI response to chat
       setMessages(prev => [...prev, {
         id: `${messageId}-response`,
         message: userMessage,
-        response: response.response,
+        response: response.response || response.message || 'Sorry, I got an empty response.',
         timestamp: new Date().toISOString(),
         isUser: false,
-        contextUsed: response.contextUsed || response.dataFound?.profile,
-        contextCount: response.context?.length || (response.dataFound ? Object.values(response.dataFound).filter(Boolean).length : 0),
-        agentType: response.agentType || (useLangGraph ? 'multi-agent' : 'rag-basic'),
+        contextUsed: response.contextUsed || false,
+        contextCount: response.contextCount || 0,
+        agentType: useLangGraph ? 'multi-agent' : 'basic-ai',
       }]);
 
     } catch (error) {
@@ -116,7 +114,7 @@ export default function ChatPage() {
       setMessages(prev => [...prev, {
         id: `${messageId}-error`,
         message: userMessage,
-        response: 'Sorry, I encountered an error processing your request. Please try again.',
+        response: 'Sorry, I encountered an error processing your request. Please try again later.',
         timestamp: new Date().toISOString(),
         isUser: false,
       }]);
@@ -140,10 +138,17 @@ export default function ChatPage() {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`API Error ${response.status}: ${errorText}`);
       }
 
-      return await response.json();
+      const data = await response.json();
+      
+      if (!data || (!data.response && !data.message)) {
+        throw new Error('Empty response from chatbot API');
+      }
+
+      return data;
     } catch (error) {
       console.error(`Error calling ${endpoint}:`, error);
       throw error;
@@ -210,7 +215,7 @@ export default function ChatPage() {
             size="small" 
           />
         )}
-        <Tooltip title={useLangGraph ? "Multi-agent system with specialized workout, nutrition, and progress agents" : "Single RAG system with vector search"}>
+        <Tooltip title="Toggle between different AI interaction modes">
           <FormControlLabel
             control={
               <Switch
@@ -222,11 +227,11 @@ export default function ChatPage() {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Typography variant="body2">
-                  {useLangGraph ? 'LangGraph Multi-Agent' : 'Basic RAG'}
+                  {useLangGraph ? 'Advanced Mode' : 'Standard Mode'}
                 </Typography>
                 {useLangGraph && (
                   <Chip 
-                    label="ADVANCED" 
+                    label="ENHANCED" 
                     color="secondary" 
                     size="small" 
                     sx={{ fontSize: '0.6rem', height: 16 }}
