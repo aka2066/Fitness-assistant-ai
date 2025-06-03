@@ -1,47 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateClient } from 'aws-amplify/api';
 import { Amplify } from 'aws-amplify';
 import outputs from '../../../../amplify_outputs.json';
 
 // Configure Amplify for server-side use
 Amplify.configure(outputs, { ssr: true });
 
-const client = generateClient();
-
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    console.log('🔍 Testing DynamoDB connection...');
+    console.log('🔍 Testing Amplify configuration...');
 
-    // Try to scan all profiles to see what's actually in the table
-    const allProfiles: any = await client.graphql({
-      query: `
-        query ListUserProfiles {
-          listUserProfiles {
-            items {
-              id
-              userId 
-              age
-              createdAt
-              updatedAt
-            }
-          }
-        }
-      `
-    });
-
-    const profiles = allProfiles.data?.listUserProfiles?.items || [];
+    const configInfo = {
+      graphql_endpoint: outputs.data?.url || 'Not configured',
+      region: outputs.data?.aws_region || 'Not configured',
+      auth_type: outputs.data?.default_authorization_type || 'Not configured',
+      user_pool_id: outputs.auth?.user_pool_id || 'Not configured',
+      user_pool_client_id: outputs.auth?.user_pool_client_id || 'Not configured',
+      tables: ['UserProfile', 'WorkoutLog', 'MealLog'],
+      note: 'Configuration check only - authenticated queries require user login in frontend'
+    };
     
-    console.log('📊 All profiles in database:', profiles);
+    console.log('📊 Amplify configuration:', configInfo);
 
     return NextResponse.json({
       success: true,
-      profileCount: profiles.length,
-      profiles: profiles,
-      message: profiles.length > 0 ? 'Found profiles in database' : 'Database is empty'
+      message: 'Amplify configuration loaded successfully',
+      config: configInfo
     });
     
   } catch (error) {
-    console.error('❌ Database test error:', error);
+    console.error('❌ Configuration test error:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -52,41 +39,27 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId, age } = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      body = {};
+    }
     
-    console.log('🔄 Attempting to create profile for:', userId);
-
-    // Try to create a profile with only the fields that exist
-    const result: any = await client.graphql({
-      query: `
-        mutation CreateUserProfile($input: CreateUserProfileInput!) {
-          createUserProfile(input: $input) {
-            id
-            userId
-            age
-            createdAt
-            updatedAt
-          }
-        }
-      `,
-      variables: {
-        input: {
-          userId: userId,
-          age: age
-        }
-      }
-    });
-
-    console.log('✅ Profile created:', result.data?.createUserProfile);
+    const { message = 'test' } = body;
+    
+    console.log('🔄 API test endpoint called with:', message);
 
     return NextResponse.json({
       success: true,
-      profile: result.data?.createUserProfile,
-      message: 'Profile created successfully'
+      message: 'API endpoint is working correctly',
+      received: message,
+      timestamp: new Date().toISOString(),
+      note: 'This is a test endpoint. Real profile operations happen in the frontend with user authentication.'
     });
     
   } catch (error) {
-    console.error('❌ Profile creation error:', error);
+    console.error('❌ API test error:', error);
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
