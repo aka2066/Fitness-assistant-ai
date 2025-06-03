@@ -64,17 +64,19 @@ function SimpleProfileTest() {
       setLoading(true);
       setMessage('');
       
-      console.log('🧪 Testing basic profile save...');
+      console.log('🧪 Testing profile save with full data...');
       console.log('User:', user);
-      console.log('Data:', { age, userId: user?.userId });
+      console.log('Data:', { name, age: parseInt(age), userId: user?.userId });
 
       const createQuery = `
         mutation CreateUserProfile($input: CreateUserProfileInput!) {
           createUserProfile(input: $input) {
             id
             userId
+            name
             age
             createdAt
+            updatedAt
           }
         }
       `;
@@ -84,6 +86,7 @@ function SimpleProfileTest() {
         variables: {
           input: {
             userId: user?.userId,
+            name: name,
             age: parseInt(age)
           }
         }
@@ -92,7 +95,7 @@ function SimpleProfileTest() {
       console.log('✅ Result:', result);
       
       if (result.data?.createUserProfile) {
-        setMessage(`✅ SUCCESS! Created profile: ${JSON.stringify(result.data.createUserProfile)}`);
+        setMessage(`✅ SUCCESS! Created profile in DynamoDB: ${JSON.stringify(result.data.createUserProfile)}`);
       } else {
         setMessage(`❌ No data returned: ${JSON.stringify(result)}`);
       }
@@ -183,7 +186,14 @@ export default function ProfilePage() {
             items {
               id
               userId
+              name
               age
+              heightFeet
+              heightInches
+              weight
+              fitnessGoals
+              activityLevel
+              dietaryRestrictions
               createdAt
               updatedAt
             }
@@ -243,10 +253,17 @@ export default function ProfilePage() {
     try {
       setSaving(true);
       
-      // Only save fields that exist in current schema
+      // Save all available fields
       const profileData = {
         userId: profile.userId,
+        name: profile.name,
         age: profile.age,
+        heightFeet: profile.heightFeet,
+        heightInches: profile.heightInches,
+        weight: profile.weight,
+        fitnessGoals: profile.fitnessGoals,
+        activityLevel: profile.activityLevel,
+        dietaryRestrictions: profile.dietaryRestrictions,
       };
 
       let result: any;
@@ -257,7 +274,14 @@ export default function ProfilePage() {
             updateUserProfile(input: $input) {
               id
               userId
+              name
               age
+              heightFeet
+              heightInches
+              weight
+              fitnessGoals
+              activityLevel
+              dietaryRestrictions
               createdAt
               updatedAt
             }
@@ -279,7 +303,14 @@ export default function ProfilePage() {
             createUserProfile(input: $input) {
               id
               userId
+              name
               age
+              heightFeet
+              heightInches
+              weight
+              fitnessGoals
+              activityLevel
+              dietaryRestrictions
               createdAt
               updatedAt
             }
@@ -299,18 +330,18 @@ export default function ProfilePage() {
         setProfile({
           id: savedProfile.id,
           userId: savedProfile.userId,
-          name: savedProfile.name || profile.name,
+          name: savedProfile.name || '',
           age: savedProfile.age,
-          heightFeet: savedProfile.heightFeet || profile.heightFeet,
-          heightInches: savedProfile.heightInches || profile.heightInches,
-          weight: savedProfile.weight || profile.weight,
-          fitnessGoals: savedProfile.fitnessGoals || profile.fitnessGoals,
-          activityLevel: savedProfile.activityLevel || profile.activityLevel,
-          dietaryRestrictions: savedProfile.dietaryRestrictions || profile.dietaryRestrictions,
+          heightFeet: savedProfile.heightFeet,
+          heightInches: savedProfile.heightInches,
+          weight: savedProfile.weight,
+          fitnessGoals: savedProfile.fitnessGoals,
+          activityLevel: savedProfile.activityLevel,
+          dietaryRestrictions: savedProfile.dietaryRestrictions,
           createdAt: savedProfile.createdAt,
           updatedAt: savedProfile.updatedAt,
         });
-        setMessage({ type: 'success', text: 'Basic profile saved! (Full fields will save once backend is fully deployed)' });
+        setMessage({ type: 'success', text: 'Profile saved successfully!' });
         
         // If this was a new user, redirect to dashboard after a delay
         if (isNewUser) {
