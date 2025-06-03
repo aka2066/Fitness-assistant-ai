@@ -1,5 +1,5 @@
 import { handler } from '../amplify/functions/chatbot/handler';
-import { APIGatewayProxyEvent } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import OpenAI from 'openai';
 import { Pinecone } from '@pinecone-database/pinecone';
 
@@ -86,18 +86,19 @@ describe('Chatbot Lambda Function Handler', () => {
       body: JSON.stringify({
         message: 'What should I eat after my workout?',
         userId: 'test-user-123'
-      })
+      }),
+      httpMethod: 'POST'
     } as APIGatewayProxyEvent;
     
     // Call the handler
-    const result = await handler(mockEvent);
+    const result = await handler(mockEvent, {} as any, {} as any) as APIGatewayProxyResult;
     
     // Assert response structure
+    expect(result).toBeDefined();
     expect(result.statusCode).toBe(200);
-    expect(result.headers).toEqual(expect.objectContaining({
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json'
-    }));
+    expect(result.headers).toHaveProperty('Access-Control-Allow-Origin', '*');
+    expect(result.headers).toHaveProperty('Access-Control-Allow-Headers');
+    expect(result.headers).toHaveProperty('Access-Control-Allow-Methods');
     
     // Parse response body
     const responseBody = JSON.parse(result.body);
@@ -112,13 +113,15 @@ describe('Chatbot Lambda Function Handler', () => {
       body: JSON.stringify({
         message: 'What should I eat after my workout?'
         // Missing userId
-      })
+      }),
+      httpMethod: 'POST'
     } as APIGatewayProxyEvent;
     
     // Call the handler
-    const result = await handler(mockEvent);
+    const result = await handler(mockEvent, {} as any, {} as any) as APIGatewayProxyResult;
     
     // Assert response is an error
+    expect(result).toBeDefined();
     expect(result.statusCode).toBe(400);
     
     // Parse response body

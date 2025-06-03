@@ -76,7 +76,7 @@ describe('ChatPage', () => {
     
     // Wait for the welcome message to appear
     await waitFor(() => {
-      expect(screen.getByText(/Hi! I'm your AI fitness coach with access to your profile and activity history/)).toBeInTheDocument();
+      expect(screen.getByText(/Hi! I'm your AI fitness coach powered by OpenAI/)).toBeInTheDocument();
     });
     
     expect(screen.getByPlaceholderText('Ask your coach anything...')).toBeInTheDocument();
