@@ -2,35 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 import AWS from 'aws-sdk';
 import { Pinecone } from '@pinecone-database/pinecone';
+import { getAwsConfig } from '../aws-config';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 // AWS SDK v2 DynamoDB client (proven to work)
-AWS.config.update({
-  region: 'us-east-2',
-  // Try multiple sources for AWS credentials
-  ...(
-    // First try AMPLIFY_ prefixed variables
-    (process.env.AMPLIFY_ACCESS_KEY_ID && process.env.AMPLIFY_SECRET_ACCESS_KEY) ? {
-      accessKeyId: process.env.AMPLIFY_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AMPLIFY_SECRET_ACCESS_KEY,
-    } :
-    // Fallback to AWS_ prefixed variables  
-    (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) ? {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    } : {}
-  )
-});
+AWS.config.update(getAwsConfig());
 
-console.log('🔧 AWS SDK Config check:', {
-  region: 'us-east-2',
-  hasAmplifyKey: !!process.env.AMPLIFY_ACCESS_KEY_ID,
-  hasAwsKey: !!process.env.AWS_ACCESS_KEY_ID,
-  usingCredentials: !!(process.env.AMPLIFY_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID)
-});
+console.log('🔧 AWS SDK configured with credentials');
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 

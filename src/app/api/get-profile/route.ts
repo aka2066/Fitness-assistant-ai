@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import AWS from 'aws-sdk';
+import { getAwsConfig } from '../aws-config';
 
 // AWS SDK v2 DynamoDB client
-AWS.config.update({
-  region: 'us-east-2',
-  ...(process.env.AMPLIFY_ACCESS_KEY_ID && process.env.AMPLIFY_SECRET_ACCESS_KEY && {
-    accessKeyId: process.env.AMPLIFY_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AMPLIFY_SECRET_ACCESS_KEY,
-  })
-});
+AWS.config.update(getAwsConfig());
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
