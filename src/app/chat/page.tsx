@@ -60,10 +60,10 @@ export default function ChatPage() {
         {
           id: 'welcome',
           message: '',
-          response: "Hi! I'm your AI fitness coach powered by OpenAI. I can provide personalized workout recommendations, nutrition advice, and general fitness guidance. Ask me anything about fitness, exercise, nutrition, or health goals!",
+          response: "Hi! I'm your AI fitness coach powered by OpenAI with access to your real fitness data. I can provide personalized workout recommendations, nutrition advice, and progress tracking based on your actual profile, workout logs, and meal logs stored in our database. Ask me anything about your fitness journey, and I'll give you personalized advice based on your real data!",
           timestamp: new Date().toISOString(),
           isUser: false,
-          agentType: 'basic-ai',
+          agentType: 'enhanced-ai',
         }
       ]);
     }
@@ -96,8 +96,8 @@ export default function ChatPage() {
         { role: 'assistant' as const, content: msg.response }
       ]).flat();
 
-      // Call the RAG-enabled chatbot API
-      const response = await fetch('/api/chatbot', {
+      // Call the enhanced chatbot API that can access DynamoDB data
+      const response = await fetch('/api/chatbot-enhanced', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
