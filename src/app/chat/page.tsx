@@ -59,28 +59,83 @@ export default function ChatPage() {
   // Fetch user profile for personalized greeting
   useEffect(() => {
     const fetchUserProfile = async () => {
-      if (user) {
+      if (user && user.userId) {
         try {
-          const response = await fetch('/api/profile', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'get', userId: user.userId || user.username })
-          });
+          console.log('🔍 Fetching profile for user:', user.userId);
           
-          if (response.ok) {
-            const data = await response.json();
-            if (data.profile) {
-              setUserProfile(data.profile);
+          // Try multiple endpoints to get user profile
+          const endpoints = [
+            '/api/profile',
+            '/api/chatbot-enhanced'
+          ];
+          
+          for (const endpoint of endpoints) {
+            try {
+              let response;
+              
+              if (endpoint === '/api/profile') {
+                response = await fetch('/api/profile', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ action: 'get', userId: user.userId })
+                });
+              } else {
+                // Use chatbot endpoint to get user data
+                response = await fetch('/api/chatbot-enhanced', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ 
+                    message: 'get profile info', 
+                    userId: user.userId 
+                  })
+                });
+              }
+              
+              if (response.ok) {
+                const data = await response.json();
+                console.log('📊 Profile response from', endpoint, ':', data);
+                
+                // Extract profile data
+                let profileData = null;
+                if (data.profile && typeof data.profile === 'object') {
+                  profileData = data.profile;
+                } else if (data.userData && data.userData.profile) {
+                  profileData = data.userData.profile;
+                } else if (data.message && data.userData) {
+                  // From chatbot response, try to extract user data
+                  console.log('🔍 Extracted user data:', data.userData);
+                }
+                
+                if (profileData && profileData.name) {
+                  console.log('✅ Found user profile:', profileData.name);
+                  setUserProfile(profileData);
+                  break; // Success, stop trying other endpoints
+                }
+              }
+            } catch (endpointError) {
+              console.log(`❌ ${endpoint} failed:`, endpointError);
+              continue; // Try next endpoint
             }
           }
+          
+          // If no profile found, set a default with username
+          if (!userProfile && user.username) {
+            console.log('🔄 Using username as fallback:', user.username);
+            setUserProfile({ name: user.username });
+          }
+          
         } catch (error) {
-          console.log('Could not fetch profile:', error);
+          console.log('❌ Profile fetch failed:', error);
+          // Fallback to username if available
+          if (user.username) {
+            setUserProfile({ name: user.username });
+          }
         }
       }
     };
 
     fetchUserProfile();
-  }, [user]);
+  }, [user, userProfile]);
 
   // Add welcome message
   useEffect(() => {
@@ -279,8 +334,8 @@ export default function ChatPage() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 4, height: 'calc(100vh - 200px)', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+    <Container maxWidth="xl" sx={{ mt: 2, mb: 2, height: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column', px: { xs: 1, sm: 2, md: 4 } }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3, flexWrap: 'wrap' }}>
         <Button
           onClick={() => router.push('/')}
           startIcon={<HomeIcon />}
@@ -290,7 +345,7 @@ export default function ChatPage() {
           Back to Dashboard
         </Button>
         
-        <Typography variant="h3" component="h1">
+        <Typography variant="h3" component="h1" sx={{ fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3rem' } }}>
           AI Fitness Coach
         </Typography>
         
@@ -298,7 +353,8 @@ export default function ChatPage() {
           <Chip 
             label={`Personalized for ${userProfile?.name || user?.username}`} 
             color="primary" 
-            size="small" 
+            size="medium" 
+            sx={{ fontSize: '0.9rem', height: 32 }}
           />
         )}
         
@@ -331,12 +387,14 @@ export default function ChatPage() {
       </Box>
       
       <Paper 
-        elevation={2} 
+        elevation={3} 
         sx={{ 
           flex: 1, 
           display: 'flex', 
           flexDirection: 'column',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          borderRadius: 3,
+          minHeight: '70vh'
         }}
       >
         {/* Chat Messages */}
@@ -344,11 +402,12 @@ export default function ChatPage() {
           elevation={1} 
           sx={{ 
             flexGrow: 1, 
-            p: 2, 
+            p: { xs: 2, sm: 3, md: 4 }, 
             mb: 2, 
             overflow: 'auto',
             backgroundColor: '#fafafa',
-            borderRadius: 2
+            borderRadius: 3,
+            minHeight: '500px'
           }}
         >
           <Stack spacing={2}>
@@ -359,15 +418,16 @@ export default function ChatPage() {
                     <Paper 
                       elevation={1} 
                       sx={{ 
-                        p: 2, 
-                        maxWidth: '70%', 
+                        p: { xs: 2, sm: 3 }, 
+                        maxWidth: '80%', 
                         backgroundColor: '#2196f3', 
                         color: 'white',
-                        borderRadius: '18px 18px 4px 18px'
+                        borderRadius: '18px 18px 4px 18px',
+                        fontSize: '1rem'
                       }}
                     >
-                      <Typography variant="body1">{msg.message}</Typography>
-                      <Typography variant="caption" sx={{ opacity: 0.8, display: 'block', mt: 0.5 }}>
+                      <Typography variant="body1" sx={{ fontSize: '1rem', lineHeight: 1.5 }}>{msg.message}</Typography>
+                      <Typography variant="caption" sx={{ opacity: 0.8, display: 'block', mt: 1, fontSize: '0.8rem' }}>
                         {new Date(msg.timestamp).toLocaleTimeString()}
                       </Typography>
                     </Paper>
@@ -377,15 +437,15 @@ export default function ChatPage() {
                     <Paper 
                       elevation={1} 
                       sx={{ 
-                        p: 2, 
-                        maxWidth: '80%', 
+                        p: { xs: 2, sm: 3 }, 
+                        maxWidth: '85%', 
                         backgroundColor: 'white',
                         borderRadius: '18px 18px 18px 4px',
                         border: '1px solid #e0e0e0'
                       }}
                     >
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                        <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#1976d2', fontSize: '0.9rem' }}>
                           🤖 AI Coach
                         </Typography>
                         {msg.agentType && (
@@ -412,10 +472,10 @@ export default function ChatPage() {
                           />
                         )}
                       </Box>
-                      <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
+                      <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', fontSize: '1rem', lineHeight: 1.6 }}>
                         {msg.response}
                       </Typography>
-                      <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 1 }}>
+                      <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 1.5, fontSize: '0.8rem' }}>
                         {new Date(msg.timestamp).toLocaleTimeString()}
                       </Typography>
                     </Paper>
@@ -457,18 +517,25 @@ export default function ChatPage() {
         )}
 
         {/* Message Input */}
-        <Paper elevation={1} sx={{ p: 2 }}>
+        <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, borderRadius: 3 }}>
           <form onSubmit={handleSubmit}>
             <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
               <TextField
                 fullWidth
                 multiline
-                maxRows={3}
+                maxRows={4}
                 value={currentMessage}
                 onChange={(e) => setCurrentMessage(e.target.value)}
                 placeholder="Ask your coach anything..."
                 variant="outlined"
                 disabled={loading}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    fontSize: '1rem',
+                    borderRadius: 2,
+                    minHeight: '56px'
+                  }
+                }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -480,7 +547,12 @@ export default function ChatPage() {
                 type="submit"
                 variant="contained"
                 disabled={!currentMessage.trim() || loading}
-                sx={{ minWidth: 80, height: 56 }}
+                sx={{ 
+                  minWidth: 100, 
+                  height: 56, 
+                  borderRadius: 2,
+                  fontSize: '1rem'
+                }}
               >
                 Send
               </Button>
