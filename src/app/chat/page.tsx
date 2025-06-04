@@ -90,20 +90,46 @@ export default function ChatPage() {
     }]);
 
     try {
-      // Choose API endpoint - use our working chatbot for both modes
-      const endpoint = '/api/chatbot';
-      const response = await getChatResponse(userMessage, user.userId || user.username, endpoint);
+      // Prepare chat history for API (convert our format to OpenAI format)
+      const chatHistory = messages.map(msg => [
+        { role: 'user' as const, content: msg.message },
+        { role: 'assistant' as const, content: msg.response }
+      ]).flat();
+
+      // Call the RAG-enabled chatbot API
+      const response = await fetch('/api/chatbot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          userId: user.userId || user.username,
+          chatHistory: chatHistory.slice(-10) // Keep last 10 messages for context
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`API Error ${response.status}: ${errorText}`);
+      }
+
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to get response');
+      }
       
       // Add AI response to chat
       setMessages(prev => [...prev, {
         id: `${messageId}-response`,
         message: userMessage,
-        response: response.response || response.message || 'Sorry, I got an empty response.',
+        response: data.message || 'Sorry, I got an empty response.',
         timestamp: new Date().toISOString(),
         isUser: false,
-        contextUsed: response.contextUsed || false,
-        contextCount: response.contextCount || 0,
-        agentType: useLangGraph ? 'multi-agent' : 'basic-ai',
+        contextUsed: data.hasPersonalizedData || false,
+        contextCount: data.contextDataPoints || 0,
+        agentType: useLangGraph ? 'rag-enhanced' : 'basic-ai',
       }]);
 
     } catch (error) {

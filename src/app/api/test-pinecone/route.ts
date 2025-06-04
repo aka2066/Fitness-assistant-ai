@@ -5,27 +5,37 @@ export async function GET(request: NextRequest) {
   try {
     console.log('🔍 Testing Pinecone connection...');
     
-    const pinecone = new (Pinecone as any)({
-      apiKey: process.env.PINECONE_API_KEY || 'pcsk_2YeBCc_3BgnVr2ENQbJJmDws13s55b3ZvKYywHgoZ2bR1ygu3Bnd1LV1km5x9t4pBkfMNb',
+    if (!process.env.PINECONE_API_KEY) {
+      throw new Error('PINECONE_API_KEY is not set');
+    }
+
+    const pinecone = new Pinecone({
+      apiKey: process.env.PINECONE_API_KEY,
     });
 
     // Test 1: List indexes
     const indexes = await pinecone.listIndexes();
     console.log('📊 Available Pinecone indexes:', indexes);
 
-    // Test 2: Try to access the fitness-assistant index
-    const index = pinecone.index('fitness-assistant');
-    
-    // Test 3: Get index stats
-    const stats = await index.describeIndexStats();
-    console.log('📈 Fitness-assistant index stats:', stats);
+    let indexStats = null;
+    try {
+      // Test 2: Try to access the fitness-assistant index if it exists
+      const index = pinecone.index('fitness-assistant');
+      
+      // Test 3: Get index stats
+      indexStats = await index.describeIndexStats();
+      console.log('📈 Fitness-assistant index stats:', indexStats);
+    } catch (indexError) {
+      console.log('ℹ️ fitness-assistant index not found or inaccessible');
+    }
 
     return NextResponse.json({
       success: true,
       message: 'Pinecone connection successful!',
       indexes: indexes,
-      indexStats: stats,
-      indexName: 'fitness-assistant'
+      indexStats: indexStats,
+      indexName: 'fitness-assistant',
+      hasApiKey: !!process.env.PINECONE_API_KEY
     });
 
   } catch (error) {

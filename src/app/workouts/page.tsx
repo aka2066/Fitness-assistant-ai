@@ -128,34 +128,33 @@ export default function WorkoutsPage() {
 
   const createEmbedding = async (workout: WorkoutLog) => {
     try {
-      // Create a text summary of the workout for embedding
-      const workoutSummary = `
-        Workout: ${workout.type} for ${workout.duration} minutes, ${workout.calories} calories burned.
-        Notes: ${workout.notes || 'No additional notes'}.
-        Date: ${workout.date}.
-      `.trim();
-
       const response = await fetch('/api/embeddings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: workout.userId,
           type: 'workout',
-          content: workoutSummary,
-          metadata: {
-            workoutType: workout.type,
+          data: {
+            id: workout.id,
+            exercise: workout.type,
+            sets: '', // Not tracked yet
+            reps: '', // Not tracked yet  
+            weight: '', // Not tracked yet
             duration: workout.duration,
             calories: workout.calories,
-            date: workout.date,
+            notes: workout.notes,
+            date: workout.date
           },
+          operation: 'upsert'
         }),
       });
 
       if (!response.ok) {
-        console.warn('Failed to create embedding, but workout was saved');
+        const error = await response.text();
+        console.warn('Failed to create embedding:', error);
       } else {
         const result = await response.json();
-        console.log('Workout embedding created:', result);
+        console.log('✅ Workout embedding created:', result.message);
       }
     } catch (error) {
       console.error('Error creating embedding:', error);

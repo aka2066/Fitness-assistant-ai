@@ -122,35 +122,32 @@ export default function MealsPage() {
 
   const createEmbedding = async (meal: MealLog) => {
     try {
-      // Create a text summary of the meal for embedding
-      const mealSummary = `
-        Meal: ${meal.type} with ${meal.calories} calories.
-        Foods: ${meal.foods || 'Not specified'}.
-        Notes: ${meal.notes || 'No additional notes'}.
-        Date: ${meal.date}.
-      `.trim();
-
       const response = await fetch('/api/embeddings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: meal.userId,
           type: 'meal',
-          content: mealSummary,
-          metadata: {
-            mealType: meal.type,
+          data: {
+            id: meal.id,
+            food: meal.foods || meal.type,
             calories: meal.calories,
-            foods: meal.foods,
-            date: meal.date,
+            protein: 0, // Not tracked yet
+            carbs: 0, // Not tracked yet
+            fat: 0, // Not tracked yet
+            notes: meal.notes,
+            date: meal.date
           },
+          operation: 'upsert'
         }),
       });
 
       if (!response.ok) {
-        console.warn('Failed to create embedding, but meal was saved');
+        const error = await response.text();
+        console.warn('Failed to create embedding:', error);
       } else {
         const result = await response.json();
-        console.log('Meal embedding created:', result);
+        console.log('✅ Meal embedding created:', result.message);
       }
     } catch (error) {
       console.error('Error creating embedding:', error);
