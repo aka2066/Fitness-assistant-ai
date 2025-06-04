@@ -63,34 +63,30 @@ export default function ChatPage() {
         try {
           console.log('🔍 Fetching profile for user:', user.userId);
           
-          // Get the user's name by calling the chatbot API
-          const response = await fetch('/api/chatbot-enhanced', {
+          // Try to get the user's profile data directly
+          const response = await fetch('/api/get-profile', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              message: 'What is my name?', 
-              userId: user.userId,
-              chatHistory: []
-            })
+            body: JSON.stringify({ userId: user.userId })
           });
           
           if (response.ok) {
             const data = await response.json();
             console.log('📊 Profile response:', data);
             
-            if (data.success && data.message) {
-              // Extract name from response like "Hello Ryan!" or "Hi Ryan"
-              const nameMatch = data.message.match(/(?:Hello|Hi|Hey)\s+([A-Za-z]+)/i);
-              if (nameMatch && nameMatch[1] && nameMatch[1].toLowerCase() !== 'there') {
-                const extractedName = nameMatch[1].trim();
-                console.log('✅ Extracted user name:', extractedName);
-                setUserProfile({ name: extractedName });
-                return;
-              }
+            if (data.success && data.profile?.name) {
+              console.log('✅ Got user profile:', data.profile.name);
+              setUserProfile({ 
+                name: data.profile.name,
+                age: data.profile.age,
+                fitnessGoals: data.profile.fitnessGoals,
+                activityLevel: data.profile.activityLevel
+              });
+              return;
             }
           }
           
-          // Fallback to username if name extraction fails
+          // Fallback to username if profile fetch fails
           if (user.username) {
             console.log('🔄 Using username as fallback:', user.username);
             setUserProfile({ name: user.username });
@@ -325,56 +321,60 @@ export default function ChatPage() {
   };
 
   return (
-    <Container maxWidth="xl" sx={{ mt: 2, mb: 2, height: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column', px: { xs: 1, sm: 2, md: 4 } }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3, flexWrap: 'wrap' }}>
-        <Button
-          onClick={() => router.push('/')}
-          startIcon={<HomeIcon />}
-          variant="outlined"
-          sx={{ mr: 1 }}
-        >
-          Back to Dashboard
-        </Button>
+    <Container maxWidth="xl" sx={{ py: 2, height: '100vh', display: 'flex', flexDirection: 'column', px: { xs: 1, sm: 2, md: 4 } }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Button
+            onClick={() => router.push('/')}
+            startIcon={<HomeIcon />}
+            variant="outlined"
+            sx={{ mr: 1 }}
+          >
+            Back to Dashboard
+          </Button>
+          
+          <Typography variant="h3" component="h1" sx={{ fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3rem' } }}>
+            AI Fitness Coach
+          </Typography>
+        </Box>
         
-        <Typography variant="h3" component="h1" sx={{ fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3rem' } }}>
-          AI Fitness Coach
-        </Typography>
-        
-        {(userProfile?.name || user?.username) && (
-          <Chip 
-            label={`Personalized for ${userProfile?.name || user?.username}`} 
-            color="primary" 
-            size="medium" 
-            sx={{ fontSize: '0.9rem', height: 32 }}
-          />
-        )}
-        
-        <Tooltip title="Toggle between different AI interaction modes">
-          <FormControlLabel
-            control={
-              <Switch
-                checked={useLangGraph}
-                onChange={(e) => setUseLangGraph(e.target.checked)}
-                color="secondary"
-              />
-            }
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Typography variant="body2">
-                  {useLangGraph ? 'Advanced Mode' : 'Standard Mode'}
-                </Typography>
-                {useLangGraph && (
-                  <Chip 
-                    label="ENHANCED" 
-                    color="secondary" 
-                    size="small" 
-                    sx={{ fontSize: '0.6rem', height: 16 }}
-                  />
-                )}
-              </Box>
-            }
-          />
-        </Tooltip>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+          {(userProfile?.name || user?.username) && (
+            <Chip 
+              label={`Personalized for ${userProfile?.name || user?.username}`} 
+              color="primary" 
+              size="medium" 
+              sx={{ fontSize: '0.9rem', height: 32 }}
+            />
+          )}
+          
+          <Tooltip title="Toggle between different AI interaction modes">
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={useLangGraph}
+                  onChange={(e) => setUseLangGraph(e.target.checked)}
+                  color="secondary"
+                />
+              }
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography variant="body2">
+                    {useLangGraph ? 'Advanced Mode' : 'Standard Mode'}
+                  </Typography>
+                  {useLangGraph && (
+                    <Chip 
+                      label="ENHANCED" 
+                      color="secondary" 
+                      size="small" 
+                      sx={{ fontSize: '0.6rem', height: 16 }}
+                    />
+                  )}
+                </Box>
+              }
+            />
+          </Tooltip>
+        </Box>
       </Box>
       
       <Paper 
@@ -385,7 +385,7 @@ export default function ChatPage() {
           flexDirection: 'column',
           overflow: 'hidden',
           borderRadius: 3,
-          minHeight: '70vh'
+          minHeight: 0
         }}
       >
         {/* Chat Messages */}
