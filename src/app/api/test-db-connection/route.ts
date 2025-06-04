@@ -6,6 +6,28 @@ import outputs from '../../../../amplify_outputs.json';
 Amplify.configure(outputs, { ssr: true });
 
 export async function GET() {
+  // PREVENT RUNNING DURING BUILD/STATIC GENERATION
+  if (process.env.NODE_ENV === 'production' && !process.env.RUNTIME_ENVIRONMENT) {
+    return NextResponse.json({
+      success: false,
+      message: 'Test endpoint disabled during build process',
+      environment: process.env.NODE_ENV,
+      buildTime: new Date().toISOString()
+    });
+  }
+
+  // PREVENT RUNNING IF NO PROPER CREDENTIALS
+  if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
+    return NextResponse.json({
+      success: false,
+      message: 'Test endpoint requires AWS credentials - skipping during build',
+      hasCredentials: false,
+      buildTime: new Date().toISOString()
+    });
+  }
+
+  console.log('🔍 Testing DynamoDB connection via API...');
+
   try {
     // Simple connection test without authentication
     const results = {

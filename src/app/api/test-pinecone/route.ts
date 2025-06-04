@@ -1,14 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Pinecone } from '@pinecone-database/pinecone';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
+  // PREVENT RUNNING DURING BUILD/STATIC GENERATION
+  if (process.env.NODE_ENV === 'production' && !process.env.RUNTIME_ENVIRONMENT) {
+    return NextResponse.json({
+      success: false,
+      message: 'Test endpoint disabled during build process',
+      environment: process.env.NODE_ENV,
+      buildTime: new Date().toISOString()
+    });
+  }
+
+  // PREVENT RUNNING IF NO PINECONE KEY
+  if (!process.env.PINECONE_API_KEY) {
+    return NextResponse.json({
+      success: false,
+      message: 'Test endpoint requires Pinecone API key - skipping during build',
+      hasPineconeKey: false,
+      buildTime: new Date().toISOString()
+    });
+  }
+
   try {
     console.log('🔍 Testing Pinecone connection...');
     
-    if (!process.env.PINECONE_API_KEY) {
-      throw new Error('PINECONE_API_KEY is not set');
-    }
-
     const pinecone = new Pinecone({
       apiKey: process.env.PINECONE_API_KEY,
     });
