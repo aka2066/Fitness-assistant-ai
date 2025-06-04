@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Fetch user profile from DynamoDB
+    // Fetch user profile
     const result = await dynamodb.scan({
       TableName: 'UserProfile-b7vimfsyujdibnpphmpxriv3c4-NONE',
       FilterExpression: 'userId = :userId',
@@ -49,9 +49,9 @@ export async function POST(request: NextRequest) {
     console.log('❌ get-profile: No profile found for userId:', userId);
     // No profile found
     return NextResponse.json({
-      success: false,
-      error: 'No profile found'
-    }, { status: 404 });
+      success: true,
+      profile: profile || null
+    });
 
   } catch (error) {
     console.error('❌ get-profile error:', error);
