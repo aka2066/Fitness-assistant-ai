@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 import AWS from 'aws-sdk';
+import { Pinecone } from '@pinecone-database/pinecone';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -16,6 +17,14 @@ AWS.config.update({
 });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
+
+// Initialize Pinecone (for RAG enhancement)
+let pinecone: Pinecone | null = null;
+if (process.env.PINECONE_API_KEY) {
+  pinecone = new Pinecone({
+    apiKey: process.env.PINECONE_API_KEY,
+  });
+}
 
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
@@ -158,6 +167,57 @@ async function fetchUserData(userId: string): Promise<UserData> {
   }
 }
 
+// Enhanced RAG: Fetch contextual information from Pinecone
+async function fetchPineconeContext(userId: string, message: string): Promise<string> {
+  if (!pinecone) {
+    console.log('📝 Pinecone not configured, skipping RAG enhancement');
+    return '';
+  }
+
+  try {
+    console.log('🔍 Retrieving contextual information from Pinecone...');
+    
+    // Create embedding for the user's message
+    const embeddingResponse = await openai.embeddings.create({
+      model: 'text-embedding-ada-002',
+      input: message,
+    });
+
+    const messageEmbedding = embeddingResponse.data[0].embedding;
+    
+    // Query Pinecone for relevant user context
+    const index = pinecone.index('fitness-assistant');
+    const queryResponse = await index.namespace(userId).query({
+      vector: messageEmbedding,
+      topK: 5,
+      includeMetadata: true,
+    });
+
+    if (queryResponse.matches && queryResponse.matches.length > 0) {
+      console.log('🎯 Found', queryResponse.matches.length, 'relevant context items from Pinecone');
+      
+      // Extract relevant context from matches
+      const contextItems = queryResponse.matches
+        .filter(match => match.score && match.score > 0.7) // Only high-relevance matches
+        .map(match => {
+          const metadata = match.metadata as any;
+          return `${metadata?.type || 'activity'}: ${metadata?.summary || metadata?.data || 'No details'}`;
+        })
+        .slice(0, 3); // Limit to top 3 matches
+
+      return contextItems.length > 0 
+        ? `Recent relevant activities: ${contextItems.join('; ')}`
+        : '';
+    } else {
+      console.log('ℹ️ No relevant context found in Pinecone');
+      return '';
+    }
+  } catch (error) {
+    console.log('⚠️ Pinecone RAG failed, continuing without enhanced context:', error);
+    return '';
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     // 1. AUTHENTICATION: Validate authorization header
@@ -220,7 +280,10 @@ export async function POST(request: NextRequest) {
     // 6. FETCH USER DATA (with proper access controls)
     const userData = await fetchUserData(userId);
     
-    // 7. BUILD PERSONALIZED CONTEXT
+    // 7. FETCH ENHANCED CONTEXT from Pinecone (RAG)
+    const pineconeContext = await fetchPineconeContext(userId, message);
+    
+    // 8. BUILD PERSONALIZED CONTEXT
     let personalizedContext = '';
     let hasPersonalizedData = false;
     let contextDataPoints = 0;
@@ -269,15 +332,23 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // 8. PREPARE SYSTEM MESSAGE
+    // Add Pinecone RAG context if available
+    if (pineconeContext) {
+      hasPersonalizedData = true;
+      contextDataPoints++;
+      personalizedContext += `${pineconeContext} `;
+      console.log('🚀 Enhanced with Pinecone RAG context');
+    }
+
+    // 9. PREPARE SYSTEM MESSAGE
     const systemMessage = hasPersonalizedData 
-      ? `You are a personal fitness coach with access to the user's real fitness data. Use this information to provide personalized advice: ${personalizedContext.trim()}`
+      ? `You are a personal fitness coach with access to the user's real fitness data and contextual information from their activity history. Use this information to provide personalized advice: ${personalizedContext.trim()}`
       : `You are a helpful fitness coach. The user doesn't have profile data yet, so provide general fitness advice and encourage them to set up their profile for personalized recommendations.`;
 
-    console.log('💬 Sending to OpenAI with', hasPersonalizedData ? 'personalized' : 'general', 'context');
-    console.log('📊 Data summary:', `Profile ${userData.profile ? '✓' : '✗'} | ${userData.workouts.length} workouts | ${userData.meals.length} meals`);
+    console.log('💬 Sending to OpenAI with', hasPersonalizedData ? 'personalized + RAG' : 'general', 'context');
+    console.log('📊 Data summary:', `Profile ${userData.profile ? '✓' : '✗'} | ${userData.workouts.length} workouts | ${userData.meals.length} meals | RAG ${pineconeContext ? '✓' : '✗'}`);
 
-    // 9. CALL OPENAI WITH SANITIZED INPUT
+    // 10. CALL OPENAI WITH SANITIZED INPUT
     const messages: ChatMessage[] = [
       { role: 'system', content: systemMessage },
       ...chatHistory.slice(-10), // Limit chat history for security
@@ -295,7 +366,7 @@ export async function POST(request: NextRequest) {
     
     console.log('✅ Enhanced chatbot response generated successfully');
 
-    // 10. RETURN SECURE RESPONSE
+    // 11. RETURN SECURE RESPONSE
     return NextResponse.json({
       success: true,
       message: responseMessage,
