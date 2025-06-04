@@ -245,6 +245,10 @@ export default function ProfilePage() {
           createdAt: savedProfile.createdAt,
           updatedAt: savedProfile.updatedAt,
         });
+
+        // Create embedding for the profile (runs in background)
+        await createProfileEmbedding(savedProfile);
+
         setMessage({ type: 'success', text: 'Profile saved successfully! Your information will now appear in the navigation bar.' });
         
         // Emit event to trigger navigation refresh
@@ -281,6 +285,52 @@ export default function ProfilePage() {
       setMessage({ type: 'error', text: `Failed to save profile: ${errorMessage}` });
     } finally {
       setSaving(false);
+    }
+  };
+
+  const createProfileEmbedding = async (profile: any) => {
+    try {
+      // Generate text content for embedding
+      const details = [];
+      if (profile.age) details.push(`${profile.age} years old`);
+      if (profile.heightFeet && profile.heightInches) details.push(`${profile.heightFeet}'${profile.heightInches}" tall`);
+      if (profile.weight) details.push(`${profile.weight} lbs`);
+      if (profile.activityLevel) details.push(`activity level: ${profile.activityLevel}`);
+      if (profile.fitnessGoals) details.push(`fitness goals: ${profile.fitnessGoals}`);
+      if (profile.dietaryRestrictions) details.push(`dietary restrictions: ${profile.dietaryRestrictions}`);
+      
+      const content = `User profile: ${details.join(', ')}`;
+      
+      const response = await fetch('/api/embeddings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: profile.userId,
+          type: 'profile',
+          data: {
+            id: profile.id,
+            name: profile.name,
+            age: profile.age,
+            height: profile.heightFeet && profile.heightInches ? `${profile.heightFeet}'${profile.heightInches}"` : '',
+            weight: profile.weight,
+            fitnessGoals: profile.fitnessGoals,
+            activityLevel: profile.activityLevel,
+            dietaryRestrictions: profile.dietaryRestrictions
+          },
+          operation: 'upsert'
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        console.warn('Failed to create profile embedding:', error);
+      } else {
+        const result = await response.json();
+        console.log('✅ Profile embedding created:', result.message);
+      }
+    } catch (error) {
+      console.error('Error creating profile embedding:', error);
+      // Don't fail the whole save if embedding fails
     }
   };
 

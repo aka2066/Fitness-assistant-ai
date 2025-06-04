@@ -68,7 +68,17 @@ export async function POST(request: NextRequest) {
       } else if (type === 'meal') {
         textContent = `User meal: ${data.food} - ${data.calories} calories, ${data.protein}g protein, ${data.carbs}g carbs, ${data.fat}g fat on ${data.date}. Notes: ${data.notes || 'None'}`;
       } else if (type === 'profile') {
-        textContent = `User profile: ${data.name}, ${data.age} years old, ${data.height}cm, ${data.weight}kg. Fitness goals: ${data.fitnessGoals}`;
+        // Generate descriptive text for profile embedding
+        const details = [];
+        if (data.name) details.push(`Name: ${data.name}`);
+        if (data.age) details.push(`${data.age} years old`);
+        if (data.height) details.push(`height ${data.height}`);
+        if (data.weight) details.push(`weight ${data.weight} lbs`);
+        if (data.activityLevel) details.push(`activity level: ${data.activityLevel}`);
+        if (data.fitnessGoals) details.push(`fitness goals: ${data.fitnessGoals}`);
+        if (data.dietaryRestrictions) details.push(`dietary restrictions: ${data.dietaryRestrictions}`);
+        
+        textContent = `User profile: ${details.join(', ')}`;
       }
 
       // Generate embedding
