@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import { useAuth } from '../providers/AuthProvider';
 import { generateClient } from 'aws-amplify/api';
+import { useRouter } from 'next/navigation';
 
 const client = generateClient();
 
@@ -51,6 +52,7 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [isNewUser, setIsNewUser] = useState(false);
+  const router = useRouter();
 
   // Load profile when user is available
   useEffect(() => {
@@ -244,11 +246,16 @@ export default function ProfilePage() {
         });
         setMessage({ type: 'success', text: 'Profile saved successfully! Your information will now appear in the navigation bar.' });
         
-        // Clear message after 5 seconds
-        setTimeout(() => setMessage(null), 5000);
-        
         // Emit event to trigger navigation refresh
         window.dispatchEvent(new CustomEvent('profile-updated'));
+        
+        // Redirect to dashboard after showing success message
+        setTimeout(() => {
+          router.push('/');
+        }, 2000);
+        
+        // Clear message after 5 seconds (in case redirect fails)
+        setTimeout(() => setMessage(null), 5000);
       }
 
     } catch (error) {
