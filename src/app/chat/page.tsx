@@ -320,6 +320,52 @@ export default function ChatPage() {
     };
   };
 
+  // Debug function to check user data
+  const debugUserData = async () => {
+    if (!user) return;
+    
+    try {
+      console.log('🔍 Debugging user data for:', user.userId);
+      const response = await fetch('/api/debug-user-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.userId || user.username })
+      });
+      
+      const data = await response.json();
+      console.log('🐛 Debug results:', data);
+      
+      // Add debug info to chat
+      setMessages(prev => [...prev, {
+        id: `debug-${Date.now()}`,
+        message: 'Debug user data',
+        response: `**Debug Results:**
+        
+**Searched User ID:** ${data.debug?.searchedUserId || 'Unknown'}
+
+**Profile Found:** ${data.debug?.foundProfile ? 'YES ✅' : 'NO ❌'}
+${data.debug?.foundProfile ? `Name: ${data.debug.foundProfile.name}, Age: ${data.debug.foundProfile.age}` : ''}
+
+**Workouts Found:** ${data.debug?.foundWorkouts || 0}
+**Meals Found:** ${data.debug?.foundMeals || 0}
+
+**Existing User IDs in DB:** ${data.debug?.existingUserIds?.join(', ') || 'None found'}
+
+**Table Access:** 
+- Profile table: ${data.debug?.tableAccess?.profile ? '✅' : '❌'}
+- Workouts table: ${data.debug?.tableAccess?.workouts ? '✅' : '❌'}  
+- Meals table: ${data.debug?.tableAccess?.meals ? '✅' : '❌'}
+
+This debug info will help identify why the chatbot isn't finding your profile data.`,
+        timestamp: new Date().toISOString(),
+        isUser: false,
+      }]);
+      
+    } catch (error) {
+      console.error('Debug error:', error);
+    }
+  };
+
   return (
     <Container maxWidth="xl" sx={{ py: 2, height: '100vh', display: 'flex', flexDirection: 'column', px: { xs: 1, sm: 2, md: 4 } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3, flexWrap: 'wrap', gap: 2 }}>
@@ -591,6 +637,13 @@ export default function ChatPage() {
           onClick={() => setCurrentMessage("What meals would you recommend based on my dietary preferences?")}
           clickable
           size="small"
+        />
+        <Chip
+          label="🐛 Debug User Data"
+          onClick={debugUserData}
+          clickable
+          size="small"
+          color="warning"
         />
       </Box>
     </Container>

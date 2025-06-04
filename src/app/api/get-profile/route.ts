@@ -16,6 +16,8 @@ export async function POST(request: NextRequest) {
   try {
     const { userId } = await request.json();
     
+    console.log('🔍 get-profile: Looking for userId:', userId);
+    
     if (!userId) {
       return NextResponse.json({ 
         success: false, 
@@ -32,9 +34,12 @@ export async function POST(request: NextRequest) {
       }
     }).promise();
 
+    console.log('🔍 get-profile: Found', result.Items?.length || 0, 'items');
+    
     const profile = result.Items?.[0];
     
     if (profile && profile.name) {
+      console.log('✅ get-profile: Found profile for', profile.name);
       return NextResponse.json({
         success: true,
         profile: {
@@ -46,6 +51,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    console.log('❌ get-profile: No profile found for userId:', userId);
     // No profile found
     return NextResponse.json({
       success: false,
@@ -53,7 +59,7 @@ export async function POST(request: NextRequest) {
     }, { status: 404 });
 
   } catch (error) {
-    console.error('Profile fetch error:', error);
+    console.error('❌ get-profile error:', error);
     return NextResponse.json({
       success: false,
       error: 'Failed to fetch profile'

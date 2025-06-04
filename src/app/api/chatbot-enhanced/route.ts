@@ -62,7 +62,7 @@ function validateChatRequest(body: any): { isValid: boolean; errors: string[]; d
     errors.push('UserId is required and must be a string');
   } else if (body.userId.trim().length === 0) {
     errors.push('UserId cannot be empty');
-  } else if (!/^[a-zA-Z0-9_-]+$/.test(body.userId)) {
+  } else if (!/^[a-zA-Z0-9\-_.@]+$/.test(body.userId)) {
     errors.push('UserId contains invalid characters');
   }
 
@@ -110,6 +110,7 @@ function validateAuthHeader(request: NextRequest): { isValid: boolean; error?: s
 async function fetchUserData(userId: string): Promise<UserData> {
   try {
     console.log('🔧 Using AWS SDK v2 DynamoDB method for user:', userId);
+    console.log('🔧 Exact userId being searched:', JSON.stringify(userId));
 
     const results = await Promise.allSettled([
       // Fetch user profile
@@ -140,9 +141,41 @@ async function fetchUserData(userId: string): Promise<UserData> {
       }).promise()
     ]);
 
-    // Extract data from results
-    const profile = results[0].status === 'fulfilled' 
-      ? (results[0].value as any).Items?.[0] 
+    // Extract data from results with detailed logging
+    const profileResult = results[0];
+    if (profileResult.status === 'fulfilled') {
+      const items = (profileResult.value as any).Items || [];
+      console.log('🔍 Profile scan found', items.length, 'items');
+      if (items.length > 0) {
+        console.log('✅ Profile found:', { 
+          name: items[0].name, 
+          userId: items[0].userId,
+          age: items[0].age 
+        });
+      } else {
+        console.log('❌ No profile items found for userId:', userId);
+        // Let's also scan a few items to see what userIds exist
+        try {
+          const sampleScan = await dynamodb.scan({
+            TableName: 'UserProfile-b7vimfsyujdibnpphmpxriv3c4-NONE',
+            Limit: 5
+          }).promise();
+          console.log('📋 Sample userIds in database:', 
+            sampleScan.Items?.map(item => ({ 
+              userId: item.userId, 
+              name: item.name 
+            })) || []
+          );
+        } catch (e) {
+          console.log('❌ Failed to get sample data:', e);
+        }
+      }
+    } else {
+      console.log('❌ Profile scan failed:', profileResult.reason);
+    }
+
+    const profile = profileResult.status === 'fulfilled' 
+      ? (profileResult.value as any).Items?.[0] 
       : null;
 
     const workouts = results[1].status === 'fulfilled' 
@@ -157,8 +190,9 @@ async function fetchUserData(userId: string): Promise<UserData> {
     workouts.sort((a: any, b: any) => new Date(b.createdAt || b.date).getTime() - new Date(a.createdAt || a.date).getTime());
     meals.sort((a: any, b: any) => new Date(b.createdAt || b.date).getTime() - new Date(a.createdAt || a.date).getTime());
 
-    console.log('✅ AWS SDK v2 DynamoDB successful');
-    console.log('📊 Data summary:', `Profile ${profile ? '✓' : '✗'} | ${workouts.length} workouts | ${meals.length} meals`);
+    console.log('✅ AWS SDK v2 DynamoDB completed');
+    console.log('📊 Final data summary:', `Profile ${profile ? '✓' : '✗'} | ${workouts.length} workouts | ${meals.length} meals`);
+    
     return { profile, workouts, meals };
 
   } catch (error) {
@@ -254,6 +288,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { message, userId, chatHistory } = validation.data!;
+    console.log('✅ Input validation passed for userId:', userId);
 
     // 4. RATE LIMITING: Basic protection against abuse
     const userAgent = request.headers.get('user-agent') || 'unknown';
