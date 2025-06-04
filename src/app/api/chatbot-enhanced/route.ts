@@ -383,12 +383,13 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Add Pinecone RAG context if available
-    if (pineconeContext) {
-      hasPersonalizedData = true;
+    // Add Pinecone RAG context ONLY if we already have user data
+    if (pineconeContext && hasPersonalizedData) {
       contextDataPoints++;
       personalizedContext += `${pineconeContext} `;
       console.log('🚀 Enhanced with Pinecone RAG context');
+    } else if (pineconeContext && !hasPersonalizedData) {
+      console.log('⚠️ Pinecone returned context but user has no actual data - ignoring to prevent hallucination');
     }
 
     // 9. PREPARE ENHANCED SYSTEM MESSAGE
@@ -396,11 +397,13 @@ export async function POST(request: NextRequest) {
       ? `You are an expert personal fitness coach with access to the user's complete fitness history and data. 
 
 CRITICAL INSTRUCTIONS FOR DATA ANALYSIS:
+- ONLY reference data that is explicitly provided below
 - When user asks about "last meal" or "recent meal" - refer to their MOST RECENT meal, not all meals
 - When user asks about "last workout" - refer to their MOST RECENT workout specifically
 - When user mentions "notes" - analyze and reference their actual stored notes/comments, don't give generic advice
 - Always prioritize their ACTUAL DATA over general fitness knowledge
 - Be specific with dates, numbers, and personal details from their data
+- NEVER mention workouts or meals that are not in their actual data below
 
 USER'S ACTUAL DATA:
 ${personalizedContext.trim()}
@@ -419,7 +422,22 @@ Example good responses:
 - "Your most recent workout was [specific workout] for [duration] minutes"
 
 Respond as a knowledgeable coach who has studied their complete fitness journey.`
-      : `You are a helpful fitness coach. The user doesn't have profile data yet, so provide general fitness advice and encourage them to set up their profile for personalized recommendations.`;
+      : `You are a helpful fitness coach. The user ${userData.profile?.name ? `(${userData.profile.name}) ` : ''}doesn't have any workout or meal data logged yet.
+
+IMPORTANT: 
+- Do NOT reference any specific workouts, meals, or dates that don't exist
+- Do NOT make up workout history or meal history
+- Do NOT say things like "your last workout" or "based on your recent meals" 
+- Focus on encouraging them to start logging their fitness journey
+- Provide general fitness advice and motivation
+
+Since they have no logged data yet, encourage them to:
+1. Start by logging their first workout in the Workouts section
+2. Track their meals in the Meals section  
+3. Set up their profile with fitness goals
+4. Begin building their personalized fitness history
+
+Once they start logging workouts and meals, I'll be able to provide much more personalized advice based on their actual data!`;
 
     console.log('💬 Sending to OpenAI with', hasPersonalizedData ? 'personalized + RAG' : 'general', 'context');
     console.log('📊 Data summary:', `Profile ${userData.profile ? '✓' : '✗'} | ${userData.workouts.length} workouts | ${userData.meals.length} meals | RAG ${pineconeContext ? '✓' : '✗'}`);
