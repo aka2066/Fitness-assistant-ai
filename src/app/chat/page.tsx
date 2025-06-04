@@ -63,13 +63,14 @@ export default function ChatPage() {
         try {
           console.log('🔍 Fetching profile for user:', user.userId);
           
-          // Use the same approach as dashboard - fetch profile directly with proper user data
+          // Get the user's name by calling the chatbot API
           const response = await fetch('/api/chatbot-enhanced', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
-              message: 'get my profile info', 
-              userId: user.userId 
+              message: 'What is my name?', 
+              userId: user.userId,
+              chatHistory: []
             })
           });
           
@@ -77,49 +78,21 @@ export default function ChatPage() {
             const data = await response.json();
             console.log('📊 Profile response:', data);
             
-            // If we get userData back with profile info, extract the name
-            if (data.success && data.userData && data.userData.hasProfile) {
-              // Try to extract profile name from the response message or userData
-              const responseText = data.message || '';
-              
-              // Look for patterns like "Hi [Name]" or "your profile shows [Name]" 
-              const nameMatch = responseText.match(/(?:Hi |Hello |Your name is |you are |profile shows |name is |you're )([A-Za-z\s]+?)(?:[,.\!]|$|\d|\s+you|\s+and|\s+age|\s+who)/i);
-              
-              if (nameMatch && nameMatch[1]) {
+            if (data.success && data.message) {
+              // Extract name from response like "Hello Ryan!" or "Hi Ryan"
+              const nameMatch = data.message.match(/(?:Hello|Hi|Hey)\s+([A-Za-z]+)/i);
+              if (nameMatch && nameMatch[1] && nameMatch[1].toLowerCase() !== 'there') {
                 const extractedName = nameMatch[1].trim();
-                // Make sure the extracted name is reasonable (not just single letters or very long)
-                if (extractedName.length >= 2 && extractedName.length <= 50 && !extractedName.includes('user')) {
-                  console.log('✅ Extracted user name from response:', extractedName);
-                  setUserProfile({ name: extractedName });
-                  return;
-                }
-              }
-            }
-          }
-          
-          // Fallback: try the profile API directly
-          try {
-            const profileResponse = await fetch('/api/profile', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ action: 'get', userId: user.userId })
-            });
-            
-            if (profileResponse.ok) {
-              const profileData = await profileResponse.json();
-              if (profileData.profile && profileData.profile.name) {
-                console.log('✅ Got profile name from API:', profileData.profile.name);
-                setUserProfile(profileData.profile);
+                console.log('✅ Extracted user name:', extractedName);
+                setUserProfile({ name: extractedName });
                 return;
               }
             }
-          } catch (profileError) {
-            console.log('❌ Profile API failed:', profileError);
           }
           
-          // Final fallback to username
+          // Fallback to username if name extraction fails
           if (user.username) {
-            console.log('🔄 Using username as final fallback:', user.username);
+            console.log('🔄 Using username as fallback:', user.username);
             setUserProfile({ name: user.username });
           }
           
@@ -185,6 +158,12 @@ export default function ChatPage() {
 
     try {
       console.log('🚀 Sending message to chatbot...');
+      console.log('📋 Request details:', {
+        url: '/api/chatbot-enhanced',
+        message: userMessage,
+        userId: userId,
+        currentUrl: window.location.href
+      });
       
       // Simple, direct API call
       const response = await fetch('/api/chatbot-enhanced', {
@@ -197,17 +176,30 @@ export default function ChatPage() {
         }),
       });
 
-      console.log('📥 Response status:', response.status);
+      console.log('📥 Response details:', {
+        status: response.status,
+        ok: response.ok,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries())
+      });
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        const errorText = await response.text();
+        console.error('❌ Error response body:', errorText);
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
 
       const data = await response.json();
-      console.log('✅ Got response:', data.success);
+      console.log('✅ Success response:', {
+        success: data.success,
+        hasMessage: !!data.message,
+        messagePreview: data.message ? data.message.substring(0, 50) + '...' : 'No message',
+        hasPersonalizedData: data.hasPersonalizedData
+      });
       
       if (!data.success || !data.message) {
-        throw new Error('Invalid response');
+        console.error('❌ Invalid response structure:', data);
+        throw new Error('Invalid response from API');
       }
       
       // Add successful response to chat
@@ -223,13 +215,18 @@ export default function ChatPage() {
       }]);
 
     } catch (error) {
-      console.error('❌ Chatbot error:', error);
+      console.error('❌ Full chatbot error details:', {
+        error: error,
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : 'No stack trace'
+      });
       
-      // Add simple error message
+      // Add detailed error message for debugging
+      const errorDetails = error instanceof Error ? error.message : 'Unknown error occurred';
       setMessages(prev => [...prev, {
         id: `${messageId}-error`,
         message: userMessage,
-        response: "I'm having trouble responding right now. Please try again.",
+        response: `Debug Info: ${errorDetails}\n\nPlease check the console for more details and try again.`,
         timestamp: new Date().toISOString(),
         isUser: false,
       }]);
