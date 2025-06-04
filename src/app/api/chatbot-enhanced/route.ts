@@ -10,10 +10,26 @@ const openai = new OpenAI({
 // AWS SDK v2 DynamoDB client (proven to work)
 AWS.config.update({
   region: 'us-east-2',
-  ...(process.env.AMPLIFY_ACCESS_KEY_ID && process.env.AMPLIFY_SECRET_ACCESS_KEY && {
-    accessKeyId: process.env.AMPLIFY_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AMPLIFY_SECRET_ACCESS_KEY,
-  })
+  // Try multiple sources for AWS credentials
+  ...(
+    // First try AMPLIFY_ prefixed variables
+    (process.env.AMPLIFY_ACCESS_KEY_ID && process.env.AMPLIFY_SECRET_ACCESS_KEY) ? {
+      accessKeyId: process.env.AMPLIFY_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AMPLIFY_SECRET_ACCESS_KEY,
+    } :
+    // Fallback to AWS_ prefixed variables  
+    (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) ? {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    } : {}
+  )
+});
+
+console.log('🔧 AWS SDK Config check:', {
+  region: 'us-east-2',
+  hasAmplifyKey: !!process.env.AMPLIFY_ACCESS_KEY_ID,
+  hasAwsKey: !!process.env.AWS_ACCESS_KEY_ID,
+  usingCredentials: !!(process.env.AMPLIFY_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID)
 });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
