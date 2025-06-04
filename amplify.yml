@@ -11,6 +11,8 @@ frontend:
         - echo "OPENAI_API_KEY=$OPENAI_API_KEY" >> .env.local
         - echo "PINECONE_API_KEY=$PINECONE_API_KEY" >> .env.local
         - echo "PINECONE_INDEX_NAME=$PINECONE_INDEX_NAME" >> .env.local
+        - echo "Environment variables set:"
+        - cat .env.local
         - echo "Starting Next.js build"
         - npm run build
   artifacts:
@@ -22,6 +24,5 @@ frontend:
       - node_modules/**/*
       - .next/cache/**/*
 
-# This configuration is for frontend hosting only
-# Backend runs separately via sandbox: npx ampx sandbox
-# Environment variables are configured in the Amplify Console
+# Environment variables should be configured in the Amplify Console:
+# OPENAI_API_KEY, PINECONE_API_KEY, PINECONE_INDEX_NAME

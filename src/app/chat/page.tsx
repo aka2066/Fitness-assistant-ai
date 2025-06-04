@@ -121,7 +121,7 @@ export default function ChatPage() {
         {
           id: 'welcome',
           message: '',
-          response: `${greeting} I'm your AI fitness coach powered by OpenAI with access to your real fitness data. I can provide personalized workout recommendations, nutrition advice, and progress tracking based on your actual profile, workout logs, and meal logs stored in our database. ${isRealName ? `Nice to see you, ${userName}!` : ''} Ask me anything about your fitness journey, and I'll give you personalized advice based on your real data!`,
+          response: `${greeting} I'm your AI fitness coach with access to your real fitness data. I can provide personalized workout recommendations, nutrition advice, and progress tracking based on your profile, workouts, and meals. ${isRealName ? `Great to see you, ${userName}!` : ''} Ask me anything about your fitness journey!`,
           timestamp: new Date().toISOString(),
           isUser: false,
           agentType: 'enhanced-ai',
@@ -213,6 +213,16 @@ export default function ChatPage() {
         contextCount: data.contextDataPoints || 0,
         agentType: 'enhanced-ai',
       }]);
+
+      // Extract user name from the response if we don't have it yet
+      if (!userProfile?.name && data.message) {
+        const nameMatch = data.message.match(/(?:Hello|Hi|Hey)\s+([A-Za-z]+)/i);
+        if (nameMatch && nameMatch[1] && nameMatch[1].toLowerCase() !== 'there') {
+          const extractedName = nameMatch[1].trim();
+          console.log('✅ Extracted user name from response:', extractedName);
+          setUserProfile({ name: extractedName });
+        }
+      }
 
     } catch (error) {
       console.error('❌ Full chatbot error details:', {
