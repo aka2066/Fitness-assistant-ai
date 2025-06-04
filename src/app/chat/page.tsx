@@ -209,6 +209,8 @@ export default function ChatPage() {
         userId: userId,
         historyLength: chatHistory.slice(-10).length
       });
+      console.log('🌐 Current hostname:', window.location.hostname);
+      console.log('🔗 Full URL will be:', window.location.origin + apiUrl);
 
       // Call the enhanced chatbot API that can access DynamoDB data
       const response = await fetch(apiUrl, {
@@ -225,6 +227,7 @@ export default function ChatPage() {
 
       console.log('📥 Response status:', response.status);
       console.log('📥 Response ok:', response.ok);
+      console.log('📥 Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
         const errorText = await response.text();
