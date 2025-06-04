@@ -226,8 +226,20 @@ export async function POST(request: NextRequest) {
   try {
     const { message, userId, chatHistory = [] } = await request.json();
     
+    // Check if OpenAI API key is available
+    if (!process.env.OPENAI_API_KEY) {
+      console.log('❌ OpenAI API key not found in environment variables');
+      return NextResponse.json({
+        success: true,
+        message: "I'm currently unavailable due to missing API configuration. Please ensure the OPENAI_API_KEY environment variable is set in your deployment settings.\n\nIn the meantime, here are some general fitness tips:\n\n1. Stay consistent with your workouts\n2. Maintain a balanced diet\n3. Get adequate rest and recovery\n4. Stay hydrated throughout the day\n5. Set realistic, achievable goals\n\nPlease contact support to resolve the API configuration issue.",
+        hasPersonalizedData: false,
+        contextDataPoints: 0,
+        userData: null
+      });
+    }
+
     console.log('🤖 Enhanced chatbot request:', {
-      message,
+      message: message.substring(0, 100) + (message.length > 100 ? '...' : ''),
       userId,
       historyLength: chatHistory.length
     });

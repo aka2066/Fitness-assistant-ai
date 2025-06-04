@@ -13,6 +13,7 @@ import {
   MenuItem,
   Box,
 } from '@mui/material';
+import { Home as HomeIcon } from '@mui/icons-material';
 import { useAuth } from '../providers/AuthProvider';
 import { generateClient } from 'aws-amplify/api';
 import { useRouter } from 'next/navigation';
@@ -414,6 +415,14 @@ export default function ProfilePage() {
 
           <Grid item xs={12}>
             <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+              <Button
+                variant="outlined"
+                startIcon={<HomeIcon />}
+                onClick={() => router.push('/')}
+                size="large"
+              >
+                Back to Dashboard
+              </Button>
               <Button
                 variant="contained"
                 onClick={handleSave}

@@ -20,8 +20,10 @@ import {
   ListItemText,
   Divider,
 } from '@mui/material';
+import { Home as HomeIcon } from '@mui/icons-material';
 import { useAuth } from '../providers/AuthProvider';
 import { generateClient } from 'aws-amplify/api';
+import { useRouter } from 'next/navigation';
 
 const client = generateClient();
 
@@ -50,6 +52,7 @@ interface MealLog {
 
 export default function MealsPage() {
   const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
   const [meals, setMeals] = useState<MealLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -332,6 +335,14 @@ export default function MealsPage() {
             
             <Grid item xs={12}>
               <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+                <Button
+                  variant="outlined"
+                  startIcon={<HomeIcon />}
+                  onClick={() => router.push('/')}
+                  size="large"
+                >
+                  Back to Dashboard
+                </Button>
                 <Button
                   type="submit"
                   variant="contained"

@@ -134,13 +134,33 @@ export default function ChatPage() {
 
     } catch (error) {
       console.error('Error getting chat response:', error);
-      setError('Sorry, I encountered an error. Please try again.');
       
-      // Add error message to chat
+      let errorMessage = 'Sorry, I encountered an error. Please try again.';
+      let detailedError = '';
+      
+      if (error instanceof Error) {
+        if (error.message.includes('API Error 500')) {
+          errorMessage = 'Server error - this might be due to missing environment variables in production.';
+          detailedError = 'The OpenAI API key may not be configured properly.';
+        } else if (error.message.includes('API Error 401')) {
+          errorMessage = 'Authentication error - invalid API credentials.';
+          detailedError = 'Please check the OpenAI API key configuration.';
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+          errorMessage = 'Network error - please check your internet connection.';
+          detailedError = 'Could not connect to the AI service.';
+        } else {
+          errorMessage = `Error: ${error.message}`;
+          detailedError = 'Please try again or contact support if the issue persists.';
+        }
+      }
+      
+      setError(errorMessage);
+      
+      // Add error message to chat with more details
       setMessages(prev => [...prev, {
         id: `${messageId}-error`,
         message: userMessage,
-        response: 'Sorry, I encountered an error processing your request. Please try again later.',
+        response: `${errorMessage}\n\n${detailedError}\n\nNote: In production, make sure all environment variables (OPENAI_API_KEY) are properly configured.`,
         timestamp: new Date().toISOString(),
         isUser: false,
       }]);

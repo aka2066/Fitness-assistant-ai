@@ -163,7 +163,8 @@ describe('ChatPage', () => {
     });
     
     await waitFor(() => {
-      expect(screen.getByText(/Sorry, I encountered an error processing your request/)).toBeInTheDocument();
+      const errorElements = screen.getAllByText(/Error: API Error/);
+      expect(errorElements.length).toBeGreaterThan(0);
     }, { timeout: 3000 });
   });
 
