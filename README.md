@@ -5,6 +5,7 @@ Full-stack RAG-enabled fitness coach built with Next.js, AWS Amplify Gen 2, and 
 ## 🗺️ Detailed Architecture Diagram
 ![Image](https://github.com/user-attachments/assets/e702c6fe-40bb-437e-91e3-acce5c02dd70)
 ![Image](https://github.com/user-attachments/assets/cc14805d-f547-480a-bb58-d07b194078bf)
+![Image](https://github.com/user-attachments/assets/846aa353-1da9-42c5-afe0-3293c01c4bef)
 
 ## 📐 Pinecone Index Design
 
