@@ -29,7 +29,7 @@ const client = generateClient();
 
 const mealTypes = [
   'Breakfast',
-  'Lunch',
+  'Lunch', 
   'Dinner',
   'Snack',
   'Pre-workout',
@@ -149,7 +149,7 @@ export default function MealsPage() {
         const error = await response.text();
         console.warn('Failed to create embedding:', error);
       } else {
-        const result = await response.json();
+      const result = await response.json();
         console.log('✅ Meal embedding created:', result.message);
       }
     } catch (error) {
@@ -207,25 +207,25 @@ export default function MealsPage() {
       const savedMeal = result.data?.createMealLog;
       
       if (savedMeal) {
-        // Update the meals list
-        setMeals(prev => [savedMeal, ...prev]);
+      // Update the meals list
+      setMeals(prev => [savedMeal, ...prev]);
 
-        // Create embedding for the meal (runs in background)
-        await createEmbedding(savedMeal);
+      // Create embedding for the meal (runs in background)
+      await createEmbedding(savedMeal);
 
         setMessage({ type: 'success', text: 'Meal saved to database successfully!' });
-        
-        // Reset form
-        setNewMeal({
-          userId: user?.userId || '',
-          type: '',
-          calories: undefined,
-          notes: '',
-          foods: '',
-          date: new Date().toISOString().split('T')[0],
-        });
+      
+      // Reset form
+      setNewMeal({
+        userId: user?.userId || '',
+        type: '',
+        calories: undefined,
+        notes: '',
+        foods: '',
+        date: new Date().toISOString().split('T')[0],
+      });
 
-        setTimeout(() => setMessage(null), 3000);
+      setTimeout(() => setMessage(null), 3000);
       } else {
         throw new Error('No data returned from database');
       }
@@ -272,20 +272,20 @@ export default function MealsPage() {
         <Box component="form" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                select
-                label="Meal Type"
-                value={newMeal.type}
-                onChange={(e) => handleInputChange('type', e.target.value)}
-                required
-              >
-                {mealTypes.map((type) => (
-                  <MenuItem key={type} value={type}>
-                    {type}
-                  </MenuItem>
-                ))}
-              </TextField>
+          <TextField
+            fullWidth
+            select
+            label="Meal Type"
+            value={newMeal.type}
+            onChange={(e) => handleInputChange('type', e.target.value)}
+            required
+          >
+            {mealTypes.map((type) => (
+              <MenuItem key={type} value={type}>
+                {type}
+              </MenuItem>
+            ))}
+          </TextField>
             </Grid>
             
             <Grid item xs={12} sm={6}>
@@ -301,48 +301,48 @@ export default function MealsPage() {
             </Grid>
             
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Calories"
-                type="number"
-                value={newMeal.calories || ''}
-                onChange={(e) => handleInputChange('calories', parseInt(e.target.value) || undefined)}
+          <TextField
+            fullWidth
+            label="Calories"
+            type="number"
+            value={newMeal.calories || ''}
+            onChange={(e) => handleInputChange('calories', parseInt(e.target.value) || undefined)}
                 InputProps={{ inputProps: { min: 0, max: 5000 } }}
-              />
+          />
             </Grid>
-            
+          
             <Grid item xs={12}>
-              <TextField
-                fullWidth
+          <TextField
+            fullWidth
                 label="Foods"
                 value={newMeal.foods || ''}
                 onChange={(e) => handleInputChange('foods', e.target.value)}
                 placeholder="e.g., Grilled chicken, brown rice, vegetables..."
-              />
+          />
             </Grid>
             
             <Grid item xs={12}>
-              <TextField
-                fullWidth
+          <TextField
+            fullWidth
                 label="Notes"
-                multiline
-                rows={3}
+            multiline
+            rows={3}
                 value={newMeal.notes || ''}
-                onChange={(e) => handleInputChange('notes', e.target.value)}
+            onChange={(e) => handleInputChange('notes', e.target.value)}
                 placeholder="How did the meal taste? Any special preparation?"
               />
             </Grid>
             
             <Grid item xs={12}>
               <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-                <Button
-                  variant="outlined"
+            <Button
+              variant="outlined"
                   startIcon={<HomeIcon />}
                   onClick={() => router.push('/')}
-                  size="large"
-                >
-                  Back to Dashboard
-                </Button>
+              size="large"
+            >
+              Back to Dashboard
+            </Button>
                 <Button
                   type="submit"
                   variant="contained"
@@ -351,7 +351,7 @@ export default function MealsPage() {
                 >
                   {saving ? <CircularProgress size={24} /> : 'Save to Database'}
                 </Button>
-              </Box>
+          </Box>
             </Grid>
           </Grid>
         </Box>

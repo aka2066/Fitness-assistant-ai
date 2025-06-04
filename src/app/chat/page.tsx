@@ -59,67 +59,30 @@ export default function ChatPage() {
   // Fetch user profile for personalized greeting
   useEffect(() => {
     const fetchUserProfile = async () => {
-      if (user && user.userId) {
+      if (user && user.userId && !userProfile) {
         try {
           console.log('🔍 Fetching profile for user:', user.userId);
           
-          // Try multiple endpoints to get user profile
-          const endpoints = [
-            '/api/profile',
-            '/api/chatbot-enhanced'
-          ];
+          // Try the profile API first
+          const response = await fetch('/api/profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'get', userId: user.userId })
+          });
           
-          for (const endpoint of endpoints) {
-            try {
-              let response;
-              
-              if (endpoint === '/api/profile') {
-                response = await fetch('/api/profile', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ action: 'get', userId: user.userId })
-                });
-              } else {
-                // Use chatbot endpoint to get user data
-                response = await fetch('/api/chatbot-enhanced', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ 
-                    message: 'get profile info', 
-                    userId: user.userId 
-                  })
-                });
-              }
-              
-              if (response.ok) {
-                const data = await response.json();
-                console.log('📊 Profile response from', endpoint, ':', data);
-                
-                // Extract profile data
-                let profileData = null;
-                if (data.profile && typeof data.profile === 'object') {
-                  profileData = data.profile;
-                } else if (data.userData && data.userData.profile) {
-                  profileData = data.userData.profile;
-                } else if (data.message && data.userData) {
-                  // From chatbot response, try to extract user data
-                  console.log('🔍 Extracted user data:', data.userData);
-                }
-                
-                if (profileData && profileData.name) {
-                  console.log('✅ Found user profile:', profileData.name);
-                  setUserProfile(profileData);
-                  break; // Success, stop trying other endpoints
-                }
-              }
-            } catch (endpointError) {
-              console.log(`❌ ${endpoint} failed:`, endpointError);
-              continue; // Try next endpoint
+          if (response.ok) {
+            const data = await response.json();
+            console.log('📊 Profile response:', data);
+            
+            if (data.profile && data.profile.name) {
+              console.log('✅ Found user profile:', data.profile.name);
+              setUserProfile(data.profile);
+              return;
             }
           }
           
-          // If no profile found, set a default with username
-          if (!userProfile && user.username) {
+          // Fallback to username if available
+          if (user.username) {
             console.log('🔄 Using username as fallback:', user.username);
             setUserProfile({ name: user.username });
           }
@@ -157,9 +120,23 @@ export default function ChatPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!currentMessage.trim() || !user) return;
+    if (!currentMessage.trim()) {
+      console.log('❌ Empty message');
+      return;
+    }
+    
+    if (!user) {
+      console.log('❌ No user found');
+      setError('Please log in to use the chatbot');
+      return;
+    }
     
     const userMessage = currentMessage.trim();
+    const userId = user.userId || user.username || 'anonymous';
+    
+    console.log('🚀 Submitting message:', userMessage);
+    console.log('👤 User ID:', userId);
+    
     setCurrentMessage('');
     setLoading(true);
     setError(null);
@@ -181,6 +158,13 @@ export default function ChatPage() {
         { role: 'assistant' as const, content: msg.response }
       ]).flat();
 
+      console.log('📤 Sending request to /api/chatbot-enhanced');
+      console.log('📋 Request payload:', {
+        message: userMessage,
+        userId: userId,
+        historyLength: chatHistory.slice(-10).length
+      });
+
       // Call the enhanced chatbot API that can access DynamoDB data
       const response = await fetch('/api/chatbot-enhanced', {
         method: 'POST',
@@ -189,17 +173,22 @@ export default function ChatPage() {
         },
         body: JSON.stringify({
           message: userMessage,
-          userId: user.userId || user.username,
+          userId: userId,
           chatHistory: chatHistory.slice(-10) // Keep last 10 messages for context
         }),
       });
 
+      console.log('📥 Response status:', response.status);
+      console.log('📥 Response headers:', Object.fromEntries(response.headers.entries()));
+
       if (!response.ok) {
         const errorText = await response.text();
+        console.error('❌ API Error Response:', errorText);
         throw new Error(`API Error ${response.status}: ${errorText}`);
       }
 
       const data = await response.json();
+      console.log('✅ API Response data:', data);
       
       if (!data.success) {
         throw new Error(data.error || 'Failed to get response');
@@ -217,13 +206,21 @@ export default function ChatPage() {
         agentType: useLangGraph ? 'rag-enhanced' : 'enhanced-ai',
       }]);
 
+      console.log('✅ Message added to chat successfully');
+
     } catch (error) {
-      console.error('Error getting chat response:', error);
+      console.error('❌ Error getting chat response:', error);
       
       let errorMessage = 'Sorry, I encountered an error. Please try again.';
       let detailedError = '';
       
       if (error instanceof Error) {
+        console.log('🔍 Error details:', {
+          name: error.name,
+          message: error.message,
+          stack: error.stack
+        });
+        
         if (error.message.includes('API Error 500')) {
           errorMessage = 'Server error - this might be due to missing environment variables in production.';
           detailedError = 'The OpenAI API key may not be configured properly.';
@@ -245,7 +242,7 @@ export default function ChatPage() {
       setMessages(prev => [...prev, {
         id: `${messageId}-error`,
         message: userMessage,
-        response: `${errorMessage}\n\n${detailedError}\n\nNote: In production, make sure all environment variables (OPENAI_API_KEY) are properly configured.`,
+        response: `${errorMessage}\n\n${detailedError}`,
         timestamp: new Date().toISOString(),
         isUser: false,
       }]);
@@ -518,6 +515,17 @@ export default function ChatPage() {
 
         {/* Message Input */}
         <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, borderRadius: 3 }}>
+          {/* Debug info - can be removed in production */}
+          {process.env.NODE_ENV === 'development' && (
+            <Box sx={{ mb: 2, p: 1, backgroundColor: '#f5f5f5', borderRadius: 1, fontSize: '0.8rem' }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold' }}>Debug Info:</Typography>
+              <br />
+              User: {user ? `${user.username || 'no username'} (${user.userId || 'no userId'})` : 'No user'}
+              <br />
+              Profile: {userProfile ? userProfile.name || 'unnamed profile' : 'No profile'}
+            </Box>
+          )}
+          
           <form onSubmit={handleSubmit}>
             <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
               <TextField

@@ -85,11 +85,11 @@ describe('ProfilePage', () => {
 
   it('renders profile form with all required fields', async () => {
     await act(async () => {
-      renderWithTheme(<ProfilePage />);
+    renderWithTheme(<ProfilePage />);
     });
     
     await waitFor(() => {
-      expect(screen.getByText('Update Your Profile')).toBeInTheDocument();
+    expect(screen.getByText('Update Your Profile')).toBeInTheDocument();
     });
     
     expect(screen.getByLabelText('Age')).toBeInTheDocument();
@@ -101,7 +101,7 @@ describe('ProfilePage', () => {
 
   it('validates age input within acceptable range', async () => {
     await act(async () => {
-      renderWithTheme(<ProfilePage />);
+    renderWithTheme(<ProfilePage />);
     });
     
     await waitFor(() => {
@@ -111,7 +111,7 @@ describe('ProfilePage', () => {
     const ageInput = screen.getByLabelText('Age') as HTMLInputElement;
     
     await act(async () => {
-      fireEvent.change(ageInput, { target: { value: '25' } });
+    fireEvent.change(ageInput, { target: { value: '25' } });
     });
     
     expect(ageInput.value).toBe('25');
@@ -119,7 +119,7 @@ describe('ProfilePage', () => {
 
   it('validates height input within acceptable range', async () => {
     await act(async () => {
-      renderWithTheme(<ProfilePage />);
+    renderWithTheme(<ProfilePage />);
     });
     
     await waitFor(() => {
@@ -137,7 +137,7 @@ describe('ProfilePage', () => {
 
   it('validates weight input within acceptable range', async () => {
     await act(async () => {
-      renderWithTheme(<ProfilePage />);
+    renderWithTheme(<ProfilePage />);
     });
     
     await waitFor(() => {
@@ -155,7 +155,7 @@ describe('ProfilePage', () => {
 
   it('allows fitness goals text input', async () => {
     await act(async () => {
-      renderWithTheme(<ProfilePage />);
+    renderWithTheme(<ProfilePage />);
     });
     
     await waitFor(() => {
@@ -166,7 +166,7 @@ describe('ProfilePage', () => {
     const testGoals = 'I want to lose weight and build muscle';
     
     await act(async () => {
-      fireEvent.change(goalsInput, { target: { value: testGoals } });
+    fireEvent.change(goalsInput, { target: { value: testGoals } });
     });
     
     expect(goalsInput.value).toBe(testGoals);
@@ -174,7 +174,7 @@ describe('ProfilePage', () => {
 
   it('shows save button and handles form submission', async () => {
     await act(async () => {
-      renderWithTheme(<ProfilePage />);
+    renderWithTheme(<ProfilePage />);
     });
     
     await waitFor(() => {

@@ -23,49 +23,49 @@ export default function Navigation() {
   const [userName, setUserName] = useState<string>('');
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  const fetchUserName = async () => {
-    if (!user?.userId) {
-      setUserName('');
-      return;
-    }
-
-    try {
-      const listQuery = `
-        query ListUserProfiles($filter: ModelUserProfileFilterInput) {
-          listUserProfiles(filter: $filter) {
-            items {
-              id
-              userId
-              name
-            }
-          }
-        }
-      `;
-      
-      const result: any = await client.graphql({
-        query: listQuery,
-        variables: {
-          filter: {
-            userId: {
-              eq: user.userId
-            }
-          }
-        }
-      });
-
-      const profiles = result.data?.listUserProfiles?.items || [];
-      
-      if (profiles.length > 0 && profiles[0].name) {
-        setUserName(profiles[0].name);
-      } else {
-        // Fallback to username if no profile name
-        setUserName(user.username);
+    const fetchUserName = async () => {
+      if (!user?.userId) {
+        setUserName('');
+        return;
       }
-    } catch (error) {
-      console.error('Error fetching user name:', error);
-      setUserName(user.username || 'User');
-    }
-  };
+
+      try {
+        const listQuery = `
+          query ListUserProfiles($filter: ModelUserProfileFilterInput) {
+            listUserProfiles(filter: $filter) {
+              items {
+                id
+                userId
+                name
+              }
+            }
+          }
+        `;
+        
+        const result: any = await client.graphql({
+          query: listQuery,
+          variables: {
+            filter: {
+              userId: {
+                eq: user.userId
+              }
+            }
+          }
+        });
+
+        const profiles = result.data?.listUserProfiles?.items || [];
+        
+        if (profiles.length > 0 && profiles[0].name) {
+          setUserName(profiles[0].name);
+        } else {
+          // Fallback to username if no profile name
+          setUserName(user.username);
+        }
+      } catch (error) {
+        console.error('Error fetching user name:', error);
+        setUserName(user.username || 'User');
+      }
+    };
 
   useEffect(() => {
     fetchUserName();
