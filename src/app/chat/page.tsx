@@ -366,6 +366,50 @@ This debug info will help identify why the chatbot isn't finding your profile da
     }
   };
 
+  // Debug function to check environment variables
+  const debugEnvironment = async () => {
+    try {
+      console.log('🔍 Debugging environment variables...');
+      const response = await fetch('/api/debug-env');
+      const data = await response.json();
+      console.log('🐛 Environment debug results:', data);
+      
+      // Add environment debug info to chat
+      setMessages(prev => [...prev, {
+        id: `env-debug-${Date.now()}`,
+        message: 'Debug environment variables',
+        response: `**Environment Debug Results:**
+
+**AWS Credentials:**
+- AMPLIFY_ACCESS_KEY_ID: ${data.environment?.hasAmplifyAccessKey ? '✅' : '❌'} ${data.environment?.amplifyAccessKeyStart || ''}
+- AMPLIFY_SECRET_ACCESS_KEY: ${data.environment?.hasAmplifySecretKey ? '✅' : '❌'}
+- AWS_ACCESS_KEY_ID: ${data.environment?.hasAwsAccessKey ? '✅' : '❌'} ${data.environment?.awsAccessKeyStart || ''}
+- AWS_SECRET_ACCESS_KEY: ${data.environment?.hasAwsSecretKey ? '✅' : '❌'}
+
+**API Keys:**
+- OpenAI API Key: ${data.environment?.hasOpenAI ? '✅' : '❌'} ${data.environment?.openAIKeyStart || ''}
+- Pinecone API Key: ${data.environment?.hasPinecone ? '✅' : '❌'}
+- Pinecone Index: ${data.environment?.pineconeIndexName || 'Not set'}
+
+**Environment:** ${data.environment?.NODE_ENV || 'Unknown'}
+
+This will help identify if the environment variables are being loaded correctly.`,
+        timestamp: new Date().toISOString(),
+        isUser: false,
+      }]);
+      
+    } catch (error) {
+      console.error('Environment debug error:', error);
+      setMessages(prev => [...prev, {
+        id: `env-debug-error-${Date.now()}`,
+        message: 'Debug environment variables',
+        response: `❌ Failed to debug environment variables: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        timestamp: new Date().toISOString(),
+        isUser: false,
+      }]);
+    }
+  };
+
   return (
     <Container maxWidth="xl" sx={{ py: 2, height: '100vh', display: 'flex', flexDirection: 'column', px: { xs: 1, sm: 2, md: 4 } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3, flexWrap: 'wrap', gap: 2 }}>
@@ -644,6 +688,13 @@ This debug info will help identify why the chatbot isn't finding your profile da
           clickable
           size="small"
           color="warning"
+        />
+        <Chip
+          label="🔧 Debug Environment"
+          onClick={debugEnvironment}
+          clickable
+          size="small"
+          color="error"
         />
       </Box>
     </Container>

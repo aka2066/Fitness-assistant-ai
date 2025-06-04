@@ -1,32 +1,50 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  // Only allow this in development or with a secret key for security
-  const authHeader = request.headers.get('x-debug-key');
-  const isDev = process.env.NODE_ENV === 'development';
-  
-  if (!isDev && authHeader !== 'debug-2024') {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    // Check what environment variables are available
+    const envCheck = {
+      NODE_ENV: process.env.NODE_ENV,
+      
+      // AWS/Amplify credentials
+      hasAmplifyAccessKey: !!process.env.AMPLIFY_ACCESS_KEY_ID,
+      hasAmplifySecretKey: !!process.env.AMPLIFY_SECRET_ACCESS_KEY,
+      amplifyAccessKeyStart: process.env.AMPLIFY_ACCESS_KEY_ID?.substring(0, 8) + '...',
+      
+      // Legacy AWS variables (just to check)
+      hasAwsAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
+      hasAwsSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
+      awsAccessKeyStart: process.env.AWS_ACCESS_KEY_ID?.substring(0, 8) + '...',
+      
+      // OpenAI and Pinecone
+      hasOpenAI: !!process.env.OPENAI_API_KEY,
+      openAIKeyStart: process.env.OPENAI_API_KEY?.substring(0, 8) + '...',
+      hasPinecone: !!process.env.PINECONE_API_KEY,
+      pineconeIndexName: process.env.PINECONE_INDEX_NAME,
+      
+      // All environment variable keys (filtered for security)
+      allEnvKeys: Object.keys(process.env).filter(key => 
+        !key.includes('SECRET') && 
+        !key.includes('PASSWORD') && 
+        !key.includes('TOKEN') &&
+        !key.includes('KEY')
+      ).sort()
+    };
+
+    return NextResponse.json({
+      success: true,
+      timestamp: new Date().toISOString(),
+      environment: envCheck
+    });
+
+  } catch (error) {
+    console.error('Environment debug error:', error);
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to check environment',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
-
-  const envCheck = {
-    NODE_ENV: process.env.NODE_ENV,
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY ? 'SET ✅' : 'MISSING ❌',
-    PINECONE_API_KEY: process.env.PINECONE_API_KEY ? 'SET ✅' : 'MISSING ❌',
-    PINECONE_INDEX_NAME: process.env.PINECONE_INDEX_NAME || 'MISSING ❌',
-    AWS_REGION: process.env.AWS_REGION || 'NOT SET',
-    // Show available env vars (filtered for security)
-    availableEnvVars: Object.keys(process.env)
-      .filter(key => !key.includes('SECRET') && !key.includes('KEY') && !key.includes('TOKEN'))
-      .slice(0, 20)
-  };
-
-  return NextResponse.json({
-    environment: envCheck,
-    timestamp: new Date().toISOString(),
-    host: request.headers.get('host'),
-    message: 'Environment variable check complete'
-  });
 }
 
 export async function POST(request: NextRequest) {
