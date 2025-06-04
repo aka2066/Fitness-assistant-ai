@@ -63,27 +63,60 @@ export default function ChatPage() {
         try {
           console.log('🔍 Fetching profile for user:', user.userId);
           
-          // Try the profile API first
-          const response = await fetch('/api/profile', {
+          // Use the same approach as dashboard - fetch profile directly with proper user data
+          const response = await fetch('/api/chatbot-enhanced', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'get', userId: user.userId })
+            body: JSON.stringify({ 
+              message: 'get my profile info', 
+              userId: user.userId 
+            })
           });
           
           if (response.ok) {
             const data = await response.json();
             console.log('📊 Profile response:', data);
             
-            if (data.profile && data.profile.name) {
-              console.log('✅ Found user profile:', data.profile.name);
-              setUserProfile(data.profile);
-              return;
+            // If we get userData back with profile info, extract the name
+            if (data.success && data.userData && data.userData.hasProfile) {
+              // Try to extract profile name from the response message or userData
+              const responseText = data.message || '';
+              
+              // Look for patterns like "Hi [Name]" or "your profile shows [Name]" 
+              const nameMatch = responseText.match(/(?:Hi |Hello |profile shows |you are |your name is )([A-Za-z\s]+?)(?:[,.!]|$)/i);
+              
+              if (nameMatch && nameMatch[1]) {
+                const extractedName = nameMatch[1].trim();
+                console.log('✅ Extracted user name from response:', extractedName);
+                setUserProfile({ name: extractedName });
+                return;
+              }
             }
           }
           
-          // Fallback to username if available
+          // Fallback: try the profile API directly
+          try {
+            const profileResponse = await fetch('/api/profile', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'get', userId: user.userId })
+            });
+            
+            if (profileResponse.ok) {
+              const profileData = await profileResponse.json();
+              if (profileData.profile && profileData.profile.name) {
+                console.log('✅ Got profile name from API:', profileData.profile.name);
+                setUserProfile(profileData.profile);
+                return;
+              }
+            }
+          } catch (profileError) {
+            console.log('❌ Profile API failed:', profileError);
+          }
+          
+          // Final fallback to username
           if (user.username) {
-            console.log('🔄 Using username as fallback:', user.username);
+            console.log('🔄 Using username as final fallback:', user.username);
             setUserProfile({ name: user.username });
           }
           
@@ -136,6 +169,8 @@ export default function ChatPage() {
     
     console.log('🚀 Submitting message:', userMessage);
     console.log('👤 User ID:', userId);
+    console.log('🌍 Environment:', process.env.NODE_ENV);
+    console.log('🔗 Current URL:', window.location.href);
     
     setCurrentMessage('');
     setLoading(true);
@@ -158,7 +193,10 @@ export default function ChatPage() {
         { role: 'assistant' as const, content: msg.response }
       ]).flat();
 
-      console.log('📤 Sending request to /api/chatbot-enhanced');
+      // Determine API URL - use relative path for both local and production
+      const apiUrl = '/api/chatbot-enhanced';
+      
+      console.log('📤 Sending request to:', apiUrl);
       console.log('📋 Request payload:', {
         message: userMessage,
         userId: userId,
@@ -166,7 +204,7 @@ export default function ChatPage() {
       });
 
       // Call the enhanced chatbot API that can access DynamoDB data
-      const response = await fetch('/api/chatbot-enhanced', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -179,26 +217,30 @@ export default function ChatPage() {
       });
 
       console.log('📥 Response status:', response.status);
-      console.log('📥 Response headers:', Object.fromEntries(response.headers.entries()));
+      console.log('📥 Response ok:', response.ok);
 
       if (!response.ok) {
         const errorText = await response.text();
         console.error('❌ API Error Response:', errorText);
-        throw new Error(`API Error ${response.status}: ${errorText}`);
+        throw new Error(`API returned ${response.status}: ${response.statusText}`);
       }
 
       const data = await response.json();
       console.log('✅ API Response data:', data);
       
       if (!data.success) {
-        throw new Error(data.error || 'Failed to get response');
+        throw new Error(data.error || 'API returned success: false');
+      }
+      
+      if (!data.message) {
+        throw new Error('API returned empty message');
       }
       
       // Add AI response to chat
       setMessages(prev => [...prev, {
         id: `${messageId}-response`,
         message: userMessage,
-        response: data.message || 'Sorry, I got an empty response.',
+        response: data.message,
         timestamp: new Date().toISOString(),
         isUser: false,
         contextUsed: data.hasPersonalizedData || false,
@@ -221,18 +263,21 @@ export default function ChatPage() {
           stack: error.stack
         });
         
-        if (error.message.includes('API Error 500')) {
-          errorMessage = 'Server error - this might be due to missing environment variables in production.';
-          detailedError = 'The OpenAI API key may not be configured properly.';
-        } else if (error.message.includes('API Error 401')) {
-          errorMessage = 'Authentication error - invalid API credentials.';
-          detailedError = 'Please check the OpenAI API key configuration.';
-        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+        if (error.message.includes('500')) {
+          errorMessage = 'Server error - the AI service may be temporarily unavailable.';
+          detailedError = 'This could be due to missing API keys or server configuration issues.';
+        } else if (error.message.includes('401')) {
+          errorMessage = 'Authentication error - unable to verify your identity.';
+          detailedError = 'Please try refreshing the page and logging in again.';
+        } else if (error.message.includes('NetworkError') || error.message.includes('fetch')) {
           errorMessage = 'Network error - please check your internet connection.';
           detailedError = 'Could not connect to the AI service.';
+        } else if (error.message.includes('success: false')) {
+          errorMessage = 'The AI service returned an error.';
+          detailedError = 'The chatbot may be experiencing technical difficulties.';
         } else {
-          errorMessage = `Error: ${error.message}`;
-          detailedError = 'Please try again or contact support if the issue persists.';
+          errorMessage = `Connection error: ${error.message}`;
+          detailedError = 'Please try again in a moment.';
         }
       }
       
