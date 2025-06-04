@@ -20,8 +20,9 @@ import {
   Tooltip,
   Stack,
 } from '@mui/material';
-import { Send as SendIcon, Person, SmartToy } from '@mui/icons-material';
+import { Send as SendIcon, Person, SmartToy, Home as HomeIcon } from '@mui/icons-material';
 import { useAuth } from '../providers/AuthProvider';
+import { useRouter } from 'next/navigation';
 
 interface ChatMessage {
   id: string;
@@ -36,11 +37,13 @@ interface ChatMessage {
 
 export default function ChatPage() {
   const { user } = useAuth();
+  const router = useRouter();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [useLangGraph, setUseLangGraph] = useState(false);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -53,21 +56,48 @@ export default function ChatPage() {
     scrollToBottom();
   }, [messages]);
 
+  // Fetch user profile for personalized greeting
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (user) {
+        try {
+          const response = await fetch('/api/profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'get', userId: user.userId || user.username })
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            if (data.profile) {
+              setUserProfile(data.profile);
+            }
+          }
+        } catch (error) {
+          console.log('Could not fetch profile:', error);
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [user]);
+
   // Add welcome message
   useEffect(() => {
     if (messages.length === 0) {
+      const userName = userProfile?.name || user?.username || 'there';
       setMessages([
         {
           id: 'welcome',
           message: '',
-          response: "Hi! I'm your AI fitness coach powered by OpenAI with access to your real fitness data. I can provide personalized workout recommendations, nutrition advice, and progress tracking based on your actual profile, workout logs, and meal logs stored in our database. Ask me anything about your fitness journey, and I'll give you personalized advice based on your real data!",
+          response: `Hi ${userName}! I'm your AI fitness coach powered by OpenAI with access to your real fitness data. I can provide personalized workout recommendations, nutrition advice, and progress tracking based on your actual profile, workout logs, and meal logs stored in our database. Ask me anything about your fitness journey, and I'll give you personalized advice based on your real data!`,
           timestamp: new Date().toISOString(),
           isUser: false,
           agentType: 'enhanced-ai',
         }
       ]);
     }
-  }, [messages.length]);
+  }, [messages.length, userProfile, user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,7 +159,7 @@ export default function ChatPage() {
         isUser: false,
         contextUsed: data.hasPersonalizedData || false,
         contextCount: data.contextDataPoints || 0,
-        agentType: useLangGraph ? 'rag-enhanced' : 'basic-ai',
+        agentType: useLangGraph ? 'rag-enhanced' : 'enhanced-ai',
       }]);
 
     } catch (error) {
@@ -251,16 +281,27 @@ export default function ChatPage() {
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4, height: 'calc(100vh - 200px)', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+        <Button
+          onClick={() => router.push('/')}
+          startIcon={<HomeIcon />}
+          variant="outlined"
+          sx={{ mr: 1 }}
+        >
+          Back to Dashboard
+        </Button>
+        
         <Typography variant="h3" component="h1">
           AI Fitness Coach
         </Typography>
-        {user && (
+        
+        {(userProfile?.name || user?.username) && (
           <Chip 
-            label={`Personalized for ${user.username}`} 
+            label={`Personalized for ${userProfile?.name || user?.username}`} 
             color="primary" 
             size="small" 
           />
         )}
+        
         <Tooltip title="Toggle between different AI interaction modes">
           <FormControlLabel
             control={
