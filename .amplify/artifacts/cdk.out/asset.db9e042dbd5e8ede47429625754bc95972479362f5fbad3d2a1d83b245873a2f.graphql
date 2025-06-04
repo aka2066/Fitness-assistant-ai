@@ -1,0 +1,489 @@
+type UserProfile @aws_api_key @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  userId: String!
+  name: String
+  age: Int
+  heightFeet: Int
+  heightInches: Int
+  weight: Float
+  fitnessGoals: String
+  activityLevel: String
+  dietaryRestrictions: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  owner: String
+}
+
+type WorkoutLog @aws_api_key @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  userId: String!
+  type: String!
+  duration: Int
+  calories: Int
+  notes: String
+  exercises: String
+  date: AWSDateTime!
+  createdAt: AWSDateTime
+  owner: String
+  updatedAt: AWSDateTime!
+}
+
+type MealLog @aws_api_key @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  userId: String!
+  type: String!
+  calories: Int
+  notes: String
+  foods: String
+  date: AWSDateTime!
+  createdAt: AWSDateTime
+  owner: String
+  updatedAt: AWSDateTime!
+}
+
+input AmplifyAIConversationTurnErrorInput {
+  errorType: String!
+  message: String!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelUserProfileConnection @aws_api_key @aws_iam @aws_cognito_user_pools {
+  items: [UserProfile]!
+  nextToken: String
+}
+
+input ModelUserProfileFilterInput {
+  id: ModelIDInput
+  userId: ModelStringInput
+  name: ModelStringInput
+  age: ModelIntInput
+  heightFeet: ModelIntInput
+  heightInches: ModelIntInput
+  weight: ModelFloatInput
+  fitnessGoals: ModelStringInput
+  activityLevel: ModelStringInput
+  dietaryRestrictions: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+  and: [ModelUserProfileFilterInput]
+  or: [ModelUserProfileFilterInput]
+  not: ModelUserProfileFilterInput
+}
+
+type Query {
+  getUserProfile(id: ID!): UserProfile @aws_api_key @aws_iam @aws_cognito_user_pools
+  listUserProfiles(id: ID, filter: ModelUserProfileFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserProfileConnection @aws_api_key @aws_iam @aws_cognito_user_pools
+  getWorkoutLog(id: ID!): WorkoutLog @aws_api_key @aws_iam @aws_cognito_user_pools
+  listWorkoutLogs(id: ID, filter: ModelWorkoutLogFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelWorkoutLogConnection @aws_api_key @aws_iam @aws_cognito_user_pools
+  getMealLog(id: ID!): MealLog @aws_api_key @aws_iam @aws_cognito_user_pools
+  listMealLogs(id: ID, filter: ModelMealLogFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelMealLogConnection @aws_api_key @aws_iam @aws_cognito_user_pools
+}
+
+input ModelUserProfileConditionInput {
+  userId: ModelStringInput
+  name: ModelStringInput
+  age: ModelIntInput
+  heightFeet: ModelIntInput
+  heightInches: ModelIntInput
+  weight: ModelFloatInput
+  fitnessGoals: ModelStringInput
+  activityLevel: ModelStringInput
+  dietaryRestrictions: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+  and: [ModelUserProfileConditionInput]
+  or: [ModelUserProfileConditionInput]
+  not: ModelUserProfileConditionInput
+}
+
+input CreateUserProfileInput {
+  id: ID
+  userId: String!
+  name: String
+  age: Int
+  heightFeet: Int
+  heightInches: Int
+  weight: Float
+  fitnessGoals: String
+  activityLevel: String
+  dietaryRestrictions: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  owner: String
+}
+
+input UpdateUserProfileInput {
+  id: ID!
+  userId: String
+  name: String
+  age: Int
+  heightFeet: Int
+  heightInches: Int
+  weight: Float
+  fitnessGoals: String
+  activityLevel: String
+  dietaryRestrictions: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  owner: String
+}
+
+input DeleteUserProfileInput {
+  id: ID!
+}
+
+type Mutation {
+  createUserProfile(input: CreateUserProfileInput!, condition: ModelUserProfileConditionInput): UserProfile @aws_api_key @aws_iam @aws_cognito_user_pools
+  updateUserProfile(input: UpdateUserProfileInput!, condition: ModelUserProfileConditionInput): UserProfile @aws_api_key @aws_iam @aws_cognito_user_pools
+  deleteUserProfile(input: DeleteUserProfileInput!, condition: ModelUserProfileConditionInput): UserProfile @aws_api_key @aws_iam @aws_cognito_user_pools
+  createWorkoutLog(input: CreateWorkoutLogInput!, condition: ModelWorkoutLogConditionInput): WorkoutLog @aws_api_key @aws_iam @aws_cognito_user_pools
+  updateWorkoutLog(input: UpdateWorkoutLogInput!, condition: ModelWorkoutLogConditionInput): WorkoutLog @aws_api_key @aws_iam @aws_cognito_user_pools
+  deleteWorkoutLog(input: DeleteWorkoutLogInput!, condition: ModelWorkoutLogConditionInput): WorkoutLog @aws_api_key @aws_iam @aws_cognito_user_pools
+  createMealLog(input: CreateMealLogInput!, condition: ModelMealLogConditionInput): MealLog @aws_api_key @aws_iam @aws_cognito_user_pools
+  updateMealLog(input: UpdateMealLogInput!, condition: ModelMealLogConditionInput): MealLog @aws_api_key @aws_iam @aws_cognito_user_pools
+  deleteMealLog(input: DeleteMealLogInput!, condition: ModelMealLogConditionInput): MealLog @aws_api_key @aws_iam @aws_cognito_user_pools
+}
+
+input ModelSubscriptionUserProfileFilterInput {
+  id: ModelSubscriptionIDInput
+  userId: ModelSubscriptionStringInput
+  name: ModelSubscriptionStringInput
+  age: ModelSubscriptionIntInput
+  heightFeet: ModelSubscriptionIntInput
+  heightInches: ModelSubscriptionIntInput
+  weight: ModelSubscriptionFloatInput
+  fitnessGoals: ModelSubscriptionStringInput
+  activityLevel: ModelSubscriptionStringInput
+  dietaryRestrictions: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionUserProfileFilterInput]
+  or: [ModelSubscriptionUserProfileFilterInput]
+  owner: ModelStringInput
+}
+
+type Subscription {
+  onCreateUserProfile(filter: ModelSubscriptionUserProfileFilterInput, owner: String): UserProfile @aws_subscribe(mutations: ["createUserProfile"]) @aws_api_key @aws_iam @aws_cognito_user_pools
+  onUpdateUserProfile(filter: ModelSubscriptionUserProfileFilterInput, owner: String): UserProfile @aws_subscribe(mutations: ["updateUserProfile"]) @aws_api_key @aws_iam @aws_cognito_user_pools
+  onDeleteUserProfile(filter: ModelSubscriptionUserProfileFilterInput, owner: String): UserProfile @aws_subscribe(mutations: ["deleteUserProfile"]) @aws_api_key @aws_iam @aws_cognito_user_pools
+  onCreateWorkoutLog(filter: ModelSubscriptionWorkoutLogFilterInput, owner: String): WorkoutLog @aws_subscribe(mutations: ["createWorkoutLog"]) @aws_api_key @aws_iam @aws_cognito_user_pools
+  onUpdateWorkoutLog(filter: ModelSubscriptionWorkoutLogFilterInput, owner: String): WorkoutLog @aws_subscribe(mutations: ["updateWorkoutLog"]) @aws_api_key @aws_iam @aws_cognito_user_pools
+  onDeleteWorkoutLog(filter: ModelSubscriptionWorkoutLogFilterInput, owner: String): WorkoutLog @aws_subscribe(mutations: ["deleteWorkoutLog"]) @aws_api_key @aws_iam @aws_cognito_user_pools
+  onCreateMealLog(filter: ModelSubscriptionMealLogFilterInput, owner: String): MealLog @aws_subscribe(mutations: ["createMealLog"]) @aws_api_key @aws_iam @aws_cognito_user_pools
+  onUpdateMealLog(filter: ModelSubscriptionMealLogFilterInput, owner: String): MealLog @aws_subscribe(mutations: ["updateMealLog"]) @aws_api_key @aws_iam @aws_cognito_user_pools
+  onDeleteMealLog(filter: ModelSubscriptionMealLogFilterInput, owner: String): MealLog @aws_subscribe(mutations: ["deleteMealLog"]) @aws_api_key @aws_iam @aws_cognito_user_pools
+}
+
+type ModelWorkoutLogConnection @aws_api_key @aws_iam @aws_cognito_user_pools {
+  items: [WorkoutLog]!
+  nextToken: String
+}
+
+input ModelWorkoutLogFilterInput {
+  id: ModelIDInput
+  userId: ModelStringInput
+  type: ModelStringInput
+  duration: ModelIntInput
+  calories: ModelIntInput
+  notes: ModelStringInput
+  exercises: ModelStringInput
+  date: ModelStringInput
+  createdAt: ModelStringInput
+  owner: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelWorkoutLogFilterInput]
+  or: [ModelWorkoutLogFilterInput]
+  not: ModelWorkoutLogFilterInput
+}
+
+input ModelWorkoutLogConditionInput {
+  userId: ModelStringInput
+  type: ModelStringInput
+  duration: ModelIntInput
+  calories: ModelIntInput
+  notes: ModelStringInput
+  exercises: ModelStringInput
+  date: ModelStringInput
+  createdAt: ModelStringInput
+  owner: ModelStringInput
+  and: [ModelWorkoutLogConditionInput]
+  or: [ModelWorkoutLogConditionInput]
+  not: ModelWorkoutLogConditionInput
+  updatedAt: ModelStringInput
+}
+
+input CreateWorkoutLogInput {
+  id: ID
+  userId: String!
+  type: String!
+  duration: Int
+  calories: Int
+  notes: String
+  exercises: String
+  date: AWSDateTime!
+  createdAt: AWSDateTime
+  owner: String
+}
+
+input UpdateWorkoutLogInput {
+  id: ID!
+  userId: String
+  type: String
+  duration: Int
+  calories: Int
+  notes: String
+  exercises: String
+  date: AWSDateTime
+  createdAt: AWSDateTime
+  owner: String
+}
+
+input DeleteWorkoutLogInput {
+  id: ID!
+}
+
+input ModelSubscriptionWorkoutLogFilterInput {
+  id: ModelSubscriptionIDInput
+  userId: ModelSubscriptionStringInput
+  type: ModelSubscriptionStringInput
+  duration: ModelSubscriptionIntInput
+  calories: ModelSubscriptionIntInput
+  notes: ModelSubscriptionStringInput
+  exercises: ModelSubscriptionStringInput
+  date: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionWorkoutLogFilterInput]
+  or: [ModelSubscriptionWorkoutLogFilterInput]
+  owner: ModelStringInput
+}
+
+type ModelMealLogConnection @aws_api_key @aws_iam @aws_cognito_user_pools {
+  items: [MealLog]!
+  nextToken: String
+}
+
+input ModelMealLogFilterInput {
+  id: ModelIDInput
+  userId: ModelStringInput
+  type: ModelStringInput
+  calories: ModelIntInput
+  notes: ModelStringInput
+  foods: ModelStringInput
+  date: ModelStringInput
+  createdAt: ModelStringInput
+  owner: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelMealLogFilterInput]
+  or: [ModelMealLogFilterInput]
+  not: ModelMealLogFilterInput
+}
+
+input ModelMealLogConditionInput {
+  userId: ModelStringInput
+  type: ModelStringInput
+  calories: ModelIntInput
+  notes: ModelStringInput
+  foods: ModelStringInput
+  date: ModelStringInput
+  createdAt: ModelStringInput
+  owner: ModelStringInput
+  and: [ModelMealLogConditionInput]
+  or: [ModelMealLogConditionInput]
+  not: ModelMealLogConditionInput
+  updatedAt: ModelStringInput
+}
+
+input CreateMealLogInput {
+  id: ID
+  userId: String!
+  type: String!
+  calories: Int
+  notes: String
+  foods: String
+  date: AWSDateTime!
+  createdAt: AWSDateTime
+  owner: String
+}
+
+input UpdateMealLogInput {
+  id: ID!
+  userId: String
+  type: String
+  calories: Int
+  notes: String
+  foods: String
+  date: AWSDateTime
+  createdAt: AWSDateTime
+  owner: String
+}
+
+input DeleteMealLogInput {
+  id: ID!
+}
+
+input ModelSubscriptionMealLogFilterInput {
+  id: ModelSubscriptionIDInput
+  userId: ModelSubscriptionStringInput
+  type: ModelSubscriptionStringInput
+  calories: ModelSubscriptionIntInput
+  notes: ModelSubscriptionStringInput
+  foods: ModelSubscriptionStringInput
+  date: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionMealLogFilterInput]
+  or: [ModelSubscriptionMealLogFilterInput]
+  owner: ModelStringInput
+}

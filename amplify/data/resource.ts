@@ -17,7 +17,7 @@ const schema = a.schema({
       updatedAt: a.datetime(),
       owner: a.string(), // Required for owner-based authorization
     })
-    .authorization(allow => [allow.owner()]),
+    .authorization(allow => [allow.owner(), allow.authenticated("identityPool")]),
 
   WorkoutLog: a
     .model({
@@ -32,7 +32,7 @@ const schema = a.schema({
       createdAt: a.datetime(),
       owner: a.string(), // Required for owner-based authorization
     })
-    .authorization(allow => [allow.owner()]),
+    .authorization(allow => [allow.owner(), allow.authenticated("identityPool")]),
 
   MealLog: a
     .model({
@@ -46,7 +46,7 @@ const schema = a.schema({
       createdAt: a.datetime(),
       owner: a.string(), // Required for owner-based authorization
     })
-    .authorization(allow => [allow.owner()]),
+    .authorization(allow => [allow.owner(), allow.authenticated("identityPool")]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

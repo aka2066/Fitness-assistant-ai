@@ -22,7 +22,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/34482826c7a0021532f0191feb583a664cecf8087145d6c690b7ce09d1c91b84.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/abe35fc58da0abcbedfd8f044ccfccc7416da219bac4c8e09501479a747aef93.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -2119,6 +2119,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "amplifyDataMealLogNestedStackMealLogNestedStackResourceDFFD7A96"
+          }
+        ],
+        "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AuthRolePolicy01/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataAuthRolePolicy01567A5654"
           }
         ],
         "/amplify-fitnessassistant-ryanrahrooh-sandbox-2a4644698c/data/amplifyData/AmplifyCodegenAssets/AmplifyCodegenAssetsBucket/Resource": [

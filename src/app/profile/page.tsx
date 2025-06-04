@@ -25,9 +25,7 @@ interface UserProfile {
   age?: number;
   heightFeet?: number;
   heightInches?: number;
-  heightCm?: number; // Add height in cm
   weight?: number; // in pounds
-  weightKg?: number; // Add weight in kg  
   fitnessGoals?: string;
   activityLevel?: string;
   dietaryRestrictions?: string;
@@ -75,9 +73,7 @@ export default function ProfilePage() {
               age
               heightFeet
               heightInches
-              heightCm
               weight
-              weightKg
               fitnessGoals
               activityLevel
               dietaryRestrictions
@@ -111,9 +107,7 @@ export default function ProfilePage() {
           age: existingProfile.age || undefined,
           heightFeet: existingProfile.heightFeet || undefined,
           heightInches: existingProfile.heightInches || undefined,
-          heightCm: existingProfile.heightCm || undefined,
           weight: existingProfile.weight || undefined,
-          weightKg: existingProfile.weightKg || undefined,
           fitnessGoals: existingProfile.fitnessGoals || undefined,
           activityLevel: existingProfile.activityLevel || undefined,
           dietaryRestrictions: existingProfile.dietaryRestrictions || undefined,
@@ -144,6 +138,9 @@ export default function ProfilePage() {
   const handleSave = async () => {
     try {
       setSaving(true);
+      console.log('🔄 Starting profile save...');
+      console.log('📋 Current user:', user);
+      console.log('📋 Current profile:', profile);
       
       // Save all available fields
       const profileData = {
@@ -152,18 +149,19 @@ export default function ProfilePage() {
         age: profile.age,
         heightFeet: profile.heightFeet,
         heightInches: profile.heightInches,
-        heightCm: profile.heightCm,
         weight: profile.weight,
-        weightKg: profile.weightKg,
         fitnessGoals: profile.fitnessGoals,
         activityLevel: profile.activityLevel,
         dietaryRestrictions: profile.dietaryRestrictions,
         owner: user!.userId, // Always set owner for authorization
       };
 
+      console.log('📋 Profile data to save:', profileData);
+
       let result: any;
       
       if (profile.id) {
+        console.log('🔄 Updating existing profile with ID:', profile.id);
         const updateQuery = `
           mutation UpdateUserProfile($input: UpdateUserProfileInput!) {
             updateUserProfile(input: $input) {
@@ -173,9 +171,7 @@ export default function ProfilePage() {
               age
               heightFeet
               heightInches
-              heightCm
               weight
-              weightKg
               fitnessGoals
               activityLevel
               dietaryRestrictions
@@ -195,7 +191,9 @@ export default function ProfilePage() {
             }
           }
         });
+        console.log('✅ Update result:', result);
       } else {
+        console.log('🔄 Creating new profile...');
         const createQuery = `
           mutation CreateUserProfile($input: CreateUserProfileInput!) {
             createUserProfile(input: $input) {
@@ -205,9 +203,7 @@ export default function ProfilePage() {
               age
               heightFeet
               heightInches
-              heightCm
               weight
-              weightKg
               fitnessGoals
               activityLevel
               dietaryRestrictions
@@ -224,10 +220,13 @@ export default function ProfilePage() {
             input: profileData
           }
         });
+        console.log('✅ Create result:', result);
       }
 
       if (result.data) {
         const savedProfile = profile.id ? result.data.updateUserProfile : result.data.createUserProfile;
+        console.log('✅ Profile saved successfully:', savedProfile);
+        
         setProfile({
           id: savedProfile.id,
           userId: savedProfile.userId,
@@ -235,9 +234,7 @@ export default function ProfilePage() {
           age: savedProfile.age,
           heightFeet: savedProfile.heightFeet,
           heightInches: savedProfile.heightInches,
-          heightCm: savedProfile.heightCm,
           weight: savedProfile.weight,
-          weightKg: savedProfile.weightKg,
           fitnessGoals: savedProfile.fitnessGoals,
           activityLevel: savedProfile.activityLevel,
           dietaryRestrictions: savedProfile.dietaryRestrictions,
@@ -256,7 +253,24 @@ export default function ProfilePage() {
 
     } catch (error) {
       console.error('❌ Error saving profile:', error);
-      setMessage({ type: 'error', text: `Failed to save profile: ${error}` });
+      
+      // Extract meaningful error message
+      let errorMessage = 'Unknown error occurred';
+      
+      if (error && typeof error === 'object') {
+        if ('errors' in error && Array.isArray((error as any).errors)) {
+          // GraphQL errors
+          errorMessage = (error as any).errors.map((e: any) => e.message).join(', ');
+        } else if ('message' in error) {
+          // Standard error
+          errorMessage = (error as any).message;
+        } else if (error instanceof Error) {
+          errorMessage = error.message;
+        }
+      }
+      
+      console.error('❌ Detailed error:', errorMessage);
+      setMessage({ type: 'error', text: `Failed to save profile: ${errorMessage}` });
     } finally {
       setSaving(false);
     }
@@ -343,33 +357,11 @@ export default function ProfilePage() {
           <Grid item xs={12} sm={4}>
             <TextField
               fullWidth
-              label="Height (cm)"
-              type="number"
-              value={profile.heightCm || ''}
-              onChange={(e) => handleInputChange('heightCm', parseFloat(e.target.value) || undefined)}
-              placeholder="175"
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
               label="Weight (lbs)"
               type="number"
               value={profile.weight || ''}
               onChange={(e) => handleInputChange('weight', parseFloat(e.target.value) || undefined)}
               placeholder="150"
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Weight (kg)"
-              type="number"
-              value={profile.weightKg || ''}
-              onChange={(e) => handleInputChange('weightKg', parseFloat(e.target.value) || undefined)}
-              placeholder="70"
             />
           </Grid>
 

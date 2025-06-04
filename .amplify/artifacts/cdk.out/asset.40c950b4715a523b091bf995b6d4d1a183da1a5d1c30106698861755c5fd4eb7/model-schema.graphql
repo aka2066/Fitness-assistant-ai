@@ -1,0 +1,46 @@
+type UserProfile @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: public, provider: apiKey}])
+{
+  id: ID! @primaryKey
+  userId: String!
+  name: String
+  age: Int
+  heightFeet: Int
+  heightInches: Int
+  weight: Float
+  fitnessGoals: String
+  activityLevel: String
+  dietaryRestrictions: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  owner: String
+}
+
+type WorkoutLog @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: public, provider: apiKey}])
+{
+  id: ID! @primaryKey
+  userId: String!
+  type: String!
+  duration: Int
+  calories: Int
+  notes: String
+  exercises: String
+  date: AWSDateTime!
+  createdAt: AWSDateTime
+  owner: String
+}
+
+type MealLog @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: public, provider: apiKey}])
+{
+  id: ID! @primaryKey
+  userId: String!
+  type: String!
+  calories: Int
+  notes: String
+  foods: String
+  date: AWSDateTime!
+  createdAt: AWSDateTime
+  owner: String
+}
