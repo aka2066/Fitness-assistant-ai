@@ -4,7 +4,6 @@ frontend:
     preBuild:
       commands:
         - echo "Starting build process at $(date)"
-        - npm i
         - npm ci --legacy-peer-deps
     build:
       commands:
@@ -18,6 +17,16 @@ frontend:
     baseDirectory: .next
     files:
       - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - .next/cache/**/*
+backend:
+  phases:
+    build:
+      commands:
+        - npm ci --cache .npm --prefer-offline
+        - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
 
-# This configuration is for a Next.js app with external API connections
+# This configuration supports auto-deployment from GitHub
 # Environment variables are configured in the Amplify Console

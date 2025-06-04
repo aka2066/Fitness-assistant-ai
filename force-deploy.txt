@@ -1,2 +1,4 @@
 This file was added to force a new Amplify deployment.
-Timestamp: 2025-06-01T18:50:00-04:00
+Timestamp: 2025-06-04T03:30:00-04:00
+Updated with enhanced chatbot and verified DynamoDB connectivity.
+Auto-deployment configured for GitHub integration.
