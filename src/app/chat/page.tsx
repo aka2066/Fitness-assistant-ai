@@ -160,13 +160,8 @@ export default function ChatPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!currentMessage.trim()) {
-      console.log('❌ Empty message');
-      return;
-    }
-    
+    if (!currentMessage.trim()) return;
     if (!user) {
-      console.log('❌ No user found');
       setError('Please log in to use the chatbot');
       return;
     }
@@ -174,16 +169,11 @@ export default function ChatPage() {
     const userMessage = currentMessage.trim();
     const userId = user.userId || user.username || 'anonymous';
     
-    console.log('🚀 Submitting message:', userMessage);
-    console.log('👤 User ID:', userId);
-    console.log('🌍 Environment:', process.env.NODE_ENV);
-    console.log('🔗 Current URL:', window.location.href);
-    
     setCurrentMessage('');
     setLoading(true);
     setError(null);
 
-    // Add user message to chat
+    // Add user message to chat immediately
     const messageId = `msg-${Date.now()}`;
     setMessages(prev => [...prev, {
       id: messageId,
@@ -194,93 +184,33 @@ export default function ChatPage() {
     }]);
 
     try {
-      // Prepare chat history for API (convert our format to OpenAI format)
-      const chatHistory = messages.map(msg => [
-        { role: 'user' as const, content: msg.message },
-        { role: 'assistant' as const, content: msg.response }
-      ]).flat();
-
-      // Determine API URL - use relative path for both local and production
-      const apiUrl = '/api/chatbot-enhanced';
+      console.log('🚀 Sending message to chatbot...');
       
-      console.log('📤 Sending request to:', apiUrl);
-      console.log('📋 Request payload:', {
-        message: userMessage,
-        userId: userId,
-        historyLength: chatHistory.slice(-10).length
-      });
-      console.log('🌐 Current hostname:', window.location.hostname);
-      console.log('🔗 Full URL will be:', window.location.origin + apiUrl);
-
-      // Call the enhanced chatbot API that can access DynamoDB data
-      const response = await fetch(apiUrl, {
+      // Simple, direct API call
+      const response = await fetch('/api/chatbot-enhanced', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: userMessage,
           userId: userId,
-          chatHistory: chatHistory.slice(-10) // Keep last 10 messages for context
+          chatHistory: []
         }),
       });
 
       console.log('📥 Response status:', response.status);
-      console.log('📥 Response ok:', response.ok);
-      console.log('📥 Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ API Error Response:', errorText);
-        
-        // Try to parse the error response for a user-friendly message
-        try {
-          const errorData = JSON.parse(errorText);
-          if (errorData.message && errorData.message.includes('currently unavailable due to missing API configuration')) {
-            // This is a specific backend message we should show to the user
-            setError('Service Configuration');
-            setMessages(prev => [...prev, {
-              id: `${messageId}-backend-error`,
-              message: userMessage,
-              response: errorData.message,
-              timestamp: new Date().toISOString(),
-              isUser: false,
-            }]);
-            return;
-          }
-        } catch (parseError) {
-          // If parsing fails, continue with normal error handling
-        }
-        
-        throw new Error(`API returned ${response.status}: ${response.statusText} - ${errorText}`);
+        throw new Error(`HTTP ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('✅ API Response data:', data);
+      console.log('✅ Got response:', data.success);
       
-      if (!data.success) {
-        throw new Error(data.error || 'API returned success: false');
+      if (!data.success || !data.message) {
+        throw new Error('Invalid response');
       }
       
-      if (!data.message) {
-        throw new Error('API returned empty message');
-      }
-      
-      // Check if this is an error response disguised as success (like API key missing)
-      if (data.success && data.message && data.message.includes('currently unavailable due to missing API configuration')) {
-        // This is actually an error condition, handle it specially
-        setError('API Configuration Issue');
-        setMessages(prev => [...prev, {
-          id: `${messageId}-config-error`,
-          message: userMessage,
-          response: data.message,
-          timestamp: new Date().toISOString(),
-          isUser: false,
-        }]);
-        return; // Don't continue with normal processing
-      }
-      
-      // Add AI response to chat
+      // Add successful response to chat
       setMessages(prev => [...prev, {
         id: `${messageId}-response`,
         message: userMessage,
@@ -289,57 +219,17 @@ export default function ChatPage() {
         isUser: false,
         contextUsed: data.hasPersonalizedData || false,
         contextCount: data.contextDataPoints || 0,
-        agentType: useLangGraph ? 'rag-enhanced' : 'enhanced-ai',
+        agentType: 'enhanced-ai',
       }]);
 
-      console.log('✅ Message added to chat successfully');
-
     } catch (error) {
-      console.error('❌ Error getting chat response:', error);
+      console.error('❌ Chatbot error:', error);
       
-      let errorMessage = 'I apologize, but I\'m having trouble responding right now.';
-      let detailedError = '';
-      
-      if (error instanceof Error) {
-        console.log('🔍 Error details:', {
-          name: error.name,
-          message: error.message,
-          stack: error.stack
-        });
-        
-        // Parse different types of errors more carefully
-        if (error.message.includes('API returned 500')) {
-          errorMessage = 'The AI service is temporarily experiencing issues.';
-          detailedError = 'Please try again in a moment. If the problem persists, the service may be undergoing maintenance.';
-        } else if (error.message.includes('API returned 401')) {
-          errorMessage = 'Authentication issue detected.';
-          detailedError = 'Please refresh the page and try logging in again.';
-        } else if (error.message.includes('API returned 400')) {
-          errorMessage = 'There was an issue with your request.';
-          detailedError = 'Please try rephrasing your message or refresh the page.';
-        } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-          errorMessage = 'Unable to connect to the AI service.';
-          detailedError = 'Please check your internet connection and try again.';
-        } else if (error.message.includes('API returned empty message')) {
-          errorMessage = 'The AI service didn\'t provide a response.';
-          detailedError = 'This might be a temporary issue. Please try again.';
-        } else if (error.message.includes('success: false')) {
-          errorMessage = 'The AI service reported an error.';
-          detailedError = 'Please try again with a different message.';
-        } else {
-          // For any unknown error, provide a generic but helpful message
-          errorMessage = 'Something unexpected happened.';
-          detailedError = 'Please try refreshing the page or try again in a moment.';
-        }
-      }
-      
-      setError(errorMessage);
-      
-      // Add error message to chat
+      // Add simple error message
       setMessages(prev => [...prev, {
         id: `${messageId}-error`,
         message: userMessage,
-        response: `${errorMessage}${detailedError ? '\n\n' + detailedError : ''}`,
+        response: "I'm having trouble responding right now. Please try again.",
         timestamp: new Date().toISOString(),
         isUser: false,
       }]);
