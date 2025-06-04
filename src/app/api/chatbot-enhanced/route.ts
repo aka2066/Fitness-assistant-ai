@@ -349,18 +349,29 @@ export async function POST(request: NextRequest) {
     if (userData.workouts.length > 0) {
       hasPersonalizedData = true;
       contextDataPoints++;
-      personalizedContext += `Recent workouts: `;
-      userData.workouts.slice(-3).forEach(workout => {
-        personalizedContext += `${workout.type} for ${workout.duration} minutes (${workout.calories} calories), `;
+      personalizedContext += `\nWORKOUT HISTORY (${userData.workouts.length} total, most recent first): `;
+      userData.workouts.slice(0, 5).forEach((workout, index) => {
+        const date = workout.createdAt || workout.date;
+        personalizedContext += `\n${index + 1}. ${workout.type} - ${workout.duration} min, ${workout.calories} cal`;
+        if (date) personalizedContext += ` (${new Date(date).toLocaleDateString()})`;
+        if (workout.notes) personalizedContext += ` - Notes: "${workout.notes}"`;
+        if (workout.exercises) personalizedContext += ` - Exercises: ${workout.exercises}`;
       });
     }
 
     if (userData.meals.length > 0) {
       hasPersonalizedData = true;
       contextDataPoints++;
-      personalizedContext += `Recent meals: `;
-      userData.meals.slice(-3).forEach(meal => {
-        personalizedContext += `${meal.type} (${meal.calories} calories), `;
+      personalizedContext += `\nMEAL HISTORY (${userData.meals.length} total, most recent first): `;
+      userData.meals.slice(0, 5).forEach((meal, index) => {
+        const date = meal.createdAt || meal.date;
+        personalizedContext += `\n${index + 1}. ${meal.type || 'Meal'} - ${meal.calories} cal`;
+        if (date) personalizedContext += ` (${new Date(date).toLocaleDateString()})`;
+        if (meal.foods) personalizedContext += ` - Foods: ${meal.foods}`;
+        if (meal.notes) personalizedContext += ` - Notes: "${meal.notes}"`;
+        if (meal.protein) personalizedContext += ` - Protein: ${meal.protein}g`;
+        if (meal.carbs) personalizedContext += ` - Carbs: ${meal.carbs}g`;
+        if (meal.fat) personalizedContext += ` - Fat: ${meal.fat}g`;
       });
     }
 
@@ -372,9 +383,34 @@ export async function POST(request: NextRequest) {
       console.log('🚀 Enhanced with Pinecone RAG context');
     }
 
-    // 9. PREPARE SYSTEM MESSAGE
+    // 9. PREPARE ENHANCED SYSTEM MESSAGE
     const systemMessage = hasPersonalizedData 
-      ? `You are a personal fitness coach with access to the user's real fitness data and contextual information from their activity history. Use this information to provide personalized advice: ${personalizedContext.trim()}`
+      ? `You are an expert personal fitness coach with access to the user's complete fitness history and data. 
+
+CRITICAL INSTRUCTIONS FOR DATA ANALYSIS:
+- When user asks about "last meal" or "recent meal" - refer to their MOST RECENT meal, not all meals
+- When user asks about "last workout" - refer to their MOST RECENT workout specifically
+- When user mentions "notes" - analyze and reference their actual stored notes/comments, don't give generic advice
+- Always prioritize their ACTUAL DATA over general fitness knowledge
+- Be specific with dates, numbers, and personal details from their data
+
+USER'S ACTUAL DATA:
+${personalizedContext.trim()}
+
+RESPONSE GUIDELINES:
+1. Use their real name (${userData.profile?.name || 'User'}) in responses
+2. Reference specific workouts, meals, and metrics from their history
+3. When they ask for the "last" of something, give the most recent entry
+4. If they mention progress, compare current vs previous data points
+5. Keep responses personal and data-driven, not generic
+6. If they ask about notes/comments, analyze their actual written notes
+
+Example good responses:
+- "Your last meal was [specific meal] with [calories] calories on [date]"
+- "Looking at your notes from [date], I see you mentioned [actual note content]"
+- "Your most recent workout was [specific workout] for [duration] minutes"
+
+Respond as a knowledgeable coach who has studied their complete fitness journey.`
       : `You are a helpful fitness coach. The user doesn't have profile data yet, so provide general fitness advice and encourage them to set up their profile for personalized recommendations.`;
 
     console.log('💬 Sending to OpenAI with', hasPersonalizedData ? 'personalized + RAG' : 'general', 'context');
