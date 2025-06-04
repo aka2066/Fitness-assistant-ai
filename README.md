@@ -197,4 +197,6 @@ curl -X POST http://localhost:3000/api/test-pinecone \
 # Run test suite
 npm test
 ```
+https://www.loom.com/share/5602ce9328c344e6b129ddffbaf2fc53?sid=133dc0e8-13e5-47e3-872c-c8e19572d2c8
+
 **🎯 Assessment Complete: Full-stack RAG-powered fitness assistant with personalized AI coaching!** 
