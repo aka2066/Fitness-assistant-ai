@@ -229,7 +229,7 @@ export default function ChatPage() {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('❌ API Error Response:', errorText);
-        throw new Error(`API returned ${response.status}: ${response.statusText}`);
+        throw new Error(`API returned ${response.status}: ${response.statusText} - ${errorText}`);
       }
 
       const data = await response.json();
@@ -241,6 +241,20 @@ export default function ChatPage() {
       
       if (!data.message) {
         throw new Error('API returned empty message');
+      }
+      
+      // Check if this is an error response disguised as success (like API key missing)
+      if (data.success && data.message && data.message.includes('currently unavailable due to missing API configuration')) {
+        // This is actually an error condition, handle it specially
+        setError('API Configuration Issue');
+        setMessages(prev => [...prev, {
+          id: `${messageId}-config-error`,
+          message: userMessage,
+          response: data.message,
+          timestamp: new Date().toISOString(),
+          isUser: false,
+        }]);
+        return; // Don't continue with normal processing
       }
       
       // Add AI response to chat
@@ -270,9 +284,24 @@ export default function ChatPage() {
           stack: error.stack
         });
         
-        if (error.message.includes('500')) {
-          errorMessage = 'Server error - the AI service may be temporarily unavailable.';
-          detailedError = 'This could be due to missing API keys or server configuration issues.';
+        // Check if this is a response with an error message from our backend
+        if (error.message.includes('API returned') && error.message.includes('500')) {
+          // Try to extract the actual backend error message
+          try {
+            const errorText = error.message.split('500: ')[1];
+            if (errorText) {
+              const errorData = JSON.parse(errorText);
+              if (errorData.message) {
+                // Use the backend's helpful error message directly
+                errorMessage = 'Service Configuration Issue';
+                detailedError = errorData.message;
+              }
+            }
+          } catch (parseError) {
+            // If parsing fails, use default error handling
+            errorMessage = 'Server error - this might be due to missing environment variables in production.';
+            detailedError = 'The OpenAI API key may not be configured properly.';
+          }
         } else if (error.message.includes('401')) {
           errorMessage = 'Authentication error - unable to verify your identity.';
           detailedError = 'Please try refreshing the page and logging in again.';
@@ -294,7 +323,7 @@ export default function ChatPage() {
       setMessages(prev => [...prev, {
         id: `${messageId}-error`,
         message: userMessage,
-        response: `${errorMessage}\n\n${detailedError}`,
+        response: `${errorMessage}${detailedError ? '\n\n' + detailedError : ''}`,
         timestamp: new Date().toISOString(),
         isUser: false,
       }]);
