@@ -232,6 +232,26 @@ export default function ChatPage() {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('❌ API Error Response:', errorText);
+        
+        // Try to parse the error response for a user-friendly message
+        try {
+          const errorData = JSON.parse(errorText);
+          if (errorData.message && errorData.message.includes('currently unavailable due to missing API configuration')) {
+            // This is a specific backend message we should show to the user
+            setError('Service Configuration');
+            setMessages(prev => [...prev, {
+              id: `${messageId}-backend-error`,
+              message: userMessage,
+              response: errorData.message,
+              timestamp: new Date().toISOString(),
+              isUser: false,
+            }]);
+            return;
+          }
+        } catch (parseError) {
+          // If parsing fails, continue with normal error handling
+        }
+        
         throw new Error(`API returned ${response.status}: ${response.statusText} - ${errorText}`);
       }
 
@@ -277,7 +297,7 @@ export default function ChatPage() {
     } catch (error) {
       console.error('❌ Error getting chat response:', error);
       
-      let errorMessage = 'Sorry, I encountered an error. Please try again.';
+      let errorMessage = 'I apologize, but I\'m having trouble responding right now.';
       let detailedError = '';
       
       if (error instanceof Error) {
@@ -287,42 +307,35 @@ export default function ChatPage() {
           stack: error.stack
         });
         
-        // Check if this is a response with an error message from our backend
-        if (error.message.includes('API returned') && error.message.includes('500')) {
-          // Try to extract the actual backend error message
-          try {
-            const errorText = error.message.split('500: ')[1];
-            if (errorText) {
-              const errorData = JSON.parse(errorText);
-              if (errorData.message) {
-                // Use the backend's helpful error message directly
-                errorMessage = 'Service Configuration Issue';
-                detailedError = errorData.message;
-              }
-            }
-          } catch (parseError) {
-            // If parsing fails, use default error handling
-            errorMessage = 'Server error - this might be due to missing environment variables in production.';
-            detailedError = 'The OpenAI API key may not be configured properly.';
-          }
-        } else if (error.message.includes('401')) {
-          errorMessage = 'Authentication error - unable to verify your identity.';
-          detailedError = 'Please try refreshing the page and logging in again.';
-        } else if (error.message.includes('NetworkError') || error.message.includes('fetch')) {
-          errorMessage = 'Network error - please check your internet connection.';
-          detailedError = 'Could not connect to the AI service.';
+        // Parse different types of errors more carefully
+        if (error.message.includes('API returned 500')) {
+          errorMessage = 'The AI service is temporarily experiencing issues.';
+          detailedError = 'Please try again in a moment. If the problem persists, the service may be undergoing maintenance.';
+        } else if (error.message.includes('API returned 401')) {
+          errorMessage = 'Authentication issue detected.';
+          detailedError = 'Please refresh the page and try logging in again.';
+        } else if (error.message.includes('API returned 400')) {
+          errorMessage = 'There was an issue with your request.';
+          detailedError = 'Please try rephrasing your message or refresh the page.';
+        } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+          errorMessage = 'Unable to connect to the AI service.';
+          detailedError = 'Please check your internet connection and try again.';
+        } else if (error.message.includes('API returned empty message')) {
+          errorMessage = 'The AI service didn\'t provide a response.';
+          detailedError = 'This might be a temporary issue. Please try again.';
         } else if (error.message.includes('success: false')) {
-          errorMessage = 'The AI service returned an error.';
-          detailedError = 'The chatbot may be experiencing technical difficulties.';
+          errorMessage = 'The AI service reported an error.';
+          detailedError = 'Please try again with a different message.';
         } else {
-          errorMessage = `Connection error: ${error.message}`;
-          detailedError = 'Please try again in a moment.';
+          // For any unknown error, provide a generic but helpful message
+          errorMessage = 'Something unexpected happened.';
+          detailedError = 'Please try refreshing the page or try again in a moment.';
         }
       }
       
       setError(errorMessage);
       
-      // Add error message to chat with more details
+      // Add error message to chat
       setMessages(prev => [...prev, {
         id: `${messageId}-error`,
         message: userMessage,
