@@ -21,12 +21,7 @@ frontend:
     paths:
       - node_modules/**/*
       - .next/cache/**/*
-backend:
-  phases:
-    build:
-      commands:
-        - npm ci --cache .npm --prefer-offline
-        - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
 
-# This configuration supports auto-deployment from GitHub
+# This configuration is for frontend hosting only
+# Backend runs separately via sandbox: npx ampx sandbox
 # Environment variables are configured in the Amplify Console
