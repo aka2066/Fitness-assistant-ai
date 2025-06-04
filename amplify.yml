@@ -11,6 +11,8 @@ frontend:
         - echo "OPENAI_API_KEY=$OPENAI_API_KEY" >> .env.local
         - echo "PINECONE_API_KEY=$PINECONE_API_KEY" >> .env.local
         - echo "PINECONE_INDEX_NAME=$PINECONE_INDEX_NAME" >> .env.local
+        - echo "AMPLIFY_ACCESS_KEY_ID=$AMPLIFY_ACCESS_KEY_ID" >> .env.local
+        - echo "AMPLIFY_SECRET_ACCESS_KEY=$AMPLIFY_SECRET_ACCESS_KEY" >> .env.local
         - echo "Environment variables set:"
         - cat .env.local
         - echo "Starting Next.js build"
