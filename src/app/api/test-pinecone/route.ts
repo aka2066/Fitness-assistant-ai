@@ -62,4 +62,66 @@ export async function GET() {
       message: 'Pinecone connection failed'
     }, { status: 500 });
   }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const { userId } = await request.json();
+
+    if (!userId) {
+      return NextResponse.json({
+        success: false,
+        error: 'UserId is required'
+      }, { status: 400 });
+    }
+
+    if (!process.env.PINECONE_API_KEY) {
+      return NextResponse.json({
+        success: false,
+        error: 'Pinecone API key not configured'
+      }, { status: 500 });
+    }
+
+    const pinecone = new Pinecone({
+      apiKey: process.env.PINECONE_API_KEY,
+    });
+
+    const index = pinecone.index('fitness-assistant');
+    
+    // Query for all vectors in this user's namespace
+    const queryResponse = await index.namespace(userId).query({
+      vector: new Array(1536).fill(0), // Dummy vector to get all results
+      topK: 10,
+      includeMetadata: true,
+    });
+
+    console.log('🔍 Pinecone Test Results:', {
+      userId,
+      totalVectors: queryResponse.matches?.length || 0,
+      vectors: queryResponse.matches?.map(match => ({
+        id: match.id,
+        score: match.score,
+        metadata: match.metadata
+      }))
+    });
+
+    return NextResponse.json({
+      success: true,
+      userId,
+      totalVectors: queryResponse.matches?.length || 0,
+      vectors: queryResponse.matches?.map(match => ({
+        id: match.id,
+        score: match.score,
+        metadata: match.metadata
+      })) || [],
+      message: `Found ${queryResponse.matches?.length || 0} vectors for user ${userId}`
+    });
+
+  } catch (error) {
+    console.error('Pinecone test error:', error);
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to test Pinecone: ' + (error as Error).message
+    }, { status: 500 });
+  }
 } 

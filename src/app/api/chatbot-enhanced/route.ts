@@ -226,21 +226,29 @@ async function fetchPineconeContext(userId: string, message: string): Promise<st
 
     if (queryResponse.matches && queryResponse.matches.length > 0) {
       console.log('🎯 Found', queryResponse.matches.length, 'relevant context items from Pinecone');
+      console.log('🔍 Sample match metadata:', JSON.stringify(queryResponse.matches[0]?.metadata, null, 2));
       
       // Extract relevant context from matches
       const contextItems = queryResponse.matches
         .filter(match => match.score && match.score > 0.7) // Only high-relevance matches
         .map(match => {
           const metadata = match.metadata as any;
-          return `${metadata?.type || 'activity'}: ${metadata?.summary || metadata?.data || 'No details'}`;
+          // Check multiple possible content fields from your embedding storage
+          const content = metadata?.content || metadata?.summary || metadata?.data || 'No details available';
+          const type = metadata?.type || 'activity';
+          const date = metadata?.timestamp ? new Date(metadata.timestamp).toLocaleDateString() : '';
+          
+          return `${type}${date ? ` (${date})` : ''}: ${content}`;
         })
         .slice(0, 3); // Limit to top 3 matches
 
+      console.log('📝 Extracted context items:', contextItems);
+
       return contextItems.length > 0 
-        ? `Recent relevant activities: ${contextItems.join('; ')}`
+        ? `\nRELEVANT CONTEXT FROM PINECONE RAG:\n${contextItems.join('\n')}\n`
         : '';
     } else {
-      console.log('ℹ️ No relevant context found in Pinecone');
+      console.log('ℹ️ No relevant context found in Pinecone (no matches or low scores)');
       return '';
     }
   } catch (error) {

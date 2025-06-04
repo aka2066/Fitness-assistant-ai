@@ -44,6 +44,7 @@ export default function AnalyticsPage() {
       if (!user) return;
       
       try {
+        // Use the same API that the chatbot uses to get comprehensive user data
         const response = await fetch('/api/debug-user-data', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -51,10 +52,18 @@ export default function AnalyticsPage() {
         });
         
         const data = await response.json();
+        console.log('📊 Analytics data received:', data);
+        
         if (data.success && data.debug) {
+          // Fetch the actual workout and meal arrays using GraphQL
+          const [workoutsData, mealsData] = await Promise.all([
+            fetchWorkouts(),
+            fetchMeals()
+          ]);
+          
           setAnalyticsData({
-            workouts: data.debug.workouts || [],
-            meals: data.debug.meals || [],
+            workouts: workoutsData,
+            meals: mealsData,
             profile: data.debug.foundProfile
           });
         }
@@ -62,6 +71,85 @@ export default function AnalyticsPage() {
         console.error('Failed to fetch analytics data:', error);
       } finally {
         setLoading(false);
+      }
+    };
+
+    const fetchWorkouts = async () => {
+      try {
+        const { generateClient } = await import('aws-amplify/api');
+        const client = generateClient();
+        
+        const listQuery = `
+          query ListWorkoutLogs($filter: ModelWorkoutLogFilterInput) {
+            listWorkoutLogs(filter: $filter) {
+              items {
+                id
+                userId
+                type
+                duration
+                calories
+                notes
+                exercises
+                date
+                createdAt
+                updatedAt
+              }
+            }
+          }
+        `;
+        
+        const result: any = await client.graphql({
+          query: listQuery,
+          variables: {
+            filter: {
+              userId: { eq: user!.userId }
+            }
+          }
+        });
+
+        return result.data?.listWorkoutLogs?.items || [];
+      } catch (error) {
+        console.error('Error fetching workouts:', error);
+        return [];
+      }
+    };
+
+    const fetchMeals = async () => {
+      try {
+        const { generateClient } = await import('aws-amplify/api');
+        const client = generateClient();
+        
+        const listQuery = `
+          query ListMealLogs($filter: ModelMealLogFilterInput) {
+            listMealLogs(filter: $filter) {
+              items {
+                id
+                userId
+                type
+                calories
+                notes
+                foods
+                date
+                createdAt
+                updatedAt
+              }
+            }
+          }
+        `;
+        
+        const result: any = await client.graphql({
+          query: listQuery,
+          variables: {
+            filter: {
+              userId: { eq: user!.userId }
+            }
+          }
+        });
+
+        return result.data?.listMealLogs?.items || [];
+      } catch (error) {
+        console.error('Error fetching meals:', error);
+        return [];
       }
     };
 
