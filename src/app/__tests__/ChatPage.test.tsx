@@ -39,9 +39,10 @@ global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({
-      response: 'Mock AI response from chatbot',
-      context: [],
-      contextUsed: false,
+      success: true,
+      message: 'Mock AI response from chatbot',
+      hasPersonalizedData: false,
+      contextDataPoints: 0,
     }),
   })
 ) as jest.Mock;
