@@ -1,17 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
-import AWS from 'aws-sdk';
+import { Amplify } from 'aws-amplify';
+import { generateClient } from 'aws-amplify/api';
+import outputs from '../../../../amplify_outputs.json';
+
+// Configure Amplify
+Amplify.configure(outputs);
+const client = generateClient();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-// Configure AWS SDK
-AWS.config.update({
-  region: 'us-east-2',
-});
-
-const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
@@ -24,56 +23,94 @@ interface UserData {
   meals: any[];
 }
 
-// Fetch user data directly from DynamoDB using AWS SDK
+// Fetch user data using GraphQL (works in production)
 async function fetchUserData(userId: string): Promise<UserData> {
   try {
     console.log('🔍 Fetching user data for chatbot:', userId);
 
     const results = await Promise.allSettled([
       // Fetch user profile
-      dynamodb.scan({
-        TableName: 'UserProfile-b7vimfsyujdibnpphmpxriv3c4-NONE',
-        FilterExpression: 'userId = :userId',
-        ExpressionAttributeValues: {
-          ':userId': userId
+      client.graphql({
+        query: `
+          query ListUserProfiles($filter: ModelUserProfileFilterInput) {
+            listUserProfiles(filter: $filter) {
+              items {
+                id
+                userId
+                name
+                age
+                heightFeet
+                heightInches
+                weight
+                fitnessGoals
+                activityLevel
+                dietaryRestrictions
+                createdAt
+                updatedAt
+              }
+            }
+          }
+        `,
+        variables: {
+          filter: {
+            userId: { eq: userId }
+          }
         }
-      }).promise(),
-
+      }),
       // Fetch workout logs
-      dynamodb.scan({
-        TableName: 'WorkoutLog-b7vimfsyujdibnpphmpxriv3c4-NONE',
-        FilterExpression: 'userId = :userId',
-        ExpressionAttributeValues: {
-          ':userId': userId
+      client.graphql({
+        query: `
+          query ListWorkoutLogs($filter: ModelWorkoutLogFilterInput) {
+            listWorkoutLogs(filter: $filter) {
+              items {
+                id
+                userId
+                type
+                duration
+                calories
+                notes
+                createdAt
+              }
+            }
+          }
+        `,
+        variables: {
+          filter: {
+            userId: { eq: userId }
+          }
         }
-      }).promise(),
-
+      }),
       // Fetch meal logs
-      dynamodb.scan({
-        TableName: 'MealLog-b7vimfsyujdibnpphmpxriv3c4-NONE',
-        FilterExpression: 'userId = :userId',
-        ExpressionAttributeValues: {
-          ':userId': userId
+      client.graphql({
+        query: `
+          query ListMealLogs($filter: ModelMealLogFilterInput) {
+            listMealLogs(filter: $filter) {
+              items {
+                id
+                userId
+                type
+                calories
+                notes
+                createdAt
+              }
+            }
+          }
+        `,
+        variables: {
+          filter: {
+            userId: { eq: userId }
+          }
         }
-      }).promise()
+      })
     ]);
 
-    // Extract data from results
-    const profile = results[0].status === 'fulfilled' 
-      ? (results[0].value as any).Items?.[0] 
-      : null;
+    const profileResult = results[0].status === 'fulfilled' ? results[0].value : null;
+    const workoutResult = results[1].status === 'fulfilled' ? results[1].value : null;
+    const mealResult = results[2].status === 'fulfilled' ? results[2].value : null;
 
-    const workouts = results[1].status === 'fulfilled' 
-      ? (results[1].value as any).Items || []
-      : [];
-
-    const meals = results[2].status === 'fulfilled' 
-      ? (results[2].value as any).Items || []
-      : [];
-
-    // Sort by date (newest first)
-    workouts.sort((a: any, b: any) => new Date(b.date || b.createdAt).getTime() - new Date(a.date || a.createdAt).getTime());
-    meals.sort((a: any, b: any) => new Date(b.date || b.createdAt).getTime() - new Date(a.date || a.createdAt).getTime());
+    const profile = (profileResult as any)?.data?.listUserProfiles?.items?.[0] || null;
+    const workouts = (workoutResult as any)?.data?.listWorkoutLogs?.items || [];
+    const meals = (mealResult as any)?.data?.listMealLogs?.items || [];
 
     console.log('📊 Fetched user data:', {
       profile: profile ? `Found profile for ${profile.name}, age ${profile.age}` : 'No profile',
@@ -89,171 +126,118 @@ async function fetchUserData(userId: string): Promise<UserData> {
   }
 }
 
-// Generate context string from user data
-function generateContext(userData: UserData): string {
-  const { profile, workouts, meals } = userData;
-  
-  let context = '';
-
-  // Profile context
-  if (profile) {
-    context += `USER PROFILE:\n`;
-    context += `- Name: ${profile.name}\n`;
-    if (profile.age) context += `- Age: ${profile.age} years old\n`;
-    if (profile.heightFeet && profile.heightInches) {
-      context += `- Height: ${profile.heightFeet}'${profile.heightInches}"\n`;
-    }
-    if (profile.weight) context += `- Weight: ${profile.weight} lbs\n`;
-    if (profile.fitnessGoals) context += `- Fitness Goals: ${profile.fitnessGoals}\n`;
-    if (profile.activityLevel) context += `- Activity Level: ${profile.activityLevel}\n`;
-    if (profile.dietaryRestrictions) context += `- Dietary Restrictions: ${profile.dietaryRestrictions}\n`;
-    context += `\n`;
-  }
-
-  // Recent workouts context
-  if (workouts.length > 0) {
-    context += `RECENT WORKOUTS (${workouts.length}):\n`;
-    workouts.slice(0, 5).forEach((workout: any, index: number) => {
-      const date = new Date(workout.date || workout.createdAt).toLocaleDateString();
-      context += `${index + 1}. ${workout.type} workout on ${date}`;
-      if (workout.duration) context += ` - ${workout.duration} minutes`;
-      if (workout.calories) context += ` - ${workout.calories} calories burned`;
-      if (workout.exercises) {
-        try {
-          const exercises = JSON.parse(workout.exercises);
-          if (Array.isArray(exercises) && exercises.length > 0) {
-            const exerciseList = exercises.map((ex: any) => 
-              `${ex.name || ex.exercise}${ex.sets ? ` (${ex.sets}x${ex.reps})` : ''}`
-            ).join(', ');
-            context += ` - Exercises: ${exerciseList}`;
-          }
-        } catch (e) {
-          // If not valid JSON, include as text
-          context += ` - ${workout.exercises}`;
-        }
-      }
-      if (workout.notes) context += ` - Notes: ${workout.notes}`;
-      context += `\n`;
-    });
-    context += `\n`;
-  }
-
-  // Recent meals context
-  if (meals.length > 0) {
-    context += `RECENT MEALS (${meals.length}):\n`;
-    meals.slice(0, 5).forEach((meal: any, index: number) => {
-      const date = new Date(meal.date || meal.createdAt).toLocaleDateString();
-      context += `${index + 1}. ${meal.type} on ${date}`;
-      if (meal.calories) context += ` - ${meal.calories} calories`;
-      if (meal.foods) {
-        try {
-          const foods = JSON.parse(meal.foods);
-          if (Array.isArray(foods) && foods.length > 0) {
-            const foodList = foods.map((food: any) => food.name || food.food).join(', ');
-            context += ` - Foods: ${foodList}`;
-          }
-        } catch (e) {
-          // If not valid JSON, include as text
-          context += ` - ${meal.foods}`;
-        }
-      }
-      if (meal.notes) context += ` - Notes: ${meal.notes}`;
-      context += `\n`;
-    });
-  }
-
-  return context;
-}
-
 export async function POST(request: NextRequest) {
   try {
-    const { message, chatHistory = [], userId } = await request.json();
+    const { message, userId, chatHistory = [] } = await request.json();
+    
+    console.log('🤖 Enhanced chatbot request:', {
+      message,
+      userId,
+      historyLength: chatHistory.length
+    });
 
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error('OpenAI API key not configured');
-    }
-
-    if (!userId) {
+    if (!message?.trim()) {
       return NextResponse.json({
         success: false,
-        error: 'User ID is required for personalized responses'
-      }, { status: 400 });
+        error: 'Message is required'
+      });
     }
 
-    console.log('🤖 Enhanced chatbot request:', { message, userId, historyLength: chatHistory.length });
-
-    // Fetch user data from DynamoDB
+    // Fetch user's real data from DynamoDB
     const userData = await fetchUserData(userId);
-    const hasData = userData.profile || userData.workouts.length > 0 || userData.meals.length > 0;
     
-    // Generate context from user data
-    const contextData = generateContext(userData);
+    // Build personalized context
+    let personalizedContext = '';
+    let hasPersonalizedData = false;
+    let contextDataPoints = 0;
 
-    // Create system prompt with context
-    const systemPrompt = `You are a knowledgeable fitness and nutrition assistant specialized in providing personalized advice. Your goal is to provide helpful, accurate, and personalized recommendations based on the user's actual data.
+    if (userData.profile) {
+      hasPersonalizedData = true;
+      contextDataPoints++;
+      personalizedContext += `User Profile: ${userData.profile.name || 'User'}, age ${userData.profile.age}, `;
+      
+      if (userData.profile.heightFeet && userData.profile.heightInches) {
+        personalizedContext += `height ${userData.profile.heightFeet}'${userData.profile.heightInches}", `;
+      }
+      
+      if (userData.profile.weight) {
+        personalizedContext += `weight ${userData.profile.weight} lbs, `;
+      }
+      
+      if (userData.profile.fitnessGoals) {
+        personalizedContext += `fitness goals: ${userData.profile.fitnessGoals}, `;
+      }
+      
+      if (userData.profile.activityLevel) {
+        personalizedContext += `activity level: ${userData.profile.activityLevel}, `;
+      }
+      
+      if (userData.profile.dietaryRestrictions) {
+        personalizedContext += `dietary restrictions: ${userData.profile.dietaryRestrictions}, `;
+      }
+    }
 
-${hasData ? `IMPORTANT - USER'S ACTUAL DATA:
-${contextData}
+    if (userData.workouts.length > 0) {
+      hasPersonalizedData = true;
+      contextDataPoints++;
+      personalizedContext += `Recent workouts: `;
+      userData.workouts.slice(-3).forEach(workout => {
+        personalizedContext += `${workout.type} for ${workout.duration} minutes (${workout.calories} calories), `;
+      });
+    }
 
-Based on this real data, provide personalized advice that references their specific profile, workouts, and meals. Be specific about their progress, patterns, and areas for improvement.` : 'The user hasn\'t logged any data yet. Provide general fitness advice and encourage them to start logging their workouts, meals, and profile information for more personalized recommendations.'}
+    if (userData.meals.length > 0) {
+      hasPersonalizedData = true;
+      contextDataPoints++;
+      personalizedContext += `Recent meals: `;
+      userData.meals.slice(-3).forEach(meal => {
+        personalizedContext += `${meal.type} (${meal.calories} calories), `;
+      });
+    }
 
-Guidelines:
-- Be encouraging and supportive
-- Provide specific, actionable advice based on their actual data
-- Reference their specific workouts, meals, goals, and progress when relevant
-- Suggest improvements based on their current patterns
-- Ask clarifying questions when needed
-- Always prioritize safety and recommend consulting healthcare professionals for medical concerns
-- Keep responses conversational, friendly, and motivating
-- If they ask about data they haven't logged yet, encourage them to start tracking it`;
+    // Prepare system message
+    const systemMessage = hasPersonalizedData 
+      ? `You are a personal fitness coach with access to the user's real fitness data. Use this information to provide personalized advice: ${personalizedContext.trim()}`
+      : `You are a helpful fitness coach. The user doesn't have profile data yet, so provide general fitness advice and encourage them to set up their profile for personalized recommendations.`;
 
-    // Prepare messages for OpenAI
+    console.log('💬 Sending to OpenAI with', hasPersonalizedData ? 'personalized' : 'general', 'context');
+    console.log('📊 Data summary:', `Profile ${userData.profile ? '✓' : '✗'} | ${userData.workouts.length} workouts | ${userData.meals.length} meals`);
+
+    // Call OpenAI with personalized context
     const messages: ChatMessage[] = [
-      { role: 'system', content: systemPrompt },
-      ...chatHistory.slice(-10), // Keep last 10 messages for context
+      { role: 'system', content: systemMessage },
+      ...chatHistory.slice(-10), // Include recent chat history
       { role: 'user', content: message }
     ];
 
-    console.log(`💬 Sending to OpenAI with ${hasData ? 'personalized' : 'general'} context`);
-    console.log(`📊 Data summary: ${userData.profile ? 'Profile ✓' : 'Profile ✗'} | ${userData.workouts.length} workouts | ${userData.meals.length} meals`);
-
-    // Get response from OpenAI
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
-      messages,
-      max_tokens: 600,
+      messages: messages,
+      max_tokens: 500,
       temperature: 0.7,
-      stream: false,
     });
 
-    const assistantMessage = completion.choices[0]?.message?.content || 'I apologize, but I cannot provide a response at the moment.';
-
+    const responseMessage = completion.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
+    
     console.log('✅ Enhanced chatbot response generated successfully');
 
     return NextResponse.json({
       success: true,
-      message: assistantMessage,
-      hasPersonalizedData: hasData,
-      dataSource: 'DynamoDB_Direct',
-      dataSummary: {
-        profile: !!userData.profile,
-        workouts: userData.workouts.length,
-        meals: userData.meals.length
-      }
+      message: responseMessage,
+      hasPersonalizedData,
+      contextDataPoints,
+      userData: hasPersonalizedData ? {
+        hasProfile: !!userData.profile,
+        workoutCount: userData.workouts.length,
+        mealCount: userData.meals.length
+      } : null
     });
 
   } catch (error) {
     console.error('❌ Enhanced chatbot error:', error);
-
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-    
-    return NextResponse.json(
-      {
-        success: false,
-        error: errorMessage,
-        message: 'I apologize, but I\'m experiencing technical difficulties. Please try again later.'
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
+    });
   }
 } 
