@@ -83,13 +83,16 @@ export default function ChatPage() {
               const responseText = data.message || '';
               
               // Look for patterns like "Hi [Name]" or "your profile shows [Name]" 
-              const nameMatch = responseText.match(/(?:Hi |Hello |profile shows |you are |your name is )([A-Za-z\s]+?)(?:[,.!]|$)/i);
+              const nameMatch = responseText.match(/(?:Hi |Hello |Your name is |you are |profile shows |name is |you're )([A-Za-z\s]+?)(?:[,.\!]|$|\d|\s+you|\s+and|\s+age|\s+who)/i);
               
               if (nameMatch && nameMatch[1]) {
                 const extractedName = nameMatch[1].trim();
-                console.log('✅ Extracted user name from response:', extractedName);
-                setUserProfile({ name: extractedName });
-                return;
+                // Make sure the extracted name is reasonable (not just single letters or very long)
+                if (extractedName.length >= 2 && extractedName.length <= 50 && !extractedName.includes('user')) {
+                  console.log('✅ Extracted user name from response:', extractedName);
+                  setUserProfile({ name: extractedName });
+                  return;
+                }
               }
             }
           }
@@ -137,11 +140,15 @@ export default function ChatPage() {
   useEffect(() => {
     if (messages.length === 0) {
       const userName = userProfile?.name || user?.username || 'there';
+      // Make the welcome message more personal if we have a real name
+      const isRealName = userProfile?.name && userProfile.name !== user?.username;
+      const greeting = isRealName ? `Hi ${userName}!` : `Hi there!`;
+      
       setMessages([
         {
           id: 'welcome',
           message: '',
-          response: `Hi ${userName}! I'm your AI fitness coach powered by OpenAI with access to your real fitness data. I can provide personalized workout recommendations, nutrition advice, and progress tracking based on your actual profile, workout logs, and meal logs stored in our database. Ask me anything about your fitness journey, and I'll give you personalized advice based on your real data!`,
+          response: `${greeting} I'm your AI fitness coach powered by OpenAI with access to your real fitness data. I can provide personalized workout recommendations, nutrition advice, and progress tracking based on your actual profile, workout logs, and meal logs stored in our database. ${isRealName ? `Nice to see you, ${userName}!` : ''} Ask me anything about your fitness journey, and I'll give you personalized advice based on your real data!`,
           timestamp: new Date().toISOString(),
           isUser: false,
           agentType: 'enhanced-ai',
