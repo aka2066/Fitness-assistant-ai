@@ -4,6 +4,16 @@ import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import ProfilePage from '../profile/page';
 
+// Mock Next.js router
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+    refresh: jest.fn(),
+  })),
+}));
+
 // Mock AWS Amplify
 jest.mock('aws-amplify/auth', () => ({
   getCurrentUser: jest.fn().mockResolvedValue({
@@ -83,8 +93,9 @@ describe('ProfilePage', () => {
     });
     
     expect(screen.getByLabelText('Age')).toBeInTheDocument();
-    expect(screen.getByLabelText('Height (cm)')).toBeInTheDocument();
-    expect(screen.getByLabelText('Weight (kg)')).toBeInTheDocument();
+    expect(screen.getByLabelText('Height (feet)')).toBeInTheDocument();
+    expect(screen.getByLabelText('Height (inches)')).toBeInTheDocument();
+    expect(screen.getByLabelText('Weight (lbs)')).toBeInTheDocument();
     expect(screen.getByLabelText('Fitness Goals')).toBeInTheDocument();
   });
 
@@ -112,16 +123,16 @@ describe('ProfilePage', () => {
     });
     
     await waitFor(() => {
-      expect(screen.getByLabelText('Height (cm)')).toBeInTheDocument();
+      expect(screen.getByLabelText('Height (feet)')).toBeInTheDocument();
     });
     
-    const heightInput = screen.getByLabelText('Height (cm)') as HTMLInputElement;
+    const heightInput = screen.getByLabelText('Height (feet)') as HTMLInputElement;
     
     await act(async () => {
-      fireEvent.change(heightInput, { target: { value: '175' } });
+      fireEvent.change(heightInput, { target: { value: '5' } });
     });
     
-    expect(heightInput.value).toBe('175');
+    expect(heightInput.value).toBe('5');
   });
 
   it('validates weight input within acceptable range', async () => {
@@ -130,16 +141,16 @@ describe('ProfilePage', () => {
     });
     
     await waitFor(() => {
-      expect(screen.getByLabelText('Weight (kg)')).toBeInTheDocument();
+      expect(screen.getByLabelText('Weight (lbs)')).toBeInTheDocument();
     });
     
-    const weightInput = screen.getByLabelText('Weight (kg)') as HTMLInputElement;
+    const weightInput = screen.getByLabelText('Weight (lbs)') as HTMLInputElement;
     
     await act(async () => {
-      fireEvent.change(weightInput, { target: { value: '70' } });
+      fireEvent.change(weightInput, { target: { value: '150' } });
     });
     
-    expect(weightInput.value).toBe('70');
+    expect(weightInput.value).toBe('150');
   });
 
   it('allows fitness goals text input', async () => {
