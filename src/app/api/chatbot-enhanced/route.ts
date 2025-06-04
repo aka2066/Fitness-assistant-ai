@@ -16,14 +16,17 @@ AWS.config.update({
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-// Try to configure Amplify (might not work in API routes)
+// Properly configure Amplify for serverless API routes
 try {
   Amplify.configure(outputs);
+  console.log('✅ Amplify configured successfully for API route');
 } catch (error) {
   console.log('🔧 Amplify config failed in API route, using AWS SDK fallback');
 }
 
-const client = generateClient();
+const client = generateClient({
+  authMode: 'apiKey' // Use API key auth mode for public access
+});
 
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
@@ -36,13 +39,14 @@ interface UserData {
   meals: any[];
 }
 
-// Fetch user data using GraphQL (try first)
+// Fetch user data using GraphQL (improved version)
 async function fetchUserDataGraphQL(userId: string): Promise<UserData> {
   try {
-    console.log('🔍 Trying GraphQL method for user:', userId);
+    console.log('🔍 Trying improved GraphQL method for user:', userId);
 
+    // Use listUserProfiles with API key auth (public access)
     const results = await Promise.allSettled([
-      // Fetch user profile
+      // Fetch user profile with API key auth
       client.graphql({
         query: `
           query ListUserProfiles($filter: ModelUserProfileFilterInput) {
@@ -70,7 +74,7 @@ async function fetchUserDataGraphQL(userId: string): Promise<UserData> {
           }
         }
       }),
-      // Fetch workout logs
+      // Fetch workout logs with API key auth
       client.graphql({
         query: `
           query ListWorkoutLogs($filter: ModelWorkoutLogFilterInput) {
@@ -93,7 +97,7 @@ async function fetchUserDataGraphQL(userId: string): Promise<UserData> {
           }
         }
       }),
-      // Fetch meal logs
+      // Fetch meal logs with API key auth
       client.graphql({
         query: `
           query ListMealLogs($filter: ModelMealLogFilterInput) {
@@ -127,7 +131,12 @@ async function fetchUserDataGraphQL(userId: string): Promise<UserData> {
 
     // Check if we got valid data
     if (profile || workouts.length > 0 || meals.length > 0) {
-      console.log('✅ GraphQL method successful');
+      console.log('✅ GraphQL method successful with improved config');
+      console.log('📊 GraphQL data fetched:', {
+        profile: profile ? `Found profile for ${profile.name}, age ${profile.age}` : 'No profile',
+        workouts: `${workouts.length} workouts`,
+        meals: `${meals.length} meals`
+      });
       return { profile, workouts, meals };
     } else {
       throw new Error('No data returned from GraphQL');
@@ -199,10 +208,10 @@ async function fetchUserDataAWS(userId: string): Promise<UserData> {
   }
 }
 
-// Hybrid fetch: try GraphQL first, fallback to AWS SDK
+// Hybrid fetch: try improved GraphQL first, fallback to AWS SDK
 async function fetchUserData(userId: string): Promise<UserData> {
   try {
-    // Try GraphQL method first (works in client-side and some API environments)
+    // Try improved GraphQL method first (with proper API route config)
     const data = await fetchUserDataGraphQL(userId);
     return data;
   } catch (error) {
