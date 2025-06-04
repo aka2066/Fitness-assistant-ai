@@ -192,32 +192,34 @@ export default function Dashboard() {
         sx={{ 
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           color: 'white',
-          py: 8,
-          mb: 6
+          py: { xs: 4, sm: 5, md: 6 },
+          mb: 4
         }}
       >
         <Container maxWidth="lg">
           <Box sx={{ textAlign: 'center' }}>
             <Typography 
-              variant="h2" 
+              variant="h3" 
               component="h1" 
               gutterBottom 
-              fontWeight="700"
+              fontWeight="600"
               sx={{ 
-                fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4rem' },
-                mb: 2 
+                fontSize: { xs: '1.8rem', sm: '2.2rem', md: '2.5rem' },
+                mb: 1.5,
+                letterSpacing: '-0.02em'
               }}
             >
               {userName ? `Welcome back, ${userName}! 👋` : 'Your AI-Powered Fitness Assistant'}
             </Typography>
             <Typography 
-              variant="h5" 
+              variant="body1" 
               sx={{ 
-                opacity: 0.9, 
-                maxWidth: '600px', 
+                opacity: 0.85, 
+                maxWidth: '500px', 
                 mx: 'auto', 
-                lineHeight: 1.6,
-                fontSize: { xs: '1.1rem', sm: '1.3rem' }
+                lineHeight: 1.5,
+                fontSize: { xs: '1rem', sm: '1.1rem' },
+                fontWeight: 400
               }}
             >
               Track your workouts and meals while getting personalized recommendations based on your fitness journey.
@@ -228,15 +230,27 @@ export default function Dashboard() {
 
       <Container maxWidth="lg" sx={{ mb: 8 }}>
         {/* Quick Actions Grid */}
-        <Typography 
-          variant="h3" 
-          component="h2" 
-          gutterBottom 
-          textAlign="center" 
-          sx={{ mb: 5, fontWeight: 600, color: 'text.primary' }}
-        >
-          Get Started
-        </Typography>
+        <Box sx={{ textAlign: 'center', mb: 4 }}>
+          <Typography 
+            variant="h4" 
+            component="h2" 
+            sx={{ 
+              fontWeight: 600, 
+              color: 'text.primary',
+              fontSize: { xs: '1.75rem', sm: '2rem' },
+              letterSpacing: '-0.01em'
+            }}
+          >
+            Get Started
+          </Typography>
+          <Typography 
+            variant="body2" 
+            color="text.secondary" 
+            sx={{ mt: 1, maxWidth: '400px', mx: 'auto' }}
+          >
+            Choose an area to begin your fitness journey
+          </Typography>
+        </Box>
 
         <Grid container spacing={4} sx={{ mb: 8 }}>
           <Grid item xs={12} sm={6} lg={4}>
