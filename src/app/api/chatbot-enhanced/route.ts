@@ -2,15 +2,28 @@ import { NextRequest, NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 import { Amplify } from 'aws-amplify';
 import { generateClient } from 'aws-amplify/api';
+import AWS from 'aws-sdk';
 import outputs from '../../../../amplify_outputs.json';
-
-// Configure Amplify
-Amplify.configure(outputs);
-const client = generateClient();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+// Configure AWS SDK as backup
+AWS.config.update({
+  region: 'us-east-2',
+});
+
+const dynamodb = new AWS.DynamoDB.DocumentClient();
+
+// Try to configure Amplify (might not work in API routes)
+try {
+  Amplify.configure(outputs);
+} catch (error) {
+  console.log('🔧 Amplify config failed in API route, using AWS SDK fallback');
+}
+
+const client = generateClient();
 
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
@@ -23,10 +36,10 @@ interface UserData {
   meals: any[];
 }
 
-// Fetch user data using GraphQL (works in production)
-async function fetchUserData(userId: string): Promise<UserData> {
+// Fetch user data using GraphQL (try first)
+async function fetchUserDataGraphQL(userId: string): Promise<UserData> {
   try {
-    console.log('🔍 Fetching user data for chatbot:', userId);
+    console.log('🔍 Trying GraphQL method for user:', userId);
 
     const results = await Promise.allSettled([
       // Fetch user profile
@@ -112,17 +125,91 @@ async function fetchUserData(userId: string): Promise<UserData> {
     const workouts = (workoutResult as any)?.data?.listWorkoutLogs?.items || [];
     const meals = (mealResult as any)?.data?.listMealLogs?.items || [];
 
-    console.log('📊 Fetched user data:', {
-      profile: profile ? `Found profile for ${profile.name}, age ${profile.age}` : 'No profile',
-      workouts: `${workouts.length} workouts`,
-      meals: `${meals.length} meals`
-    });
+    // Check if we got valid data
+    if (profile || workouts.length > 0 || meals.length > 0) {
+      console.log('✅ GraphQL method successful');
+      return { profile, workouts, meals };
+    } else {
+      throw new Error('No data returned from GraphQL');
+    }
 
+  } catch (error) {
+    console.log('❌ GraphQL method failed:', error);
+    throw error;
+  }
+}
+
+// Fetch user data using AWS SDK (fallback)
+async function fetchUserDataAWS(userId: string): Promise<UserData> {
+  try {
+    console.log('🔧 Using AWS SDK fallback method for user:', userId);
+
+    const results = await Promise.allSettled([
+      // Fetch user profile
+      dynamodb.scan({
+        TableName: 'UserProfile-b7vimfsyujdibnpphmpxriv3c4-NONE',
+        FilterExpression: 'userId = :userId',
+        ExpressionAttributeValues: {
+          ':userId': userId
+        }
+      }).promise(),
+
+      // Fetch workout logs
+      dynamodb.scan({
+        TableName: 'WorkoutLog-b7vimfsyujdibnpphmpxriv3c4-NONE',
+        FilterExpression: 'userId = :userId',
+        ExpressionAttributeValues: {
+          ':userId': userId
+        }
+      }).promise(),
+
+      // Fetch meal logs
+      dynamodb.scan({
+        TableName: 'MealLog-b7vimfsyujdibnpphmpxriv3c4-NONE',
+        FilterExpression: 'userId = :userId',
+        ExpressionAttributeValues: {
+          ':userId': userId
+        }
+      }).promise()
+    ]);
+
+    // Extract data from results
+    const profile = results[0].status === 'fulfilled' 
+      ? (results[0].value as any).Items?.[0] 
+      : null;
+
+    const workouts = results[1].status === 'fulfilled' 
+      ? (results[1].value as any).Items || []
+      : [];
+
+    const meals = results[2].status === 'fulfilled' 
+      ? (results[2].value as any).Items || []
+      : [];
+
+    // Sort by date (newest first)
+    workouts.sort((a: any, b: any) => new Date(b.createdAt || b.date).getTime() - new Date(a.createdAt || a.date).getTime());
+    meals.sort((a: any, b: any) => new Date(b.createdAt || b.date).getTime() - new Date(a.createdAt || a.date).getTime());
+
+    console.log('✅ AWS SDK fallback successful');
     return { profile, workouts, meals };
 
   } catch (error) {
-    console.error('❌ Error fetching user data:', error);
+    console.log('❌ AWS SDK fallback also failed:', error);
     return { profile: null, workouts: [], meals: [] };
+  }
+}
+
+// Hybrid fetch: try GraphQL first, fallback to AWS SDK
+async function fetchUserData(userId: string): Promise<UserData> {
+  try {
+    // Try GraphQL method first (works in client-side and some API environments)
+    const data = await fetchUserDataGraphQL(userId);
+    return data;
+  } catch (error) {
+    // Fallback to AWS SDK method (works in all environments)
+    console.log('🔄 Falling back to AWS SDK method...');
+    const data = await fetchUserDataAWS(userId);
+    return data;
   }
 }
 
@@ -143,7 +230,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Fetch user's real data from DynamoDB
+    // Fetch user's real data from DynamoDB (hybrid approach)
     const userData = await fetchUserData(userId);
     
     // Build personalized context
