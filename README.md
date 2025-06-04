@@ -166,7 +166,7 @@ npm --version   # 9+
 
 # Required accounts & keys
 AWS Account (Free Tier)
-OpenAI API Key: sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA
+OpenAI API Key:
 Pinecone API Key (Free Tier)
 ```
 
@@ -181,7 +181,7 @@ npm install
 
 # 3. Configure environment variables
 touch .env.local
-echo "OPENAI_API_KEY=sk-proj8hVgyhiQFcBoaJU9nhxnD4lbHcNCAHM5IBg6rrkxsmd3QUds9KifKRPnN3u5V1d2KfSr0bf2BNT3BlbkFJmWAsU9EW0zpXWZCo5W8Up1ZtSiP5aXj307B9QnUOUrQR6JdX_MusgNH5LXLpMJ16Pzh_V7XYA" >> .env.local
+echo "OPENAI_API_KEY=your_openai_key_here" >> .env.local
 echo "PINECONE_API_KEY=your_pinecone_key_here" >> .env.local
 ```
 
