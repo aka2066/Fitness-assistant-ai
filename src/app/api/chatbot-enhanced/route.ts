@@ -17,9 +17,6 @@ AWS.config.update({
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-// AppSync configuration
-const APPSYNC_ENDPOINT = 'https://o753qyivt5h3bjsybv4ekkydve.appsync-api.us-east-2.amazonaws.com/graphql';
-
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
@@ -100,52 +97,8 @@ function validateAuthHeader(request: NextRequest): { isValid: boolean; error?: s
   return { isValid: true };
 }
 
-// Fetch user data using direct GraphQL HTTP request with IAM signing
-async function fetchUserDataGraphQL(userId: string): Promise<UserData> {
-  try {
-    console.log('🎯 Trying GraphQL with direct HTTP + IAM signing for user:', userId);
-
-    // For now, let's use a simpler approach - direct HTTP request to AppSync
-    // This will work if IAM credentials are properly configured
-    const queries = [
-      {
-        query: `
-          query ListUserProfiles($filter: ModelUserProfileFilterInput) {
-            listUserProfiles(filter: $filter) {
-              items {
-                id
-                userId
-                name
-                age
-                heightFeet
-                heightInches
-                weight
-                fitnessGoals
-                activityLevel
-                dietaryRestrictions
-                createdAt
-                updatedAt
-                owner
-              }
-            }
-          }
-        `,
-        variables: { filter: { userId: { eq: userId } } }
-      }
-    ];
-
-    // For this implementation, I'll skip the complex IAM signing for now
-    // and focus on making the chatbot work reliably with the fallback
-    throw new Error('GraphQL HTTP implementation requires IAM signing - using fallback');
-
-  } catch (error) {
-    console.log('❌ GraphQL with direct HTTP failed:', error);
-    throw error;
-  }
-}
-
-// Fetch user data using AWS SDK v2 DynamoDB (bulletproof fallback)
-async function fetchUserDataFallback(userId: string): Promise<UserData> {
+// Fetch user data using AWS SDK v2 DynamoDB (bulletproof method)
+async function fetchUserData(userId: string): Promise<UserData> {
   try {
     console.log('🔧 Using AWS SDK v2 DynamoDB method for user:', userId);
 
@@ -200,17 +153,9 @@ async function fetchUserDataFallback(userId: string): Promise<UserData> {
     return { profile, workouts, meals };
 
   } catch (error) {
-    console.log('❌ AWS SDK v2 also failed:', error);
+    console.log('❌ AWS SDK v2 failed:', error);
     return { profile: null, workouts: [], meals: [] };
   }
-}
-
-// Smart approach: Use proven AWS SDK v2 method (skip GraphQL complexity for now)
-async function fetchUserData(userId: string): Promise<UserData> {
-  // For maximum reliability, let's use the proven method directly
-  // We can implement proper GraphQL later if needed
-  console.log('🚀 Using proven AWS SDK v2 method for reliable chatbot performance');
-  return await fetchUserDataFallback(userId);
 }
 
 export async function POST(request: NextRequest) {
